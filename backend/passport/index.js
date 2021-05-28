@@ -1,5 +1,4 @@
-const LocalStrategy = require('passport-local').Strategy;
-const users = require('../data/users.json');
+/*const LocalStrategy = require('passport-local').Strategy;
 
 exports.config = (passport) => {
     passport.serializeUser((user, done) => {
@@ -29,4 +28,4 @@ exports.config = (passport) => {
             done(null, false, { message: "가입되지 않은 회원" });
         }
     }));
-};
+};*/
