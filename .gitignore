@@ -5,3 +5,4 @@ dist/*
 *.map
 backend/public/static/js/app.a397f82a829e56fc2b4a.js.map
 backend/public/static/js/manifest.2ae2e69a05c33dfc65f8.js.map
+backend/data/db_config.json
