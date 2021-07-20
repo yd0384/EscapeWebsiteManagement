@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
-
+/*
 var db_config = require('../data/db_config.json')
 var mysql = require('mysql');
 var connection = mysql.createConnection({
@@ -27,3 +27,4 @@ connection.query('SELECT * from theme', (error, rows, fields)=>{
 });
 
 connection.end();
+*/
