@@ -9,7 +9,7 @@
             >
                 <b-form-input
                     id="input-1"
-                    v-model="form.id"
+                    v-model="id"
                     type="id"
                     placeholder="Enter id"
                     required
@@ -22,7 +22,7 @@
             >
                 <b-form-input
                     id="text-password"
-                    v-model="form.password"
+                    v-model="password"
                     type="password"
                     placeholder="Enter password"
                     required
@@ -31,7 +31,7 @@
             <b-form-group id="input-group-2" label="Level:" label-for="input-2">
                 <b-form-select
                 id="input-2"
-                v-model="form.level"
+                v-model="level"
                 :options="levels"
                 required
                 ></b-form-select>
@@ -45,19 +45,39 @@
 export default {
     data() {
         return {
-            form: {
                 id: '',
                 password: '',
-                level: null
-            },
-            levels: [{text: 'Select One', value: null}, 'Level1', 'Level2', 'Level3'],
-            show: true
-        }
-    },
+                level: null,
+                levels: [
+                    {value: 'null', text: '레벨을 선택해주세요'},
+                    {value: 1, text: 'Level 1'},
+                    {value: 2, text: 'Level 2'},
+                    {value: 3, text: 'Level 3'}
+                ]
+            };
+        },
     methods: {
         onSubmit(event) {
-            event.preventDefault()
-            alert(JSON.stringify(this.form))
+            const id = this.id;
+            const level =this.level;
+            const password = this.password;
+            if(level==null){
+                alert("level을 선택해주세요");
+            }
+            else{
+                this.$http.post("api/login", {id, level, password,}, {"Content-Type":"application-json"})
+                    .then((res) => {
+                        if(res.data.user) {
+                            this.$store.commit("setUser", res.data.user);
+                            this.$router.push({ name: "Home"});
+                        }else if (res.data.message){
+                            alert(res.data.message);
+                        }
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            }
         }
     }
 }

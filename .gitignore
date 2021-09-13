@@ -4,3 +4,4 @@ dist/*
 *.log
 *.map
 backend/data/db_config.json
+backend/.env

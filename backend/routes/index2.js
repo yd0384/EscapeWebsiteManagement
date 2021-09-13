@@ -3,8 +3,9 @@ var router = express.Router();
 var path = require('path');
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../public2/index.html'))
-  //res.render('index', { title: 'Express' });
+  res.sendFile(path.join(__dirname, '../public2/index.html'));
+  res.render('home', { title: 'Express' });
 });
 
 module.exports = router;
+
