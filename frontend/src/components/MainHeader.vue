@@ -1,10 +1,14 @@
 <template>
     <b-navbar type="dark" variant="dark">
-      <b-navbar-brand href="#">
-        <img src="https://placekitten.com/g/30/30" alt="Kitten">
-        EscapeRoom
-      </b-navbar-brand>
-      <b-nav-item text="Theme" right>Theme</b-nav-item>
+      <router-link :to="{ name : 'MainPage' }">
+        <b-navbar-brand >
+            <img src="https://placekitten.com/g/30/30" alt="Kitten">
+            EscapeRoom
+        </b-navbar-brand>
+      </router-link>
+      <router-link tag="b-nav-item" :to="{ name : 'ThemePage' }" right>
+        Theme
+      </router-link>
       <b-nav-item-dropdown text="Reservation" right>
         <b-dropdown-item v-for="menu in MenuReservation" :key="menu.id">{{menu.title}}</b-dropdown-item>
       </b-nav-item-dropdown>
