@@ -10,7 +10,7 @@
         Theme
       </router-link>
       <b-nav-item-dropdown text="Reservation" right>
-        <b-dropdown-item v-for="menu in MenuReservation" :key="menu.id">{{menu.title}}</b-dropdown-item>
+        <router-link tag="b-dropdown-item" :to="{ name : menu.url }" v-for="menu in MenuReservation" :key="menu.id">{{menu.title}}</router-link>
       </b-nav-item-dropdown>
       <b-nav-item-dropdown text="Customer" right>
         <b-dropdown-item v-for="menu in MenuCustomer" :key="menu.id">{{menu.title}}</b-dropdown-item>
@@ -25,11 +25,13 @@
                 MenuReservation: [
                     {
                         id: 1,
-                        title: '예약하기'
+                        title: '예약하기',
+                        url: 'ReservationPage'
                     },
                     {
                         id: 2,
-                        title: '예약확인/취소'
+                        title: '예약확인/취소',
+                        url: 'ReservationCheck'
                     },
                 ],
                 MenuCustomer: [

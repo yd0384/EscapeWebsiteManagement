@@ -5,7 +5,6 @@
       <b-list-group horizontal>
         <b-list-group-item v-for="branch in branchs" :key=branch.id v-on:click="select_branch(branch.id)">
           {{ branch.name }}
-          <b-badge variant="primary" pill>{{branch.themes.length}}</b-badge>
         </b-list-group-item>
       </b-list-group>
       <b-card
@@ -15,8 +14,7 @@
         img-alt="Image"
         img-left
         tag="article"
-        class="mb-5"
-      >
+        class="mb-5">
         <b-card-text>
           Some quick example text to build on the card title and make up the bulk of the card's content.
         </b-card-text>
@@ -43,7 +41,11 @@ export default {
             {
               id: 1,
               name: '콜드케이스',
-            }
+            },
+            {
+              id: 2,
+              name: '이층복도끝화장실'
+            },
           ]
         },
         { 

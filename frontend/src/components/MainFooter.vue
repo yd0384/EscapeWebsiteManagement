@@ -8,11 +8,11 @@
 </script>
 <style scoped>
     .container {
-        height: 7.5rem;
-        position: fixed;
-        left: 0;
-        bottom: 0;
+        height: 100px;
         min-width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
         text-align: center;
         color: azure;
         background: indigo;

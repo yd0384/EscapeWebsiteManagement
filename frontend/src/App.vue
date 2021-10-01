@@ -1,12 +1,16 @@
 <template>
-  <div id="app">
-    <!--<img src="./assets/logo.png">!-->
-    <MainHeader></MainHeader>
-    <nav class='main-content'>
-    <router-view/>
-    </nav>
-    <MainFooter></MainFooter>
-  </div>
+  <html>
+    <body>
+      <div id="app">
+        <MainHeader></MainHeader>
+        <!--<img src="./assets/logo.png">!-->
+        <div class='main-content'>
+        <router-view/>
+        </div>
+        <MainFooter></MainFooter>
+      </div>
+    </body>
+  </html>
 </template>
 
 <script>
@@ -28,6 +32,21 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.main-content {
+  margin-bottom: 50px;
+  padding: 50px;
 }
 
 </style>
