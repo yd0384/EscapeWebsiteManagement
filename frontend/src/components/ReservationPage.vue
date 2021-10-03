@@ -31,7 +31,7 @@
       <hr class="mx-5">
       <b-row v-for="theme in branchs[selected_branch].themes" :key=theme.id>
         <b-container class="theme_box">
-          <b-row v-for="theme in branchs[selected_branch].themes" :key=theme.id :title="theme.name">
+          <b-row :title="theme.name">
             <b-col class="theme_poster">
               <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
             </b-col>
