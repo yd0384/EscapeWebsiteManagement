@@ -27,21 +27,40 @@
       </b-row>
       <hr class="mx-5">
       <b-row>
-        <b-col>
-          <b-card
-            v-for="theme in branchs[selected_branch].themes" :key=theme.id
-            :title="theme.name"
-            img-src="https://picsum.photos/600/300/?image=25"
-            img-alt="Image"
-            img-left
-            tag="article"
-            class="mb-5">
-            <b-card-text>
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </b-card-text>
-            <b-button href="#" variant="primary">예약하기</b-button>
-          </b-card>
-        </b-col>
+        <b-container class="theme_box">
+          <b-row>
+            <b-col class="theme_poster">
+              <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
+            </b-col>
+            <b-col>
+              <b-row class="theme_title">
+                <div v-for="theme in branchs[selected_branch].themes" :key=theme.id :title="theme.name"></div>
+              </b-row>
+              <b-row class="time_area">
+                <b-button href="#" variant="primary">10:30</b-button>
+                <b-button href="#" variant="primary">21:30</b-button>
+              </b-row>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-row>
+      <b-row>
+        <b-container class="theme_box">
+          <b-row>
+            <b-col class="theme_poster">
+              <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
+            </b-col>
+            <b-col>
+              <b-row class="theme_title">
+                <h3>Cold Case</h3>
+              </b-row>
+              <b-row class="time_area">
+                <b-button href="#" variant="primary">10:30</b-button>
+                <b-button href="#" variant="primary">21:30</b-button>
+              </b-row>
+            </b-col>
+          </b-row>
+        </b-container>
       </b-row>
     </div>
   </div>
