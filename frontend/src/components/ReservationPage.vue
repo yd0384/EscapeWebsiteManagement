@@ -34,7 +34,7 @@
             </b-col>
             <b-col>
               <b-row class="theme_title">
-                <div v-for="theme in branchs[selected_branch].themes" :key=theme.id :title="theme.name"></div>
+                <h3>Lucid Dream</h3>
               </b-row>
               <b-row class="time_area">
                 <b-button href="#" variant="primary">10:30</b-button>
