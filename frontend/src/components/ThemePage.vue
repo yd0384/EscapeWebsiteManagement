@@ -18,7 +18,7 @@
         <b-card-text>
           Some quick example text to build on the card title and make up the bulk of the card's content.
         </b-card-text>
-        <b-button href="#" variant="primary">예약하기</b-button>
+        <router-link :to="{ name: 'ReservationPage', params: { branch_id: selected_branch }}"> <b-button variant="primary">예약하기</b-button></router-link>
       </b-card>
     </div>
   </div>
@@ -41,10 +41,6 @@ export default {
             {
               id: 1,
               name: '콜드케이스',
-            },
-            {
-              id: 2,
-              name: '이층복도끝화장실'
             },
           ]
         },
