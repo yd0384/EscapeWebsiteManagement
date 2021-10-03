@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import MainPage from '@/components/MainPage'
 import ThemePage from '@/components/ThemePage'
 import ReservationPage from '@/components/ReservationPage'
+import NoticePage from '@/components/NoticePage'
 Vue.use(Router)
 
 export default new Router({
@@ -22,6 +23,11 @@ export default new Router({
       path: '/reservation',
       name: 'ReservationPage',
       component: ReservationPage
+    },
+    {
+      path: '/notice',
+      name: 'NoticePage',
+      component: NoticePage
     }
   ]
 })

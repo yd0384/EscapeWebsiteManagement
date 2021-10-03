@@ -28,31 +28,13 @@
       <hr class="mx-5">
       <b-row>
         <b-container class="theme_box">
-          <b-row>
+          <b-row v-for="theme in branchs[selected_branch].themes" :key=theme.id :title="theme.name">
             <b-col class="theme_poster">
               <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
             </b-col>
             <b-col>
               <b-row class="theme_title">
-                <h3>Lucid Dream</h3>
-              </b-row>
-              <b-row class="time_area">
-                <b-button href="#" variant="primary">10:30</b-button>
-                <b-button href="#" variant="primary">21:30</b-button>
-              </b-row>
-            </b-col>
-          </b-row>
-        </b-container>
-      </b-row>
-      <b-row>
-        <b-container class="theme_box">
-          <b-row>
-            <b-col class="theme_poster">
-              <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
-            </b-col>
-            <b-col>
-              <b-row class="theme_title">
-                <h3>Cold Case</h3>
+                <h3> {{ theme.name }} </h3>
               </b-row>
               <b-row class="time_area">
                 <b-button href="#" variant="primary">10:30</b-button>
@@ -95,6 +77,10 @@ export default {
             {
               id: 1,
               name: '콜드케이스',
+            },
+            {
+              id: 2,
+              name: '더케이지',
             }
           ]
         },

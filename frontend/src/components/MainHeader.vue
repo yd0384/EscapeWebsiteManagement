@@ -13,7 +13,7 @@
         <router-link tag="b-dropdown-item" :to="{ name : menu.url }" v-for="menu in MenuReservation" :key="menu.id">{{menu.title}}</router-link>
       </b-nav-item-dropdown>
       <b-nav-item-dropdown text="Customer" right>
-        <b-dropdown-item v-for="menu in MenuCustomer" :key="menu.id">{{menu.title}}</b-dropdown-item>
+        <router-link tag="b-dropdown-item" :to="{ name : menu.url }" v-for="menu in MenuCustomer" :key="menu.id">{{menu.title}}</router-link>
       </b-nav-item-dropdown>
     </b-navbar>
 </template>
@@ -37,15 +37,12 @@
                 MenuCustomer: [
                     {
                         id: 1,
-                        title: '공지사항'
+                        title: '공지사항',
+                        url: 'NoticePage'
                     },
                     {
                         id: 2,
                         title: '매장 안내'
-                    },
-                    {
-                        id: 3,
-                        title: '문의 사항'
                     },
                 ]
             }
