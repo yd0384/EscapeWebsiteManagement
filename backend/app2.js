@@ -9,8 +9,8 @@ var passport = require('passport');
 require('./passport').config(passport);
 require('dotenv').config();
 
-var indexRouter = require('./routes/index2');
-var loginRouter = require('./routes/login');
+var indexRouter = require('./routes/manage/index2');
+var loginRouter = require('./routes/manage/login');
 
 var app2 = express();
 

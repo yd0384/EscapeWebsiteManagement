@@ -1,10 +1,4 @@
-var db_config = require('./data/db_config.json')
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-  host : db_config.host,
-  user : db_config.user,
-  password : db_config.password,
-  database : db_config.database,
-  port : db_config.port
-});
-module.exports = connection;
+const knex = require('knex');
+const config = require('./knexfile.js');
+const db = knex(config.development);
+module.exports = db;

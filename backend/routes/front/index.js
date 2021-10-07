@@ -6,7 +6,6 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../public/index.html'))
   //res.render('index', { title: 'Express' });
 });
-
 module.exports = router;
 /*
 var db_config = require('../data/db_config.json')
