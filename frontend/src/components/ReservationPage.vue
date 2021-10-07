@@ -4,7 +4,7 @@
     <div>
       <b-row>
         <b-col><b>
-          {{ branchs[selected_branch].name }}<br>
+          {{ getbranchname }}<br>
           {{ value.getFullYear() }}년 
           {{ value.getMonth()+1 }}월
           {{ value.getDate() }}일
@@ -13,8 +13,8 @@
           </b></b-col>
         <b-col>
           <b-list-group horizontal>
-            <b-list-group-item v-for="branch in branchs" :key=branch.id v-on:click="select_branch(branch.id)">
-              {{ branch.name }}
+            <b-list-group-item v-for="branch in branches" :key=branch.branch_id v-on:click="select_branch(branch.branch_id)">
+              {{ branch.branch_name }}
             </b-list-group-item>
           </b-list-group>
         </b-col>
@@ -29,23 +29,25 @@
         </b-col>
       </b-row>
       <hr class="mx-5">
-      <b-row v-for="theme in branchs[selected_branch].themes" :key=theme.id>
-        <b-container class="theme_box">
-          <b-row :title="theme.name">
-            <b-col class="theme_poster">
-              <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
-            </b-col>
-            <b-col>
-              <b-row class="theme_title">
-                <h3>{{ theme.name }}</h3>
-              </b-row>
-              <b-row class="time_area">
-                <b-button href="#" variant="primary" v-for="time in theme.start_times" :key="time">{{time}}</b-button>
-              </b-row>
-            </b-col>
-          </b-row>
-        </b-container>
-      </b-row>
+      <div v-if="themes">
+        <b-row v-for="theme in themes" :key=theme.theme_id>
+          <b-container class="theme_box">
+            <b-row>
+              <b-col class="theme_poster">
+                <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
+              </b-col>
+              <b-col>
+                <b-row class="theme_title">
+                  <h3>{{ theme.theme_name }}</h3>
+                </b-row>
+                <b-row class="time_area">
+                  <!-- <b-button href="#" variant="primary" v-for="time in theme.start_times" :key="time">{{time}}</b-button> -->
+                </b-row>
+              </b-col>
+            </b-row>
+          </b-container>
+        </b-row>
+      </div>
     </div>
   </div>
 </template>
@@ -53,7 +55,37 @@
 <script>
 //시간 받는법 theme별로 시작시간들이 정해져있음, 예약에서 해당 날짜 예약들을 조회, 있으면 그 시간 예약 예약불가, 없다면 예약가능
 export default {
+  created() {
+    console.log(this.$route.params.branch_id);
+    this.$http.get('/api/theme')
+      .then((res) => {
+        this.branches = JSON.parse(res.data);
+        this.selected_branch = this.selected_branch==0 ?  this.branches[0].branch_id: this.selected_branch;
+        this.$http.get('/api/theme/get_themes', {params: {
+          branch_id : this.selected_branch
+        }})
+          .then((res) => {
+            this.themes = JSON.parse(res.data);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
+  computed : {
+    getbranchname() {
+      for(var idx in this.branches){
+        if(this.branches[idx].branch_id == this.selected_branch){
+          return this.branches[idx].branch_name;
+        }
+      }
+    }
+  },
   data()  {
+    let selected_branch = this.$route.params.branch_id ? this.$route.params.branch_id : 0
     const limitDate = 30 //get limitDate from database
     const now = new Date()
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -61,50 +93,28 @@ export default {
     // 15th in two months
     const maxDate = new Date(today)
     maxDate.setDate(maxDate.getDate()+limitDate) 
-    let selected_branch = this.$route.params.branch_id ? this.$route.params.branch_id : 0
     return {
       value: today,
       min: minDate,
       max: maxDate,
       Days: ['일', '월', '화', '수', '목', '금', '토'],
-      selected_branch: selected_branch,
-      branchs: [
-        { 
-          id: 0,
-          name: '건대1호점' ,
-          themes : [
-            { 
-              id: 0,
-              name: '루시드드림',
-              start_times: ['10:00', '12:30', '14:00', '15:45', '17:00'],
-              theme_length: 75
-            },
-            {
-              id: 1,
-              name: '콜드케이스',
-              start_times: ['10:00', '12:30', '14:00', '15:45', '17:00'],
-              theme_length: 60
-            }
-          ]
-        },
-        { 
-          id: 1,
-          name: '건대2호점' ,
-          themes : [
-            { 
-              id: 0,
-              name: '디어마르시',
-              start_times: ['10:00', '12:30', '14:00', '15:45', '17:00'],
-              theme_length: 60
-            }
-          ]
-        }
-      ]
-    }
+      selected_branch: selected_branch, 
+      branches: [],
+      themes: [],
+    }  
   },
   methods:{
     select_branch(id){
       this.selected_branch=id;
+      this.$http.get('/api/theme/get_themes', {params: {
+          branch_id : this.selected_branch
+      }})
+        .then((res) => {
+          this.themes = JSON.parse(res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
   },
 }

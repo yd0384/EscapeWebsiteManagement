@@ -5,5 +5,5 @@ dist/*
 *.map
 backend/data/db_config.json
 backend/.env
-backend/public/*
-backend/public2/*
+backend/public/
+backend/public2/

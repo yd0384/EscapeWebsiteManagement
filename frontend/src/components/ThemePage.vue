@@ -39,7 +39,6 @@ export default {
         }})
           .then((res) => {
             this.themes = JSON.parse(res.data);
-            console.log(res.data);
           })
           .catch((err) => {
             console.error(err);
@@ -64,7 +63,6 @@ export default {
       }})
         .then((res) => {
           this.themes = JSON.parse(res.data);
-          console.log(res.data);
         })
         .catch((err) => {
           console.error(err);
