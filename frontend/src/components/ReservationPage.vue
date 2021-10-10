@@ -13,7 +13,7 @@
           </b></b-col>
         <b-col>
           <b-list-group horizontal>
-            <b-list-group-item v-for="branch in branches" :key=branch.branch_id v-on:click="select_branch(branch.branch_id)">
+            <b-list-group-item :class="{'active' : isSelected(branch.branch_id) }" v-for="branch in branches" :key=branch.branch_id v-on:click="select_branch(branch.branch_id)">
               {{ branch.branch_name }}
             </b-list-group-item>
           </b-list-group>
@@ -104,6 +104,9 @@ export default {
     }  
   },
   methods:{
+    isSelected: function(i) {
+      return i === this.selected_branch;
+    },
     select_branch(id){
       this.selected_branch=id;
       this.$http.get('/api/theme/get_themes', {params: {
