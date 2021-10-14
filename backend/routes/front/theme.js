@@ -7,6 +7,9 @@ db
     .from('branch')
     .then(rows => {
       branches=JSON.stringify(rows);  
+    })
+    .catch(error => {
+        console.log(error);
     });
 router.get('/', function(req, res, next){
     res.json(branches);
@@ -18,6 +21,9 @@ router.get('/get_themes', function(req, res, next){
         .where({'branch_id': req.query.branch_id})
         .then(rows => {
             res.json(JSON.stringify(rows));
-        }) 
+        })
+        .catch(error => {
+            console.log(error);
+        });
 });
 module.exports = router;

@@ -13,7 +13,7 @@
           </b></b-col>
         <b-col>
           <b-list-group horizontal>
-            <b-list-group-item :class="{'active' : isSelected(branch.id) }" v-for="branch in branches" :key=branch.branch_id v-on:click="select_branch(branch.id)">
+            <b-list-group-item :class="{'active' : isSelected(branch.id) }" v-for="branch in branches" :key=branch.id v-on:click="select_branch(branch.id)">
               {{ branch.name }}
             </b-list-group-item>
           </b-list-group>
@@ -60,7 +60,7 @@ export default {
     this.$http.get('/api/theme')
       .then((res) => {
         this.branches = JSON.parse(res.data);
-        this.selected_branch = this.selected_branch==0 ?  this.branches[0].branch_id: this.selected_branch;
+        this.selected_branch = this.selected_branch==0 ?  this.branches[0].id: this.selected_branch;
         this.$http.get('/api/theme/get_themes', {params: {
           branch_id : this.selected_branch
         }})
