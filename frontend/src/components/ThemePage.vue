@@ -20,6 +20,19 @@
           <b-card-text>
             {{ theme.content }}
           </b-card-text>
+          <b-card-text>
+            장르 : {{ theme.genres }}
+          </b-card-text>
+          <b-card-text>
+            문제구성 : 장치 {{ theme.device_importance }}%, 자물쇠 {{ get_lock_importance(theme.device_importance) }}%
+          </b-card-text>
+          <b-card-text>
+            테마길이 : {{ theme.length }}분
+          </b-card-text>
+          <b-card-text>
+            난이도 : <b-form-rating v-model = "theme.difficulty" readonly show-value></b-form-rating>
+          </b-card-text>
+          
           <router-link :to="{ name: 'ReservationPage', params: { branch_id: selected_branch }}"> <b-button variant="primary">예약하기</b-button></router-link>
         </b-card>
       </div>
@@ -72,6 +85,9 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+    get_lock_importance(device_importance){
+      return 100-device_importance;
     }
 
   },

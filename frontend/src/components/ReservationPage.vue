@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 >Reservation</h1>
+    <h1>Reservation</h1>
     [날짜/테마 선택]
     <div>
       <b-row>
@@ -21,6 +21,7 @@
         </b-col>
         <b-col>
           <b-calendar v-model="value"
+            v-on:change="change_max_date"
             :hide-header="true" 
             :min="min"
             :max="max"
@@ -41,8 +42,17 @@
                 <b-row class="theme_title">
                   <h3>{{ theme.title }}</h3>
                 </b-row>
-                <b-row class="time_area">
-                  <!-- <b-button href="#" variant="primary" v-for="time in theme.start_times" :key="time">{{time}}</b-button> -->
+                <b-row class="time_area mb-2" v-for="time in timetable" :key="time.id">
+                  <b-col>
+                    <b v-if="time.theme_id===theme.id" href="#">{{time.start_time}}</b>
+                  </b-col>
+                    ~
+                  <b-col>
+                    <b v-if="time.theme_id===theme.id" href="#">{{time.end_time}}</b>
+                  </b-col>
+                  <b-col>
+                    <b-button variant="primary">예약하기</b-button>
+                  </b-col>
                 </b-row>
               </b-col>
             </b-row>
@@ -56,16 +66,15 @@
 <script>
 //시간 받는법 theme별로 시작시간들이 정해져있음, 예약에서 해당 날짜 예약들을 조회, 있으면 그 시간 예약 예약불가, 없다면 예약가능
 export default {
-  created() {
-    console.log(this.$route.params.branch_id);
-    this.$http.get('/api/theme')
-      .then((res) => {
+  async created() {
+    await this.$http.get('/api/theme')
+      .then((res)=>{
         this.branches = JSON.parse(res.data);
         this.selected_branch = this.selected_branch==0 ?  this.branches[0].id: this.selected_branch;
         this.$http.get('/api/theme/get_themes', {params: {
           branch_id : this.selected_branch
         }})
-          .then((res) => {
+          .then((res)=>{
             this.themes = JSON.parse(res.data);
           })
           .catch((err) => {
@@ -75,6 +84,17 @@ export default {
       .catch((err) => {
         console.error(err);
       });
+
+    await this.$http.get('/api/reservation/get_timetable', {params: {
+      branch_id : this.selected_branch
+    }})
+      .then((res)=>{
+        this.timetable = JSON.parse(res.data);
+      })
+      .catch((err)=>{
+        console.error(err);
+      });
+    
   },
   computed : {
     getbranchname() {
@@ -102,6 +122,7 @@ export default {
       selected_branch: selected_branch, 
       branches: [],
       themes: [],
+      timetable: [],
     }  
   },
   methods:{
@@ -119,7 +140,28 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+      this.change_max_date();
+      this.$http.get('/api/reservation/get_timetable', {params: {
+      branch_id : this.selected_branch
+      }})
+        .then((res)=>{
+          this.timetable = JSON.parse(res.data);
+        })
+        .catch((err)=>{
+          console.error(err);
+        });
     },
+    change_max_date: function(){
+      this.max = new Date();
+      for(var i in this.branches){
+        if(this.branches[i].id == this.selected_branch){
+          var limitDate = this.branches[i].reservable_date;
+          break;
+        }
+      }
+      this.max.setDate(this.max.getDate() + limitDate);
+      //제한이 긴 지점에서 늦은 날짜 선택했을 시 제한 짧은 지점을 선택해도 늦은 날짜가 선택 돼있는 버그
+    }
   },
 }
 
