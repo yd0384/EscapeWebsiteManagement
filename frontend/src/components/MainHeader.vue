@@ -31,7 +31,7 @@
                     {
                         id: 2,
                         title: '예약확인/취소',
-                        url: 'ReservationCheck'
+                        url: 'ReservationCheckPage'
                     },
                 ],
                 MenuCustomer: [

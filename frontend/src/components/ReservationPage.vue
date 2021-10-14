@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Reservation</h1>
+    <h1 style="margin-bottom:-5px;">Reservation</h1>
     [날짜/테마 선택]
-    <div>
-      <b-row>
+    <div style="margin-top:50px;">
+      <b-row align-h="center">
         <b-col><b>
           {{ getbranchname }}<br>
           {{ value.getFullYear() }}년 
