@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Reservation</h1>
+    <h1 >Reservation</h1>
+    [날짜/테마 선택]
     <div>
       <b-row>
         <b-col><b>
