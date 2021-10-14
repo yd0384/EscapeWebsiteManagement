@@ -13,8 +13,8 @@
           </b></b-col>
         <b-col>
           <b-list-group horizontal>
-            <b-list-group-item :class="{'active' : isSelected(branch.branch_id) }" v-for="branch in branches" :key=branch.branch_id v-on:click="select_branch(branch.branch_id)">
-              {{ branch.branch_name }}
+            <b-list-group-item :class="{'active' : isSelected(branch.id) }" v-for="branch in branches" :key=branch.branch_id v-on:click="select_branch(branch.id)">
+              {{ branch.name }}
             </b-list-group-item>
           </b-list-group>
         </b-col>
@@ -30,7 +30,7 @@
       </b-row>
       <hr class="mx-5">
       <div v-if="themes">
-        <b-row v-for="theme in themes" :key=theme.theme_id>
+        <b-row v-for="theme in themes" :key=theme.id>
           <b-container class="theme_box">
             <b-row>
               <b-col class="theme_poster">
@@ -38,7 +38,7 @@
               </b-col>
               <b-col>
                 <b-row class="theme_title">
-                  <h3>{{ theme.theme_name }}</h3>
+                  <h3>{{ theme.title }}</h3>
                 </b-row>
                 <b-row class="time_area">
                   <!-- <b-button href="#" variant="primary" v-for="time in theme.start_times" :key="time">{{time}}</b-button> -->
@@ -78,8 +78,8 @@ export default {
   computed : {
     getbranchname() {
       for(var idx in this.branches){
-        if(this.branches[idx].branch_id == this.selected_branch){
-          return this.branches[idx].branch_name;
+        if(this.branches[idx].id == this.selected_branch){
+          return this.branches[idx].name;
         }
       }
     }

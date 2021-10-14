@@ -3,14 +3,14 @@
     <h1>Theme</h1>
     <div>
       <b-list-group horizontal>
-        <b-list-group-item :class="{'active' : isSelected(branch.branch_id) }" v-for="branch in branches" :key=branch.branch_id v-on:click="select_branch(branch.branch_id)">
-          {{ branch.branch_name }}
+        <b-list-group-item :class="{'active' : isSelected(branch.id) }" v-for="branch in branches" :key=branch.id v-on:click="select_branch(branch.id)">
+          {{ branch.name }}
         </b-list-group-item>
       </b-list-group>
       <div v-if="themes">
         <b-card
-          v-for="theme in themes" :key=theme.theme_id
-          :title="theme.theme_name"
+          v-for="theme in themes" :key=theme.id
+          :title="theme.title"
           img-src="https://picsum.photos/600/300/?image=25"
           img-alt="Image"
           img-left
@@ -18,7 +18,7 @@
           class="mb-5"
           >
           <b-card-text>
-            {{ theme.theme_detail }}
+            {{ theme.content }}
           </b-card-text>
           <router-link :to="{ name: 'ReservationPage', params: { branch_id: selected_branch }}"> <b-button variant="primary">예약하기</b-button></router-link>
         </b-card>
@@ -35,7 +35,7 @@ export default {
     this.$http.get('/api/theme')
       .then((res) => {
         this.branches = JSON.parse(res.data);
-        this.selected_branch = this.branches[0].branch_id;
+        this.selected_branch = this.branches[0].id;
         this.$http.get('/api/theme/get_themes', {params: {
           branch_id : this.selected_branch
         }})
