@@ -5,7 +5,7 @@
     <div style="margin-top:50px;">
       <b-row align-h="center">
         <b-col><b>
-          {{ getbranchname }}<br>
+          {{ branch_name }}<br>
           {{ value.getFullYear() }}년 
           {{ value.getMonth()+1 }}월
           {{ value.getDate() }}일
@@ -32,7 +32,7 @@
       </b-row>
       <hr class="mx-5">
       <div v-if="themes">
-        <b-row v-for="theme in themes" :key=theme.id>
+        <b-row v-for="theme in theme_view" :key=theme.id>
           <b-container class="theme_box">
             <b-row>
               <b-col class="theme_poster">
@@ -65,48 +65,24 @@
 
 <script>
 //시간 받는법 theme별로 시작시간들이 정해져있음, 예약에서 해당 날짜 예약들을 조회, 있으면 그 시간 예약 예약불가, 없다면 예약가능
+import { mapState, mapGetters } from 'vuex'
 export default {
-  async created() {
-    await this.$http.get('/api/theme')
-      .then((res)=>{
-        this.branches = JSON.parse(res.data);
-        this.selected_branch = this.selected_branch==0 ?  this.branches[0].id: this.selected_branch;
-        this.$http.get('/api/theme/get_themes', {params: {
-          branch_id : this.selected_branch
-        }})
-          .then((res)=>{
-            this.themes = JSON.parse(res.data);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-
-    await this.$http.get('/api/reservation/get_timetable', {params: {
-      branch_id : this.selected_branch
-    }})
-      .then((res)=>{
-        this.timetable = JSON.parse(res.data);
-      })
-      .catch((err)=>{
-        console.error(err);
-      });
-    
+  created() { 
+    this.$store.dispatch('theme/fetch_branches'),
+    this.$store.dispatch('theme/fetch_themes')
   },
   computed : {
-    getbranchname() {
-      for(var idx in this.branches){
-        if(this.branches[idx].id == this.selected_branch){
-          return this.branches[idx].name;
-        }
-      }
-    }
+    ...mapGetters('theme', {
+      theme_view: 'getThemeView',
+      branch_name: 'getBranchName'
+    }),
+    ...mapState({
+    branches: state => state.theme.branches,
+    themes: state => state.theme.themes,
+    selected_branch: state => state.theme.selected_branch,
+    })
   },
   data()  {
-    let selected_branch = this.$route.params.branch_id ? this.$route.params.branch_id : 0
     const limitDate = 30 //get limitDate from database
     const now = new Date()
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -118,11 +94,7 @@ export default {
       value: today,
       min: minDate,
       max: maxDate,
-      Days: ['일', '월', '화', '수', '목', '금', '토'],
-      selected_branch: selected_branch, 
-      branches: [],
-      themes: [],
-      timetable: [],
+      Days: ['일', '월', '화', '수', '목', '금', '토'], 
     }  
   },
   methods:{
@@ -130,36 +102,20 @@ export default {
       return i === this.selected_branch;
     },
     select_branch(id){
-      this.selected_branch=id;
-      this.$http.get('/api/theme/get_themes', {params: {
-          branch_id : this.selected_branch
-      }})
-        .then((res) => {
-          this.themes = JSON.parse(res.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      this.$store.commit('theme/select_branch', id);
       this.change_max_date();
-      this.$http.get('/api/reservation/get_timetable', {params: {
-      branch_id : this.selected_branch
-      }})
-        .then((res)=>{
-          this.timetable = JSON.parse(res.data);
-        })
-        .catch((err)=>{
-          console.error(err);
-        });
     },
     change_max_date: function(){
-      this.max = new Date();
-      for(var i in this.branches){
-        if(this.branches[i].id == this.selected_branch){
-          var limitDate = this.branches[i].reservable_date;
-          break;
-        }
+      if (Object.keys(this.branches).length != 0  && this.selected_branch != null){
+        obj = Object.values(this.branches).filter(branch=>{
+        branch.id === this.selected_branch;
+        })[0].reservable_date;
+        this.max = new Date();
+        var limitDate = 
+        console.log(limitDate)
+        this.max.setDate(this.max.getDate() + limitDate);
       }
-      this.max.setDate(this.max.getDate() + limitDate);
+      //걍 reservable_date도 getter로 받아와서 적용하자
       //제한이 긴 지점에서 늦은 날짜 선택했을 시 제한 짧은 지점을 선택해도 늦은 날짜가 선택 돼있는 버그
     }
   },

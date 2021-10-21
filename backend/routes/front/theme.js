@@ -20,9 +20,9 @@ router.get('/', function(req, res, next){
 });
 router.get('/get_themes', async function(req, res, next){
     await db
-        .select('id', 'title', 'content', 'difficulty', 'length', 'device_importance', 'image_path', 'length')
+        .select('id', 'branch_id', 'title', 'content', 'difficulty', 'length', 'device_importance', 'image_path', 'length')
         .from('theme')
-        .where({'branch_id': req.query.branch_id, 'active': true})
+        .where({'active': true})
         .then(async function(rows){
             themes = JSON.parse(JSON.stringify(rows))
             for(var i in themes){

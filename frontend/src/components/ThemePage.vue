@@ -7,9 +7,9 @@
           {{ branch.name }}
         </b-list-group-item>
       </b-list-group>
-      <div v-if="themes">
+      <div v-if="theme_view">
         <b-card
-          v-for="theme in themes" :key=theme.id
+          v-for="theme in theme_view" :key=theme.id
           :title="theme.title"
           img-src="https://picsum.photos/600/300/?image=25"
           img-alt="Image"
@@ -32,65 +32,41 @@
           <b-card-text>
             난이도 : <b-form-rating v-model = "theme.difficulty" readonly show-value></b-form-rating>
           </b-card-text>
-          
+         
           <router-link :to="{ name: 'ReservationPage', params: { branch_id: selected_branch }}"> <b-button variant="primary">예약하기</b-button></router-link>
         </b-card>
       </div>
     </div>
   </div>
 </template>
-<style scoped>
-  
-</style>
+
 <script>
+import { mapState, mapGetters } from 'vuex'
 export default {
-  created() {
-    this.$http.get('/api/theme')
-      .then((res) => {
-        this.branches = JSON.parse(res.data);
-        this.selected_branch = this.branches[0].id;
-        this.$http.get('/api/theme/get_themes', {params: {
-          branch_id : this.selected_branch
-        }})
-          .then((res) => {
-            this.themes = JSON.parse(res.data);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  },
-  data()  {
-    return {
-      branches: [],
-      themes: [],
-      selected_branch: 0,
-    }
+  computed: {
+    ...mapGetters('theme', {
+      theme_view: 'getThemeView'
+    }),
+    ...mapState({
+    branches: state => state.theme.branches,
+    themes: state => state.theme.themes,
+    selected_branch: state => state.theme.selected_branch,
+    })
+  }, 
+  created () {
+    this.$store.dispatch('theme/fetch_branches'),
+    this.$store.dispatch('theme/fetch_themes')  
   },
   methods:{
     isSelected: function(i) {
       return i === this.selected_branch;
     },
-    select_branch(id){
-      this.selected_branch=id;
-      this.$http.get('/api/theme/get_themes', {params: {
-          branch_id : this.selected_branch
-      }})
-        .then((res) => {
-          this.themes = JSON.parse(res.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    select_branch: function(id){      
+      this.$store.commit('theme/select_branch', id);
     },
     get_lock_importance(device_importance){
       return 100-device_importance;
-    }
-
-  },
+    },
+  }
 }
 </script>
-

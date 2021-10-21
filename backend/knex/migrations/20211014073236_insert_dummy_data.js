@@ -60,7 +60,21 @@ exports.up = async function(knex) {
                             {theme_id: 1, start_time: '15:00', end_time: '16:00'},
                             {theme_id: 1, start_time: '17:00', end_time: '18:00'},
                             {theme_id: 1, start_time: '19:00', end_time: '20:00'},
-                            {theme_id: 1, start_time: '21:00', end_time: '22:00'}
+                            {theme_id: 1, start_time: '21:00', end_time: '22:00'},
+                            {theme_id: 2, start_time: '09:00', end_time: '10:15'},
+                            {theme_id: 2, start_time: '11:00', end_time: '12:15'},
+                            {theme_id: 2, start_time: '13:00', end_time: '14:15'},
+                            {theme_id: 2, start_time: '15:00', end_time: '16:15'},
+                            {theme_id: 2, start_time: '17:00', end_time: '18:15'},
+                            {theme_id: 2, start_time: '19:00', end_time: '20:15'},
+                            {theme_id: 2, start_time: '21:00', end_time: '22:15'},
+                            {theme_id: 3, start_time: '09:00', end_time: '10:00'},
+                            {theme_id: 3, start_time: '11:00', end_time: '12:00'},
+                            {theme_id: 3, start_time: '13:00', end_time: '14:00'},
+                            {theme_id: 3, start_time: '15:00', end_time: '16:00'},
+                            {theme_id: 3, start_time: '17:00', end_time: '18:00'},
+                            {theme_id: 3, start_time: '19:00', end_time: '20:00'},
+                            {theme_id: 3, start_time: '21:00', end_time: '22:00'}
                         ]
                     ).then(()=>{});
                 })
