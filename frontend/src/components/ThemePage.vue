@@ -27,12 +27,14 @@
             문제구성 : 장치 {{ theme.device_importance }}%, 자물쇠 {{ get_lock_importance(theme.device_importance) }}%
           </b-card-text>
           <b-card-text>
-            테마길이 : {{ theme.length }}분
+            플레이시간 : {{ theme.length }}분
           </b-card-text>
           <b-card-text>
-            난이도 : <b-form-rating v-model = "theme.difficulty" readonly show-value></b-form-rating>
+            난이도 : <b-form-rating v-model = "theme.difficulty" readonly></b-form-rating>
           </b-card-text>
-         
+          <b-card-text>
+            권장인원 : {{ theme.recommended_number }}
+          </b-card-text>
           <router-link :to="{ name: 'ReservationPage', params: { branch_id: selected_branch }}"> <b-button variant="primary">예약하기</b-button></router-link>
         </b-card>
       </div>

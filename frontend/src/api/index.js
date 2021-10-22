@@ -6,7 +6,11 @@ function fetchBranchList() {
 function fetchThemeList() {
     return axios.get('/api/theme/get_themes');
 }
+function fetchTimetable() {
+    return axios.get('/api/theme/get_timetables');
+}
 export {
     fetchBranchList,
-    fetchThemeList
+    fetchThemeList,
+    fetchTimetable
 }

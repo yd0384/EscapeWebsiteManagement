@@ -1,7 +1,9 @@
-import { fetchBranchList, fetchThemeList } from '../../api';
+import router from '@/router';
+import { fetchBranchList, fetchThemeList, fetchTimetable } from '../../api';
 const state = () => ({
     branches: {},
     themes: {},
+    timetables: {},
     selected_branch: null,
 });
 
@@ -11,16 +13,26 @@ const getters = {
             theme.branch_id === state.selected_branch
         );
     },
-    getBranchName(state) {
+    getBranchNameAndReservableDate(state) {
         if(typeof state.branches != 'undefined' && state.selected_branch != null){
             var filtered = Object.values(state.branches).filter(branch=>
                 branch.id === state.selected_branch
             )
-            if(filtered[0].hasOwnProperty('name')){
-                return filtered[0].name;
+            if(filtered[0].hasOwnProperty('name') && filtered[0].hasOwnProperty('reservable_date')){
+                return [filtered[0].name, filtered[0].reservable_date];
             }
         }
-        return '';
+        return ['', -1];
+    },
+    getTimeTableView(state, getters){
+        var tids = getters.getThemeView.map(x=>x.id);
+        var timetables = {};
+        for(var i in tids){
+            timetables[tids[i]]=(Object.values(state.timetables).filter(timetable=>
+                timetable.theme_id === tids[i]    
+            )); 
+        }
+        return timetables;
     }
 };
 const mutations = {
@@ -33,6 +45,9 @@ const mutations = {
     set_themes(state, themes){
         state.themes=themes;
     },
+    set_timetables(state, timetables){
+        state.timetables=timetables;
+    }
 };
 const actions = {
     fetch_branches({ commit }){
@@ -40,7 +55,12 @@ const actions = {
         .then(res => {
             var data = JSON.parse(res.data);
             commit('set_branches', data);
-            commit('select_branch', data[0].id);
+            if(router.currentRoute.params.branch_id){
+                commit('select_branch', router.currentRoute.params.branch_id);
+            }
+            else{
+                commit('select_branch', data[0].id);
+            }
         })
         .catch(error => {
             console.error(error);
@@ -50,6 +70,15 @@ const actions = {
         fetchThemeList()
         .then(res => {
             commit('set_themes', JSON.parse(res.data));
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    },
+    fetch_timetables({ commit }){
+        fetchTimetable()
+        .then(res=>{
+            commit('set_timetables', JSON.parse(res.data));
         })
         .catch(error => {
             console.error(error);
