@@ -64,7 +64,7 @@
                 <b-row class="time_area mb-2" v-for="time in timetable_view[theme.id]" :key="time.id">
                   
                   <b-col>
-                    <b-button variant="primary">{{ time.start_time }}</b-button>
+                    <b-button v-on:click="postBooking" variant="primary">{{ time.start_time }}</b-button>
                   </b-col>
                 </b-row>
               </b-col>
@@ -131,11 +131,12 @@ export default {
         this.max = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         this.max.setDate(this.max.getDate() + this.branch_info[1]);
       }
-      //걍 reservable_date도 getter로 받아와서 적용하자
-      //제한이 긴 지점에서 늦은 날짜 선택했을 시 제한 짧은 지점을 선택해도 늦은 날짜가 선택 돼있는 버그
     },
     get_lock_importance(device_importance){
       return 100-device_importance;
+    },
+    postBooking: function() {
+      this.$router.push({name: 'BookingPage', params: {time: this.value}});
     }
   },
 }

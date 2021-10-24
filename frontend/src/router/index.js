@@ -27,11 +27,6 @@ export default new Router({
       component: ReservationPage
     },
     {
-      path: '/reservation/branch/:branch_id',
-      name: 'ReservationPageFromTheme',
-      component: ReservationPage
-    },
-    {
       path: '/booking',
       name: 'BookingPage',
       component: BookingPage
