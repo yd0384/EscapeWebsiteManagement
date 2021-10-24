@@ -150,7 +150,10 @@ export default {
     },
     postBooking: function(start_time) {
       this.$router.push({name: 'BookingPage', params: {time: this.value}});
-    }
+    },
+    PostThemeInfo(item){
+      this.$router.push({name:"BookingPage", params:{id:"Post Check"}});
+    },
   },
 }
 
