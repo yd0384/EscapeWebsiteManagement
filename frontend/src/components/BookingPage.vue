@@ -3,7 +3,7 @@
     <h1 style="margin-bottom:-5px;">Reservation</h1>
     [예약정보입력]<br>
     <b-badge variant="info" style="font-size:18px; opacity:0.3; margin-top:20px; height:50px;">
-      {{ Play_Date.getFullYear() }}년 {{ Play_Date.getMonth()+1 }}월 {{ Play_Date.getDate() }}일 {{ Days[Play_Date.getDay()] }}요일 {{ branch_name }} {{ theme_name }}테마 예약을 진행합니다</b-badge>
+      {{ Play_Date.getFullYear() }}년 {{ Play_Date.getMonth()+1 }}월 {{ Play_Date.getDate() }}일 {{ Days[Play_Date.getDay()] }}요일 {{ branch_name }} {{ theme_name }} 테마 예약을 진행합니다</b-badge>
     <hr class="mx-5">
     <h4 style="margin-bottom:50px;">예약정보</h4>
     <b-container style="width:35%">
