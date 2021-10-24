@@ -4,20 +4,22 @@
     [날짜/테마 선택]
     <div style="margin-top:50px;">
       <b-row align-h="center">
-        <b-col><b>
-          <h1 style="margin-bottom:-25px;">{{ branch_info[0] }}</h1><br>
-          {{ value.getFullYear() }}년 
-          {{ value.getMonth()+1 }}월
-          {{ value.getDate() }}일
-          {{ Days[value.getDay()] }}요일<br>
-          <h4>예약목록입니다.</h4>
-          </b></b-col>
         <b-col>
-          <b-list-group horizontal>
+          <b-list-group vertical style="width:200px;">
             <b-list-group-item :class="{'active' : isSelected(branch.id) }" v-for="branch in branches" :key=branch.id v-on:click="select_branch(branch.id)">
               {{ branch.name }}
             </b-list-group-item>
           </b-list-group>
+        </b-col>
+        <b-col>
+          <h1 style="margin-bottom:-20px;"><b>{{ branch_info[0] }}</b></h1><br>
+          <h2 style="margin-bottom:-20px;">
+            <b style="font-size:40px;">{{ value.getFullYear() }}</b>년 
+            <b style="font-size:40px;">{{ value.getMonth()+1 }}</b>월
+            <b style="font-size:40px;">{{ value.getDate() }}</b>일
+            <b style="font-size:40px;">{{ Days[value.getDay()] }}</b>요일
+          </h2><br>
+          <h3><strong>예약현황</strong>입니다.</h3>
         </b-col>
         <b-col>
           <b-calendar v-model="value"
@@ -31,39 +33,40 @@
         </b-col>
       </b-row>
       <hr class="mx-5">
-      <div v-if="themes">
+      <div v-if="themes" style="margin-top:50px;">
         <b-row v-for="theme in theme_view" :key=theme.id>
           <b-container class="theme_box">
             <b-row>
               <b-col class="theme_poster">
-                <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image" style="width:500px; margin-bottom:30px"></b-img>
+                <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image" style="width:300px; height:250px; margin-bottom:50px"></b-img>
               </b-col>
-              <b-col>
-                <b-row class="theme_title">
-                  <b-col text-align="start">
-                    <h3><strong>{{ theme.title }}</strong></h3>
+              <b-col cols="8">
+                <b-row class="theme_title" style="margin-bottom:10px;">
+                  <b-col style="text-align:left;">
+                    <h3 style="font-size:40px;"><strong>{{ theme.title }}</strong></h3>
                   </b-col>
-                  <b-col>
+                  <b-col align-self="start" style="text-align:right">
                      문제구성 : 장치 {{ theme.device_importance }}%, 자물쇠 {{ get_lock_importance(theme.device_importance) }}%
                   </b-col>
                 </b-row>
-                <b-row class="theme_info">
-                  <b-col>
+                <b-row class="theme_info" style="margin-bottom:-15px;">
+                  <b-col align-self="end" style="text-align:left;">
                     장르 : {{ theme.genres }}
                   </b-col>
-                  <b-col>
-                    난이도 : <b-form-rating v-model = "theme.difficulty" readonly></b-form-rating>
-                  </b-col>
-                  <b-col>
+                  <b-col align-self="end" style="text-align:left;">
                     플레이시간 : {{ theme.length }}분
                   </b-col>
-                  <b-col>
+                  <b-col align-self="end" style="text-align:left;">
                     권장인원 : {{ theme.recommended_number }}
                   </b-col>
+                  <b-col align-self="end" style="text-align:left;">
+                    <b-form-rating v-model = "theme.difficulty" variant="warning" readonly no-border style="height:30px;"></b-form-rating>
+                  </b-col>
                 </b-row>
-                <b-row class="time_area mb-2" cols="4" style="margin-top:30px">
+                <hr class="mx">
+                <b-row class="time_area mb-2" cols="4" style="margin-top:20px">
                   <b-col v-for="time in timetable_view[theme.id]" :key="time.id" style="margin-bottom:20px">
-                    <b-button v-on:click="postBooking([selected_branch, theme.id, time.start_time, value])" variant="primary" style="width:100px">{{ time.start_time }}</b-button>
+                    <b-button v-on:click="postBooking([selected_branch, theme.id, time.start_time, value])" variant="primary" style="width:150px; height:55px; word-spacing:10px;"><strong>{{ time.start_time }} 예약가능</strong></b-button>
                   </b-col>
                 </b-row>
               </b-col>
@@ -122,7 +125,7 @@ export default {
       min: minDate,
       max: maxDate,
       Days: ['일', '월', '화', '수', '목', '금', '토'], 
-    }  
+    }
   },
   methods:{
     isSelected: function(i) {

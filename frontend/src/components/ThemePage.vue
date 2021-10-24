@@ -7,7 +7,7 @@
           {{ branch.name }}
         </b-list-group-item>
       </b-list-group>
-      <div v-if="theme_view">
+      <div v-if="theme_view" style="margin-top:50px;">
         <b-card
           v-for="theme in theme_view" :key=theme.id
           :title="theme.title"
