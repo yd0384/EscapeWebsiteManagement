@@ -61,9 +61,9 @@
                     권장인원 : {{ theme.recommended_number }}
                   </b-col>
                 </b-row>
-                <b-row cols="4" style="margin-top:20px">
-                  <b-col class="time_area mb-2" v-for="time in timetable_view[theme.id]" :key="time.id">
-                    <b-button v-on:click="postBooking(time.start_time)" variant="primary" style="width:100px">{{ time.start_time }}</b-button>
+                <b-row class="time_area mb-2" cols="4" style="margin-top:30px">
+                  <b-col v-for="time in timetable_view[theme.id]" :key="time.id" style="margin-bottom:20px">
+                    <b-button v-on:click="postBooking([selected_branch, theme.id, time.start_time, value])" variant="primary" style="width:100px">{{ time.start_time }}</b-button>
                   </b-col>
                 </b-row>
               </b-col>
@@ -147,8 +147,8 @@ export default {
     get_lock_importance(device_importance){
       return 100-device_importance;
     },
-    postBooking: function(start_time) {
-      this.$router.push({name: 'BookingPage', params: {time: this.value}});
+    postBooking: function(items) {
+      this.$router.push({name: 'BookingPage', params: {items: items}});
     },
   },
 }

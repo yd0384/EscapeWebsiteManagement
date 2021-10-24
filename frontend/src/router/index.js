@@ -29,7 +29,7 @@ export default new Router({
     {
       path: '/booking',
       name: 'BookingPage',
-      component: BookingPage
+      component: BookingPage,
     },
     {
       path: '/rev.check',
@@ -41,5 +41,9 @@ export default new Router({
       name: 'NoticePage',
       component: NoticePage
     },
+    {
+      path: '*',
+      redirect: '/'
+    }
   ]
 })

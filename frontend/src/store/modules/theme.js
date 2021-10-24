@@ -13,6 +13,16 @@ const getters = {
             theme.branch_id === state.selected_branch
         );
     },
+    getThemeName(state) {
+        return Object.values(state.themes).filter(theme=>
+            theme.id === router.currentRoute.params.items[1]
+        )[0].title;
+    },
+    getBranchName(state, id) {
+        return Object.values(state.branches).filter(branch=>
+            branch.id === router.currentRoute.params.items[0]
+        )[0].name;
+    },
     getBranchNameAndReservableDate(state) {
         if(typeof state.branches != 'undefined' && state.selected_branch != null){
             var filtered = Object.values(state.branches).filter(branch=>
