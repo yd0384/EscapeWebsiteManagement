@@ -2,32 +2,32 @@
   <div>
     <h1 style="margin-bottom:-5px;">Reservation</h1>
     [예약정보입력]<br>
-    <b-badge variant="info" style="font-size:18px; opacity:0.3; margin-top:20px; width:500px; height:50px;">
-      2021년 9월 21일 A지점 A테마 예약을 진행합니다</b-badge>
+    <b-badge variant="info" style="font-size:18px; opacity:0.3; margin-top:20px; height:50px;">
+      {{ Play_Date.getFullYear() }}년 {{ Play_Date.getMonth()+1 }}월 {{ Play_Date.getDate() }}일 {{ Days[Play_Date.getDay()] }}요일 {{ branch_name }} {{ theme_name }}테마 예약을 진행합니다</b-badge>
     <hr class="mx-5">
     <h4 style="margin-bottom:50px;">예약정보</h4>
     <b-container style="width:35%">
       <b-row align-h="center">
         <b-col align-self="start"><b>지점명</b></b-col>
-        <b-col align-self="center">강남점</b-col>
+        <b-col align-self="center">{{ branch_name }}</b-col>
         <b-col align-self="end"></b-col>
       </b-row>
       <hr style="width:100%; margin-top:5px;">
       <b-row align-h="center">
         <b-col align-self="start"><b>예약일</b></b-col>
-        <b-col align-self="center">2021년 9월 21일</b-col>
+        <b-col align-self="center">{{ Play_Date.getFullYear() }}년 {{ Play_Date.getMonth()+1 }}월 {{ Play_Date.getDate() }}일</b-col>
         <b-col align-self="end"></b-col>
       </b-row>
       <hr style="width:100%; margin-top:5px;">
       <b-row align-h="center">
         <b-col align-self="start"><b>예약시간</b></b-col>
-        <b-col align-self="center">21:30</b-col>
+        <b-col align-self="center">{{ items[2] }}</b-col>
         <b-col align-self="end"></b-col>
       </b-row>
       <hr style="width:100%; margin-top:5px;">
       <b-row align-h="center">
         <b-col align-self="start"><b>테마명</b></b-col>
-        <b-col align-self="center">Lucid Dream</b-col>
+        <b-col align-self="center">{{ theme_name }}</b-col>
         <b-col align-self="end"></b-col>
       </b-row>
       <hr style="width:100%; margin-top:5px;">
@@ -72,11 +72,23 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
   export default {
-    name: "Receive",
+    created() {
+    this.$store.dispatch('theme/fetch_branches'),
+    this.$store.dispatch('theme/fetch_themes')
+    },
+    computed : {
+      ...mapGetters('theme', {
+        theme_name: 'getThemeName',
+        branch_name: 'getBranchName'
+      })
+    },
     data() {
       return {
-        id : this.$route.params.id,
+        items: this.$route.params.items,
+        Play_Date: new Date(this.$route.params.items[3]),
+        Days: ['일', '월', '화', '수', '목', '금', '토'],
         selected: '010',
         options: [
           { item: '010', name: '010' },
