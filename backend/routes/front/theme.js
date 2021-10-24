@@ -71,4 +71,15 @@ router.get('/get_timetables', function(req, res, next){
             console.error(error);
         });
 });
+router.get('/get_costinfo', function(req, res, next){
+    db('cost')
+        .select('number_of_player', 'price')
+        .where('theme_id', req.query.tid)
+        .then(rows => {
+            res.json(JSON.stringify(rows));
+        })
+        .catch(error=> {
+            console.error(error);
+        })
+})
 module.exports = router;

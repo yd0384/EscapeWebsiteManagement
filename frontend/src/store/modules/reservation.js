@@ -1,9 +1,10 @@
 import router from '@/router';
-import { fetchReservationList } from '../../api';
+import { fetchReservationList, fetchHeadCountAndCost } from '../../api';
 var now = new Date();
 const state = () => ({
     reservations: {},
-    date: new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+    cost_info: {}
 });
 
 const getters = {
@@ -17,6 +18,20 @@ const getters = {
         }
         return reservations;
     },
+    getCost(state){
+        var arr=[];
+        for(var i in state.cost_info){
+            arr.push(state.cost_info[i].price);
+        } 
+        return arr;
+    },
+    getHeadCounts(state){
+        var arr=[];
+        for(var i in state.cost_info){
+            arr.push({ idx: i, item: state.cost_info[i].number_of_player, name: state.cost_info[i].number_of_player+"명"})
+        }
+        return arr;
+    }
 };
 const mutations = {
     set_reservations(state, reservations){
@@ -24,6 +39,9 @@ const mutations = {
     },
     set_date(state, date){
         state.date=date;
+    },
+    set_costinfo(state, cost_info){
+        state.cost_info=cost_info;
     }
 };
 const actions = {
@@ -31,6 +49,15 @@ const actions = {
         fetchReservationList(date)
         .then(res => {
             commit('set_reservations', JSON.parse(res.data));
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    },
+    fetch_costinfo({ commit }, tid){
+        fetchHeadCountAndCost(tid)
+        .then(res => {
+            commit('set_costinfo', JSON.parse(res.data));
         })
         .catch(error => {
             console.error(error);

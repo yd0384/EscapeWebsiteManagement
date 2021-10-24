@@ -54,13 +54,13 @@
       <hr style="width:100%; margin-top:5px;">
       <b-row align-h="center">
         <b-col align-self="start"><b>인원</b></b-col>
-        <b-col align-self="center"><b-form-select v-model="selected_count" :options="headCount" value-field="item" text-field="name" style="margin-bottom: 0.5px; width:60px; height:25px; font-size : 0.65rem;"></b-form-select></b-col>
+        <b-col align-self="center"><b-form-select v-model="selected_count" :options="headcounts" value-field="idx" text-field="name" style="margin-bottom: 0.5px; width:60px; height:25px; font-size : 0.65rem;"></b-form-select></b-col>
         <b-col align-self="end"></b-col>
       </b-row>
       <hr style="width:100%; margin-top:5px;">
       <b-row align-h="center">
         <b-col align-self="start"><b>이용가격</b></b-col>
-        <b-col align-self="center" style="color:blue;"><strong>44,000원</strong></b-col>
+        <b-col align-self="center" style="color:blue;"><strong>{{ cost[selected_count] }}</strong></b-col>
         <b-col align-self="end"></b-col>
       </b-row>
       <hr style="width:100%; margin-top:5px;">
@@ -72,17 +72,25 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import { mapState, mapGetters } from 'vuex';
   export default {
     created() {
     this.$store.dispatch('theme/fetch_branches'),
-    this.$store.dispatch('theme/fetch_themes')
+    this.$store.dispatch('theme/fetch_themes'),
+    this.$store.dispatch('reservation/fetch_costinfo', this.$route.params.items[1])
     },
     computed : {
+      ...mapState({
+        cost_info: state=> state.reservation.cost_info
+      }),
       ...mapGetters('theme', {
         theme_name: 'getThemeName',
         branch_name: 'getBranchName'
-      })
+      }),
+      ...mapGetters('reservation', {
+        cost: 'getCost',
+        headcounts: 'getHeadCounts'
+      }),
     },
     data() {
       return {
@@ -90,6 +98,7 @@
         Play_Date: new Date(this.$route.params.items[3]),
         Days: ['일', '월', '화', '수', '목', '금', '토'],
         selected: '010',
+        selected_count: 0,
         options: [
           { item: '010', name: '010' },
           { item: '011', name: '011' },
@@ -97,15 +106,6 @@
           { item: '017', name: '017' },
           { item: '018', name: '018' },
           { item: '019', name: '019' }
-        ],
-        selected_count:'2',
-        headCount: [
-          { item: '1', name:'1명'},
-          { item: '2', name:'2명'},
-          { item: '3', name:'3명'},
-          { item: '4', name:'4명'},
-          { item: '5', name:'5명'},
-          { item: '6', name:'6명'}
         ],
         types: [
           '지점명',
@@ -128,7 +128,7 @@
           '44,000원'
         ]
       }
-    }
+    },
   }
 </script>
 

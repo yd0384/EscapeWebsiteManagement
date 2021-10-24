@@ -12,9 +12,13 @@ function fetchTimetable() {
 function fetchReservationList(date) {
     return axios.get('/api/reservation/get_reservations', { params: { date: date }});
 }
+function fetchHeadCountAndCost(tid){
+    return axios.get('/api/theme/get_costinfo', {params: { tid: tid }});
+}
 export {
     fetchBranchList,
     fetchThemeList,
     fetchTimetable,
-    fetchReservationList
+    fetchReservationList,
+    fetchHeadCountAndCost
 }
