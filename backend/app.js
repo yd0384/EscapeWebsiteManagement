@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var requestIP = require('request-ip');
 
 //var passport = require('passport');
 
@@ -35,6 +36,7 @@ app.use(session({
     secure: false,
   }
 }));
+app.use(requestIP.mw());
 //app.use(passport.initialize());
 //app.use(passport.session());
 

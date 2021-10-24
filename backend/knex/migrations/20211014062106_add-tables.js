@@ -75,7 +75,7 @@ exports.up = function(knex) {
         table.integer('number_of_player').notNullable();
         table.string('phone_number').notNullable();
         table.string('booker_name').notNullable();
-        table.integer('booker_ip').unsigned().notNullable();
+        table.string('booker_ip');
         table.integer('noshow').unsigned().notNullable();
     });
 };

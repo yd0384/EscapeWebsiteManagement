@@ -33,4 +33,29 @@ router.get('/get_reservations', function(req, res, next){
             console.error(error);
         });
 });
+router.get('/get_user_ip', function(req, res, next){
+    res.end(req.clientIp);
+});
+router.post('/create_reservation', function(req, res, next){
+    const payload = req.body;
+    db('reservation')
+        .insert({
+            theme_id: payload.theme_id,
+            start_time: payload.start_time,
+            end_time: payload.end_time,
+            status: payload.status,
+            reserved_time: payload.reserved_time,
+            number_of_player: payload.number_of_player,
+            phone_number: payload.phone_number,
+            booker_name: payload.booker_name,
+            booker_ip: payload.booker_ip,
+            noshow: 0
+        })
+        .then(function(result) {
+            res.json({success: true, message: 'ok'});
+        })
+        .catch(error => {
+            console.error(error);
+        })
+})
 module.exports = router;

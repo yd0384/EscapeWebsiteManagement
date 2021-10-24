@@ -12,9 +12,21 @@ function fetchTimetable() {
 function fetchReservationList(date) {
     return axios.get('/api/reservation/get_reservations', { params: { date: date }});
 }
+function fetchHeadCountAndCost(tid){
+    return axios.get('/api/theme/get_costinfo', {params: { tid: tid }});
+}
+function getUserIp(){
+    return axios.get('/api/reservation/get_user_ip');
+}
+function createReservation(payload){
+    return axios.post('/api/reservation/create_reservation', payload);
+}
 export {
     fetchBranchList,
     fetchThemeList,
     fetchTimetable,
-    fetchReservationList
+    fetchReservationList,
+    fetchHeadCountAndCost,
+    getUserIp,
+    createReservation
 }

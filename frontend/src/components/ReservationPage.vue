@@ -66,7 +66,7 @@
                 <hr class="mx">
                 <b-row class="time_area mb-2" cols="4" style="margin-top:20px">
                   <b-col v-for="time in timetable_view[theme.id]" :key="time.id" style="margin-bottom:20px">
-                    <b-button v-on:click="postBooking([selected_branch, theme.id, time.start_time, value])" variant="primary" style="width:150px; height:55px; word-spacing:10px;"><strong>{{ time.start_time }} 예약가능</strong></b-button>
+                    <b-button v-on:click="postBooking([selected_branch, theme.id, time.start_time, time.end_time, value])" variant="primary" style="width:150px; height:55px; word-spacing:10px;"><strong>{{ time.start_time }} 예약가능</strong></b-button>
                   </b-col>
                 </b-row>
               </b-col>
