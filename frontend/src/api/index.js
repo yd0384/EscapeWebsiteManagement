@@ -9,8 +9,12 @@ function fetchThemeList() {
 function fetchTimetable() {
     return axios.get('/api/theme/get_timetables');
 }
+function fetchReservationList(date) {
+    return axios.get('/api/reservation/get_reservations', { params: { date: date }});
+}
 export {
     fetchBranchList,
     fetchThemeList,
-    fetchTimetable
+    fetchTimetable,
+    fetchReservationList
 }

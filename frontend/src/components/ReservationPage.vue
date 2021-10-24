@@ -21,7 +21,7 @@
         </b-col>
         <b-col>
           <b-calendar v-model="value"
-            v-on:change="change_max_date"
+            v-on:change="change_date"
             :hide-header="true" 
             :min="min"
             :max="max"
@@ -83,20 +83,33 @@ export default {
   created() {
     this.$store.dispatch('theme/fetch_branches'),
     this.$store.dispatch('theme/fetch_themes'),
-    this.$store.dispatch('theme/fetch_timetables')
+    this.$store.dispatch('theme/fetch_timetables'),
+    this.$store.dispatch('reservation/fetch_reservations', this.value)
   },
   computed : {
     ...mapGetters('theme', {
       theme_view: 'getThemeView',
       timetable_view: 'getTimeTableView',
-      branch_info: 'getBranchNameAndReservableDate'
+      branch_info: 'getBranchNameAndReservableDate',
+    }),
+    ...mapGetters('reservation', {
+      reservation_view: 'getReservationByTheme'
     }),
     ...mapState({
     branches: state => state.theme.branches,
     themes: state => state.theme.themes,
     selected_branch: state => state.theme.selected_branch,
-    timetables: state=> state.theme.timetables
-    })
+    timetables: state=> state.theme.timetables,
+    reservations: state=>state.reservation.reservations,
+    }),
+    value: {
+      get () {
+        return this.$store.state.reservation.date;
+      },
+      set (value) {
+        this.$store.commit('reservation/set_date', value);
+      }
+    }
   },
   data()  {
     const limitDate = 30 //get limitDate from database
@@ -107,7 +120,6 @@ export default {
     maxDate.setDate(maxDate.getDate()+limitDate) 
     return {
       init_branch: this.$route.params.branch_id ? this.$route.params.branch_id : 0,
-      value: today,
       min: minDate,
       max: maxDate,
       Days: ['일', '월', '화', '수', '목', '금', '토'], 
@@ -118,14 +130,15 @@ export default {
       return i === this.selected_branch;
     },
     select_branch(id){
+      console.log(new Date());
       this.$store.commit('theme/select_branch', id);
-      this.change_max_date();
+      this.change_date();
       if(this.value.getTime()>this.max.getTime()){
         const now = new Date();
         this.value = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       }
     },
-    change_max_date: function(){
+    change_date: function(){
       if (this.branch_info[1] != -1){
         const now = new Date();
         this.max = new Date(now.getFullYear(), now.getMonth(), now.getDate());
