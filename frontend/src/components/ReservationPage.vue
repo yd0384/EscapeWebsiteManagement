@@ -64,7 +64,7 @@
                 <b-row class="time_area mb-2" v-for="time in timetable_view[theme.id]" :key="time.id">
                   
                   <b-col>
-                    <b-button v-on:click="postBooking" variant="primary">{{ time.start_time }}</b-button>
+                    <b-button v-on:click="postBooking(time.start_time)" variant="primary">{{ time.start_time }}</b-button>
                   </b-col>
                 </b-row>
               </b-col>
@@ -135,7 +135,7 @@ export default {
     get_lock_importance(device_importance){
       return 100-device_importance;
     },
-    postBooking: function() {
+    postBooking: function(start_time) {
       this.$router.push({name: 'BookingPage', params: {time: this.value}});
     }
   },
