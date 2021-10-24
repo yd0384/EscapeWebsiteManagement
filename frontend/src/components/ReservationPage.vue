@@ -5,12 +5,12 @@
     <div style="margin-top:50px;">
       <b-row align-h="center">
         <b-col><b>
-          {{ branch_info[0] }}<br>
+          <h1 style="margin-bottom:-25px;">{{ branch_info[0] }}</h1><br>
           {{ value.getFullYear() }}년 
           {{ value.getMonth()+1 }}월
           {{ value.getDate() }}일
           {{ Days[value.getDay()] }}요일<br>
-          예약목록입니다.
+          <h4>예약목록입니다.</h4>
           </b></b-col>
         <b-col>
           <b-list-group horizontal>

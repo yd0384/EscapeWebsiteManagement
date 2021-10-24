@@ -17,6 +17,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: LoginPage
-    }
+    },
+    {
+      path: '/reservationList',
+      name: 'reservation',
+      component: LoginPage
+    },
   ]
 })
