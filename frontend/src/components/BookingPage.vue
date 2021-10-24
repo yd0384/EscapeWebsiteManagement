@@ -73,10 +73,8 @@
 
 <script>
   export default {
-    name: "Receive",
     data() {
       return {
-        id : this.$route.params.id,
         selected: '010',
         options: [
           { item: '010', name: '010' },

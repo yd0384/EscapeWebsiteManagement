@@ -36,11 +36,11 @@
           <b-container class="theme_box">
             <b-row>
               <b-col class="theme_poster">
-                <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image"></b-img>
+                <b-img src="https://picsum.photos/600/300/?image=25" fluid alt="Responsive image" style="width:500px; margin-bottom:30px"></b-img>
               </b-col>
               <b-col>
                 <b-row class="theme_title">
-                  <b-col>
+                  <b-col text-align="start">
                     <h3><strong>{{ theme.title }}</strong></h3>
                   </b-col>
                   <b-col>
@@ -61,10 +61,9 @@
                     권장인원 : {{ theme.recommended_number }}
                   </b-col>
                 </b-row>
-                <b-row class="time_area mb-2" v-for="time in timetable_view[theme.id]" :key="time.id">
-                  
-                  <b-col>
-                    <b-button v-on:click="postBooking(time.start_time)" variant="primary">{{ time.start_time }}</b-button>
+                <b-row cols="4" style="margin-top:20px">
+                  <b-col class="time_area mb-2" v-for="time in timetable_view[theme.id]" :key="time.id">
+                    <b-button v-on:click="postBooking(time.start_time)" variant="primary" style="width:100px">{{ time.start_time }}</b-button>
                   </b-col>
                 </b-row>
               </b-col>
@@ -150,9 +149,6 @@ export default {
     },
     postBooking: function(start_time) {
       this.$router.push({name: 'BookingPage', params: {time: this.value}});
-    },
-    PostThemeInfo(item){
-      this.$router.push({name:"BookingPage", params:{id:"Post Check"}});
     },
   },
 }
