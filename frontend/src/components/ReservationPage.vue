@@ -3,15 +3,15 @@
     <h1 style="margin-bottom:-5px;">Reservation</h1>
     [날짜/테마 선택]
     <div style="margin-top:50px;">
-      <b-row align-h="center">
-        <b-col>
+      <b-row style="margin-bottom:50px;">
+        <b-col align-self="center" style="display:flex; justify-content:flex-end;">
           <b-list-group vertical style="width:200px;">
             <b-list-group-item :class="{'active' : isSelected(branch.id) }" v-for="branch in branches" :key=branch.id v-on:click="select_branch(branch.id)">
               {{ branch.name }}
             </b-list-group-item>
           </b-list-group>
         </b-col>
-        <b-col>
+        <b-col align-self="center">
           <h1 style="margin-bottom:-20px;"><b>{{ branch_info[0] }}</b></h1><br>
           <h2 style="margin-bottom:-20px;">
             <b style="font-size:40px;">{{ value.getFullYear() }}</b>년 
@@ -21,7 +21,7 @@
           </h2><br>
           <h3><strong>예약현황</strong>입니다.</h3>
         </b-col>
-        <b-col>
+        <b-col style="display:flex; justify-content:flex-start;">
           <b-calendar v-model="value"
             v-on:change="change_date"
             :hide-header="true" 

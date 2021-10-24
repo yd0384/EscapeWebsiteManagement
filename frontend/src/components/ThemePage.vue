@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>Theme</h1>
+    <h1 style="margin-bottom:-5px;">Theme</h1>
+    [테마정보]
     <div>
       <b-list-group horizontal>
         <b-list-group-item :class="{'active' : isSelected(branch.id) }" v-for="branch in branches" :key=branch.id v-on:click="select_branch(branch.id)">
@@ -11,7 +12,7 @@
         <b-card
           v-for="theme in theme_view" :key=theme.id
           :title="theme.title"
-          img-src="https://picsum.photos/600/300/?image=25"
+          img-src="https://placekitten.com/300/300"
           img-alt="Image"
           img-left
           tag="article"
