@@ -1,10 +1,11 @@
 import router from '@/router';
-import { fetchReservationList, fetchHeadCountAndCost } from '../../api';
+import { fetchReservationList, fetchHeadCountAndCost, getUserIp } from '../../api';
 var now = new Date();
 const state = () => ({
     reservations: {},
     date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-    cost_info: {}
+    cost_info: {},
+    user_ip: ''
 });
 
 const getters = {
@@ -42,6 +43,9 @@ const mutations = {
     },
     set_costinfo(state, cost_info){
         state.cost_info=cost_info;
+    },
+    set_userip(state, user_ip){
+        state.user_ip=user_ip;
     }
 };
 const actions = {
@@ -58,6 +62,15 @@ const actions = {
         fetchHeadCountAndCost(tid)
         .then(res => {
             commit('set_costinfo', JSON.parse(res.data));
+        })
+        .catch(error => {
+            console.error(error);
+        })
+    },
+    getUserIP({ commit }){
+        getUserIp()
+        .then(res=>{
+            commit('set_userip', res.data);
         })
         .catch(error => {
             console.error(error);

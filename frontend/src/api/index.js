@@ -15,10 +15,18 @@ function fetchReservationList(date) {
 function fetchHeadCountAndCost(tid){
     return axios.get('/api/theme/get_costinfo', {params: { tid: tid }});
 }
+function getUserIp(){
+    return axios.get('/api/reservation/get_user_ip');
+}
+function createReservation(payload){
+    return axios.post('/api/reservation/create_reservation', payload);
+}
 export {
     fetchBranchList,
     fetchThemeList,
     fetchTimetable,
     fetchReservationList,
-    fetchHeadCountAndCost
+    fetchHeadCountAndCost,
+    getUserIp,
+    createReservation
 }

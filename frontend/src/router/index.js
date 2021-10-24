@@ -6,6 +6,7 @@ import ReservationPage from '@/components/ReservationPage'
 import ReservationCheckPage from '@/components/ReservationCheckPage'
 import BookingPage from '@/components/BookingPage'
 import NoticePage from '@/components/NoticePage'
+import ReservationCompletePage from '@/components/ReservationCompletePage'
 Vue.use(Router)
 
 export default new Router({
@@ -29,7 +30,12 @@ export default new Router({
     {
       path: '/booking',
       name: 'BookingPage',
-      component: BookingPage,
+      component: BookingPage,        
+    },
+    {
+      path: '/complete',
+      name: 'ReservationCompletePage',
+      component: ReservationCompletePage
     },
     {
       path: '/rev.check',
