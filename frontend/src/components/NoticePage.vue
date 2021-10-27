@@ -3,17 +3,12 @@
         <h1 style="margin-bottom:-5px;">Customer</h1>
         [공지사항]
         <hr/>
-        <container>
-            <b-row align-h="end" class="search_box">
-                <b-form-select v-model="selected" style="width:70px;" class="select">
-                    <b-form-select-option :value="a">전체</b-form-select-option>
-                    <b-form-select-option :value="b">제목</b-form-select-option>
-                    <b-form-select-option :value="c">작성자</b-form-select-option>
-                </b-form-select>    
-                <b-input type="text" style="width:150px;" class="input"></b-input>
-                <b-button class="search_button">검색</b-button>
-            </b-row>
-        </container>
+        <b-row align-h="end" class="search_box">
+            <b-form-select v-model="selected" :options="options" style="width:75px;" class="select">
+            </b-form-select>    
+            <b-input type="text" style="width:150px;" class="input"></b-input>
+            <b-button class="search_button">검색</b-button>
+        </b-row>
 
         <b-table id="notice_table" striped hover 
             :items="items"
@@ -36,6 +31,12 @@
     export default {
         data(){
             return {
+                selected: '전체',
+                options: [
+                    '전체',
+                    '제목',
+                    '작성자'
+                ],
                 perPage: 3,
                 currentPage: 1,
                 items: [
