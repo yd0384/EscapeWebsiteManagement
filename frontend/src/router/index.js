@@ -38,7 +38,7 @@ export default new Router({
       component: ReservationCompletePage
     },
     {
-      path: '/rev.check',
+      path: '/reservationcheck',
       name: 'ReservationCheckPage',
       component: ReservationCheckPage
     },

@@ -27,7 +27,7 @@
             :hide-header="true" 
             :min="min"
             :max="max"
-            :initial-date=value
+            :initial-date="today"
             :value-as-date="true">
           </b-calendar>
         </b-col>
@@ -66,7 +66,8 @@
                 <hr class="mx">
                 <b-row class="time_area mb-2" cols="4" style="margin-top:20px">
                   <b-col v-for="time in timetable_view[theme.id]" :key="time.id" style="margin-bottom:20px">
-                    <b-button v-on:click="postBooking([selected_branch, theme.id, time.start_time, time.end_time, value])" variant="primary" style="width:150px; height:55px; word-spacing:10px;"><strong>{{ time.start_time }} 예약가능</strong></b-button>
+                    <b-button v-if="reservation_availability(time.start_time, theme.id)" v-on:click="postBooking([selected_branch, theme.id, time.start_time, time.end_time, value])" variant="primary" style="width:150px; height:55px; word-spacing:10px;"><strong>{{ time.start_time }} 예약가능</strong></b-button>
+                    <b-button v-else disabled style="width:150px; height:55px; word-spacing:10px;"><strong>{{ time.start_time }} 예약불가</strong></b-button>
                   </b-col>
                 </b-row>
               </b-col>
@@ -86,7 +87,11 @@ export default {
     this.$store.dispatch('theme/fetch_branches'),
     this.$store.dispatch('theme/fetch_themes'),
     this.$store.dispatch('theme/fetch_timetables'),
-    this.$store.dispatch('reservation/fetch_reservations', this.value)
+    this.$store.dispatch('reservation/fetch_reservations', this.date_to_mysql(this.value))
+  },
+  mounted() {
+    let now = new Date();
+    this.value = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   },
   computed : {
     ...mapGetters('theme', {
@@ -110,18 +115,19 @@ export default {
       },
       set (value) {
         this.$store.commit('reservation/set_date', value);
+        this.change_date();
       }
     }
   },
   data()  {
-    const limitDate = 30 //get limitDate from database
+    const limitDate=30
     const now = new Date()
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
     const minDate = new Date(today)
     const maxDate = new Date(today)
     maxDate.setDate(maxDate.getDate()+limitDate) 
     return {
-      init_branch: this.$route.params.branch_id ? this.$route.params.branch_id : 0,
+      today: today,
       min: minDate,
       max: maxDate,
       Days: ['일', '월', '화', '수', '목', '금', '토'], 
@@ -132,7 +138,6 @@ export default {
       return i === this.selected_branch;
     },
     select_branch(id){
-      console.log(new Date());
       this.$store.commit('theme/select_branch', id);
       this.change_date();
       if(this.value.getTime()>this.max.getTime()){
@@ -141,10 +146,15 @@ export default {
       }
     },
     change_date: function(){
+      this.$store.dispatch('reservation/fetch_reservations', this.date_to_mysql(this.value));
       if (this.branch_info[1] != -1){
         const now = new Date();
         this.max = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         this.max.setDate(this.max.getDate() + this.branch_info[1]);
+      }
+      else{
+        const now = new Date();
+        this.value = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       }
     },
     get_lock_importance(device_importance){
@@ -153,7 +163,43 @@ export default {
     postBooking: function(items) {
       this.$router.push({name: 'BookingPage', params: {items: items}});
     },
+    date_to_mysql: function(d){
+      let time = new Date(d)
+      time.setHours(time.getHours()+9);
+      time = time.toISOString().slice(0,19).replace('T',' ');
+      return time;
+    },
+    reservation_availability(start_time, tid){
+      let play_time = new Date(this.value);
+      let time = start_time.split(':');
+      time[0] = parseInt(time[0]);
+      time[1] = parseInt(time[1]);
+      play_time= new Date(play_time.setHours(time[0], time[1]));
+      if (play_time.getTime()<new Date().getTime()){
+        return false;
+      }
+      else{
+        if(this.reservation_view[tid].length===0){
+          return true;
+        }
+        else{
+          for(var i in this.reservation_view[tid]){
+            let tzString = this.reservation_view[tid][i].start_time;
+            let start = new Date(tzString.slice(0,-1));
+            start.setHours(start.getHours()+9);
+            let h = start.getHours();
+            let m = start.getMinutes();
+            start = ((h<10)?'0'+h:h)+":"+((m<10)?'0'+m:m);
+            if(start_time === start){
+              return false;
+            }
+          }
+          return true;
+        }
+      }
+    }
   },
+
 }
 
 </script>

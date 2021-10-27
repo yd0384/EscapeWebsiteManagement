@@ -1,16 +1,18 @@
 import router from '@/router';
-import { fetchReservationList, fetchHeadCountAndCost, getUserIp } from '../../api';
+import axios from 'axios';
+import { fetchReservationList, fetchHeadCountAndCost, getUserIp, getReservationByUser, deleteReservation } from '../../api';
 var now = new Date();
 const state = () => ({
     reservations: {},
+    booker_reservations: [{len:0}],
     date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
     cost_info: {},
     user_ip: ''
 });
 
 const getters = {
-    getReservationByTheme(state) {
-        var tids = rootGetters.getThemeView.map(x=>x.id);
+    getReservationByTheme(state, getters, rootState, rootGetters) {
+        var tids = rootGetters['theme/getThemeView'].map(x=>x.id);
         var reservations = {};
         for(var i in tids){
             reservations[tids[i]]=Object.values(state.reservations).filter(reservation => 
@@ -46,6 +48,16 @@ const mutations = {
     },
     set_userip(state, user_ip){
         state.user_ip=user_ip;
+    },
+    set_booker_reservations(state, booker_reservations){
+        state.booker_reservations=booker_reservations;
+    },
+    delete_reservation(state, reservation_id){
+        for(var idx in state.booker_reservations){
+            if(state.booker_reservations[idx].id === reservation_id){
+                state.booker_reservations.splice(idx,1);
+            }
+        }
     }
 };
 const actions = {
@@ -75,7 +87,27 @@ const actions = {
         .catch(error => {
             console.error(error);
         })
+    },
+    async fetch_reservations_of_booker({ commit }, payload){
+        let res = await getReservationByUser(payload);
+        if(res.data==='empty'){
+            return 'empty';
+        }
+        commit('set_booker_reservations', await JSON.parse(res.data));
+    },
+    delete_reservation_of_booker({ commit }, id){
+        deleteReservation(id)
+        .then(res => {
+            if(res.data=='success'){
+                commit('delete_reservation', id);
+                return "success";
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        })
     }
+
 }
 
 export default {

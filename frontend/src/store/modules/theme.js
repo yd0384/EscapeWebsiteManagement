@@ -1,13 +1,20 @@
 import router from '@/router';
 import { fetchBranchList, fetchThemeList, fetchTimetable } from '../../api';
 const state = () => ({
-    branches: {},
-    themes: {},
-    timetables: {},
+    branches: [],
+    themes: [],
+    timetables: [],
     selected_branch: null,
 });
 
 const getters = {
+    getThemeNameById: (state)=>(tid) =>{
+        return state.themes.find(theme=>theme.id===tid).title;
+    },
+    getBranchNameByThemeId: (state) => (tid) => {
+        let bid = state.themes.find(theme=>theme.id===tid).branch_id;
+        return state.branches.find(branch=>branch.id===bid).name;
+    },
     getThemeView(state) {
         return Object.values(state.themes).filter(theme=>
             theme.branch_id === state.selected_branch
@@ -18,21 +25,18 @@ const getters = {
             theme.id === router.currentRoute.params.items[1]
         )[0].title;
     },
-    getBranchName(state, id) {
+    getBranchName(state) {
         return Object.values(state.branches).filter(branch=>
             branch.id === router.currentRoute.params.items[0]
         )[0].name;
     },
     getBranchNameAndReservableDate(state) {
-        if(typeof state.branches != 'undefined' && state.selected_branch != null){
-            var filtered = Object.values(state.branches).filter(branch=>
-                branch.id === state.selected_branch
-            )
-            if(filtered[0].hasOwnProperty('name') && filtered[0].hasOwnProperty('reservable_date')){
-                return [filtered[0].name, filtered[0].reservable_date];
-            }
+        let obj = state.branches.find(branch=>branch.id===state.selected_branch);
+        if(obj===undefined){
+            return ['로드중', 0];
         }
-        return ['', -1];
+        return [obj.name, obj.reservable_date];
+
     },
     getTimeTableView(state, getters){
         var tids = getters.getThemeView.map(x=>x.id);

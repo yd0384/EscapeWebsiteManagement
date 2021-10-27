@@ -126,8 +126,8 @@
         let end_time=this.date_to_mysql(end_day.setHours(en[0],en[1]));
         let payload = {
           theme_id: this.items[1],
-          start_time: start_time,//this.items[2],
-          end_time: end_time,//this.items[3],
+          start_time: start_time,
+          end_time: end_time,
           status: 0,
           reserved_time: this.date_to_mysql(new Date()),
           number_of_player: this.headcounts[this.idx].item,
@@ -144,8 +144,9 @@
         })
       },
       date_to_mysql: function(d){
-        
-        return new Date(d).toISOString().slice(0,19).replace('T',' ');
+        let time = new Date(d)
+        time.setHours(time.getHours()+9);
+        return time.toISOString().slice(0,19).replace('T',' ');
       },
       get_hour_and_minute: function(s){
         var arr= s.split(':');
