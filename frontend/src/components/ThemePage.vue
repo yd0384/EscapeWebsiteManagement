@@ -15,26 +15,36 @@
           :img-src="require(`@/assets/theme/${theme.image_path }`)"
           img-alt="Image"
           img-left
+          img-width="400"
           tag="article"
           class="mb-5"
+          align="left"
+          style="width:1000px; margin:auto;"
           >
           <b-card-text>
             {{ theme.content }}
           </b-card-text>
           <b-card-text>
-            장르 : {{ theme.genres }}
+            장르 : &nbsp; {{ theme.genres }}
           </b-card-text>
           <b-card-text>
-            문제구성 : 장치 {{ theme.device_importance }}%, 자물쇠 {{ get_lock_importance(theme.device_importance) }}%
+            문제구성 : &nbsp; 장치 {{ theme.device_importance }}%, 자물쇠 {{ get_lock_importance(theme.device_importance) }}%
           </b-card-text>
           <b-card-text>
-            플레이시간 : {{ theme.length }}분
+            플레이시간 : &nbsp; {{ theme.length }}분
           </b-card-text>
           <b-card-text>
-            난이도 : <b-form-rating v-model = "theme.difficulty" readonly></b-form-rating>
+            <b-row>
+              <b-col cols="2">
+                난이도 : 
+              </b-col>
+              <b-col style="margin-left:-50px; margin-bottom:-20px;">
+                <b-form-rating v-model = "theme.difficulty" readonly no-border variant="warning" style="width:100px; margin-top:-9px;"></b-form-rating>
+              </b-col>
+            </b-row>
           </b-card-text>
           <b-card-text>
-            권장인원 : {{ theme.recommended_number }}
+            권장인원 : &nbsp; {{ theme.recommended_number }}
           </b-card-text>
           <router-link :to="{ name: 'ReservationPage', params: { branch_id: selected_branch }}"> <b-button variant="primary">예약하기</b-button></router-link>
         </b-card>
@@ -73,3 +83,9 @@ export default {
   }
 }
 </script>
+<style>
+.card_title{
+  font-size: 100px;
+  align-content: center;
+}
+</style>
