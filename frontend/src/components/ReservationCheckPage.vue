@@ -12,6 +12,7 @@
                 id="input-group-1"
                 label="예약자명:"
                 label-for="input-1"
+                label-cols="auto"
               >
                 <b-form-input
                   id="input-1"
@@ -25,6 +26,7 @@
                 label="전화번호:"
                 label-for="input-2"
                 class="mx-5"
+                label-cols="auto"
               >
                 <b-form-select
                   id="input-2"
