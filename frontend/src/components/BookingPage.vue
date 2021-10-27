@@ -12,7 +12,7 @@
           id="input-group-1"
           label="지점명: "
           label-for="input-1"
-          label-cols="auto"
+          label-cols="12" label-cols-sm="2"
         >
           <b-form-input
             id="input-1"
@@ -26,7 +26,7 @@
           id="input-group-2"
           label="예약일: "
           label-for="input-2"
-          label-cols="auto"
+          label-cols="12" label-cols-sm="2"
         >
           <b-form-input
             id="input-2"
@@ -40,7 +40,7 @@
           id="input-group-3"
           label="예약시간: "
           label-for="input-3"
-          label-cols="auto"
+          label-cols="12" label-cols-sm="2"
         >
           <b-form-input
             id="input-3"
@@ -54,7 +54,7 @@
           id="input-group-4"
           label="테마명: "
           label-for="input-4"
-          label-cols="auto"
+          label-cols="12" label-cols-sm="2"
         >
           <b-form-input
             id="input-4"
@@ -68,7 +68,7 @@
           id="input-group-5"
           label="예약자명: "
           label-for="input-5"
-          label-cols="auto"
+          label-cols="12" label-cols-sm="2"
         >
           <b-form-input
             id="input-5"
@@ -79,12 +79,11 @@
         </b-form-group>
         <hr style="width:100%; margin-top:5px;">
           <b-form-group
-            id="input-group-6"
-            label="전화번호: "
-            label-for="input-6"
-            label-cols="auto"
-            content-cols="auto"
-          >
+          id="input-group-6"
+          label="전화번호: "
+          label-for="input-6"
+          label-cols="12" label-cols-sm="2"
+        >
           <b-form-select
             id="input-6"
             v-model="firstphone"
@@ -92,28 +91,31 @@
             value-field="item"
             text-field="name"
             required
-            style="text-align: center"
+            style="background-color: #FFFFFF; text-align: center; width:100px;"
+            class="custom-control-inline"
           ></b-form-select>
           <b-form-input
             id="input-7"
             v-model="secondphone"
             required
-            style="text-align: center"
+            style="background-color: #FFFFFF; text-align: center; width:100px;"
+            class="custom-control-inline"
           ></b-form-input>
           <b-form-input
             id="input-8"
             v-model="thirdphone"
             required
-            style="text-align: center"
+            style="background-color: #FFFFFF; text-align: center; width:100px;"
+            class="custom-control-inline"
           ></b-form-input>
-          </b-form-group>
           <hr style="width:100%; margin-top:5px;">
+        </b-form-group>
         <b-form-group
           id="input-group-7"
           required
           label="인원: "
           label-for="input-9"
-          label-cols="auto"
+          label-cols="12" label-cols-sm="2"
         >
           <b-form-select
             id="input-9"
@@ -125,8 +127,20 @@
             style="text-align: center"
           ></b-form-select>
         </b-form-group>
-        <hr style="width:100%; margin-top:5px;">  
-        <b-form-row> <b-col>이용가격: </b-col><b-col>{{ cost[idx] }}</b-col></b-form-row>
+        <hr style="width:100%; margin-top:5px;">
+        <b-form-group
+          id="input-group-10"
+          label="이용가격: "
+          label-for="input-10"
+          label-cols="12" label-cols-sm="2"
+        >
+          <b-form-input
+            id="input-10"
+            v-model="cost[idx]"
+            disabled
+            style="background-color: #FFFFFF; text-align: center; border: 0px;"
+          ></b-form-input>
+        </b-form-group>
         <hr style="width:100%; margin-top:5px;">
         <b-button type="submit" variant="primary"> 예약하기 </b-button>
         <b-button type="reset"> 초기화하기 </b-button>
