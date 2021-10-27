@@ -18,10 +18,10 @@
             id="input-1"
             v-model="branch_name"
             disabled
-            style="background-color: #FFFFFF; text-align: center"
+            style="background-color: #FFFFFF; text-align: center; border: 0px;"
           ></b-form-input>
-          <hr style="width:100%; margin-top:5px;">
         </b-form-group>
+        <hr style="width:100%; margin-top:5px;">
         <b-form-group
           id="input-group-2"
           label="예약일: "
@@ -32,10 +32,10 @@
             id="input-2"
             v-model="play_date"
             disabled
-            style="background-color: #FFFFFF; text-align: center"
+            style="background-color: #FFFFFF; text-align: center; border: 0px;"
           ></b-form-input>
-          <hr style="width:100%; margin-top:5px;">
         </b-form-group>
+        <hr style="width:100%; margin-top:5px;">
         <b-form-group
           id="input-group-3"
           label="예약시간: "
@@ -46,10 +46,10 @@
             id="input-3"
             v-model="items[2]"
             disabled
-            style="background-color: #FFFFFF; text-align: center"
+            style="background-color: #FFFFFF; text-align: center; border: 0px;"
           ></b-form-input>
-          <hr style="width:100%; margin-top:5px;">
         </b-form-group>
+        <hr style="width:100%; margin-top:5px;">
         <b-form-group
           id="input-group-4"
           label="테마명: "
@@ -60,10 +60,10 @@
             id="input-4"
             v-model="theme_name"
             disabled
-            style="background-color: #FFFFFF; text-align: center"
+            style="background-color: #FFFFFF; text-align: center; border: 0px;"
           ></b-form-input>
-          <hr style="width:100%; margin-top:5px;">
         </b-form-group>
+        <hr style="width:100%; margin-top:5px;">
         <b-form-group
           id="input-group-5"
           label="예약자명: "
@@ -74,16 +74,17 @@
             id="input-5"
             v-model="booker_name"
             required
-            style="background-color: #FFFFFF; text-align: center"
+            style="text-align: center;"
           ></b-form-input>
-          <hr style="width:100%; margin-top:5px;">
         </b-form-group>
-        <b-form-group
-          id="input-group-6"
-          label="전화번호: "
-          label-for="input-6"
-          label-cols="auto"
-        >
+        <hr style="width:100%; margin-top:5px;">
+          <b-form-group
+            id="input-group-6"
+            label="전화번호: "
+            label-for="input-6"
+            label-cols="auto"
+            content-cols="auto"
+          >
           <b-form-select
             id="input-6"
             v-model="firstphone"
@@ -91,22 +92,22 @@
             value-field="item"
             text-field="name"
             required
-            style="background-color: #FFFFFF; text-align: center"
+            style="text-align: center"
           ></b-form-select>
           <b-form-input
             id="input-7"
             v-model="secondphone"
             required
-            style="background-color: #FFFFFF; text-align: center"
+            style="text-align: center"
           ></b-form-input>
           <b-form-input
             id="input-8"
             v-model="thirdphone"
             required
-            style="background-color: #FFFFFF; text-align: center"
+            style="text-align: center"
           ></b-form-input>
+          </b-form-group>
           <hr style="width:100%; margin-top:5px;">
-        </b-form-group>
         <b-form-group
           id="input-group-7"
           required
@@ -121,12 +122,11 @@
             value-field="idx"
             text-field="name"
             required
-            style="background-color: #FFFFFF; text-align: center"
+            style="text-align: center"
           ></b-form-select>
-          <hr style="width:100%; margin-top:5px;">
         </b-form-group>
-        <b-form-row> 이용가격 </b-form-row>
-        <b-form-row> {{ cost[idx] }} </b-form-row>
+        <hr style="width:100%; margin-top:5px;">  
+        <b-form-row> <b-col>이용가격: </b-col><b-col>{{ cost[idx] }}</b-col></b-form-row>
         <hr style="width:100%; margin-top:5px;">
         <b-button type="submit" variant="primary"> 예약하기 </b-button>
         <b-button type="reset"> 초기화하기 </b-button>
@@ -230,7 +230,7 @@
         };
         createReservation(payload)
         .then(res => {
-          this.$router.push({name: 'ReservationCompletePage'});
+          this.$router.push({name: 'ReservationCompletePage', params: { play_date: this.play_date, theme_name: this.theme_name, branch_name: this.branch_name }});
         })
         .catch(error=>{
           console.log(error);
