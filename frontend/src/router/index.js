@@ -7,6 +7,7 @@ import ReservationCheckPage from '@/components/ReservationCheckPage'
 import BookingPage from '@/components/BookingPage'
 import NoticePage from '@/components/NoticePage'
 import ReservationCompletePage from '@/components/ReservationCompletePage'
+import BranchPage from '@/components/BranchPage'
 Vue.use(Router)
 
 export default new Router({
@@ -46,6 +47,11 @@ export default new Router({
       path: '/notice',
       name: 'NoticePage',
       component: NoticePage
+    },
+    {
+      path: '/branch',
+      name: 'BranchPage',
+      component: BranchPage
     },
     {
       path: '*',

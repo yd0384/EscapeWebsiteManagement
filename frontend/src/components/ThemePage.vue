@@ -12,7 +12,7 @@
         <b-card
           v-for="theme in theme_view" :key=theme.id
           :title="theme.title"
-          img-src="https://placekitten.com/300/300"
+          :img-src="require(`@/assets/theme/${theme.image_path }`)"
           img-alt="Image"
           img-left
           tag="article"

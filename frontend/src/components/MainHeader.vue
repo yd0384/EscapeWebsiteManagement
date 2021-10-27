@@ -45,7 +45,8 @@
                     },
                     {
                         id: 2,
-                        title: '매장 안내'
+                        title: '매장 안내',
+                        url: 'BranchPage'
                     },
                 ]
             }

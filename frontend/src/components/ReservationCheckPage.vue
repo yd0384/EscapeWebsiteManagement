@@ -55,7 +55,6 @@
     </div>
     <div v-else>
       <h3> 예약정보 </h3>
-      <b-button class="reenter_infomation" type="submit" variant="primary">예약조회</b-button>
       <h5 v-for="reservation in booker_reservations" :key="reservation.id">       
         예약자 성함: {{ reservation.booker_name }}<br>
         지점명: {{ branch_name(reservation.theme_id) }}<br>
@@ -65,6 +64,7 @@
         상태: {{ getStatus(reservation.status) }}<br>
         <b-button class="delete_submit_button" @click="onDelete(reservation.id)" v-if="reservation.status===0" type="submit" variant="primary"> 예약취소</b-button>
       </h5>
+      <b-button class="reenter_infomation" type="reset" @click="onReset" variant="primary">확인</b-button>
     </div>
 </div>
 </template>
@@ -139,7 +139,10 @@
       onDelete(id) {
         this.$store.dispatch('reservation/delete_reservation_of_booker', id)
         .then(result=>{
-          alert("예약 취소 완료"+result);
+          alert("예약 취소 완료");
+          if(this.booker_reservations.length<2){
+            this.$router.go();
+          }
         })
         .catch(error=>{
           console.error(error);
