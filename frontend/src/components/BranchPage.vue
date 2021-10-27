@@ -4,15 +4,30 @@
         [지점정보]
         <div>
             <b-container>
-            <b-row cols="2">
+              <b-row cols="2" style = "margin-top:50px">
                 <b-col v-for="branch in branches" :key=branch.id>
-                    
-                    <h2> {{ branch.name }} </h2>
-                    <h3> 지점 전화번호 : {{ branch.tel_number }} </h3>
-                    <h3> 지점 주소 : {{ branch.address }} </h3>
-                    <b-img :src="require(`@/assets/branch/${ branch.image_path }`)" fluid alt="Responsive image" style="width:300px; height:250px; margin-bottom:50px"></b-img>
+                  <b-card
+                    :img-src="require(`@/assets/branch/${ branch.image_path }`)"
+                    img-alt="Image"
+                    img-top
+                    img-height="220"
+                    tag="article"
+                    class="mb-5"
+                    align="left"
+                    style="max-width:22rem; margin:auto;"
+                    >
+                    <b-card-text style="text-align:center;">
+                      <h4> {{ branch.name }} </h4>
+                    </b-card-text>
+                    <b-card-text>
+                      지점 전화번호 : {{ branch.tel_number }}
+                    </b-card-text>
+                    <b-card-text style="margin-top:-15px;">
+                      지점 주소 : {{ branch.address }}
+                    </b-card-text>
+                  </b-card>
                 </b-col>
-            </b-row>
+              </b-row>
             </b-container>
         </div>
     </div>
