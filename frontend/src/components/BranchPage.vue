@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 style="margin-bottom:-5px;">Theme</h1>
+        <h1 style="margin-bottom:-5px;">Customer</h1>
         [지점정보]
         <div>
             <b-container>

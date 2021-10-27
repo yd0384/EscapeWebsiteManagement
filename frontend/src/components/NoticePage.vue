@@ -1,6 +1,7 @@
 <template>
     <div id="notice">
-        <h1>공지사항</h1>
+        <h1 style="margin-bottom:-5px;">Customer</h1>
+        [공지사항]
         <hr/>
         <container>
             <b-row align-h="end" class="search_box">
@@ -64,9 +65,6 @@
 <style>
     #notice_table{
         text-align:start;
-    }
-    #notice {
-    margin: 20px;
     }
     .search_box{
         margin-bottom:20px;
