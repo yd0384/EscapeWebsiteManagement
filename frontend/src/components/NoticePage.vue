@@ -4,7 +4,7 @@
         [공지사항]
         <hr/>
         <b-row align-h="end" class="search_box">
-            <b-form-select v-model="selected" :options="options" style="width:75px;" class="select">
+            <b-form-select v-model="selected" :options="options" style="width:90px;" class="select">
             </b-form-select>    
             <b-input type="text" style="width:150px;" class="input"></b-input>
             <b-button class="search_button">검색</b-button>
