@@ -75,6 +75,7 @@ export default {
       return i === this.selected_branch;
     },
     select_branch: function(id){      
+      console.log(process.env.NODE_ENV);
       this.$store.commit('theme/select_branch', id);
     },
     get_lock_importance(device_importance){
