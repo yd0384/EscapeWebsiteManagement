@@ -33,21 +33,21 @@
                   v-model="form.firstphone"
                   :options="options"
                   required
-                  style="width:80px;"
+                  style="width:100px;"
                 ></b-form-select>
                 <b-form-input
                   id="input-3"
                   v-model="form.secondphone"
                   type="text"
-                  required
-                  style="width:80px;"
+                  :state="validate_secondphone"
+                  style="width:100px;"
                 ></b-form-input>
                 <b-form-input
                   id="input-4"
                   v-model="form.thirdphone"
                   type="text"
-                  required
-                  style="width:80px;"
+                  :state="validate_thirdphone"
+                  style="width:100px;"
                 ></b-form-input>
               </b-form-group>
               <b-button class="confirm_button"  variant="primary" type="submit">예약확인</b-button>
@@ -87,13 +87,19 @@
       ...mapGetters('theme',{
         theme_name: 'getThemeNameById',
         branch_name: 'getBranchNameByThemeId'
-      })
+      }),
+      validate_secondphone: function() {
+        return this.form.secondphone.length >2 && this.form.secondphone.length <5 && !isNaN(this.form.secondphone);
+      },
+      validate_thirdphone: function() {
+        return this.form.thirdphone.length==4 && !isNaN(this.form.thirdphone);
+      }
     },
     data() {
       return {
         form: {
           booker_name: "",
-          firstphone: "",
+          firstphone: "010",
           secondphone: "",
           thirdphone: "",  
         },
@@ -112,23 +118,28 @@
     methods: {
       async onSubmit(event) {
         event.preventDefault();
-        let payload = {
+        if(this.validate_secondphone && this.validate_thirdphone){
+          let payload = {
           booker_name: this.form.booker_name,
           phone_number: this.form.firstphone+'-'+this.form.secondphone+'-'+this.form.thirdphone
-        };
-        await this.$store.dispatch('reservation/fetch_reservations_of_booker',payload)
-          .then((empty)=>{
-            if(empty==='empty'){
-              alert('해당 예약 내역이 없습니다.');
-              this.onReset(event);
-            }
-            else{
-              this.show=false;
-            }
-          })
-          .catch(error=>{
-            console.error(error);
-          });
+          };
+          await this.$store.dispatch('reservation/fetch_reservations_of_booker',payload)
+            .then((empty)=>{
+              if(empty==='empty'){
+                alert('해당 예약 내역이 없습니다.');
+                this.onReset(event);
+              }
+              else{
+                this.show=false;
+              }
+            })
+            .catch(error=>{
+              console.error(error);
+            });
+        }
+        else{
+          alert('올바른 전화번호를 입력해주세요.');
+        }
       },
       onReset(event) {
         event.preventDefault();

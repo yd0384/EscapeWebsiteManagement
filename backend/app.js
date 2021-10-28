@@ -6,9 +6,6 @@ var logger = require('morgan');
 var session = require('express-session');
 var requestIP = require('request-ip');
 
-//var passport = require('passport');
-
-//require('./passport').config(passport);
 require('dotenv').config()
 
 var indexRouter = require('./routes/front/index');
@@ -37,14 +34,11 @@ app.use(session({
   }
 }));
 app.use(requestIP.mw());
-//app.use(passport.initialize());
-//app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/api/theme', themeRouter);
 app.use('/api/reservation', reservationRouter);
-//app.use('/users', usersRouter);
-//app.use('/api/login', loginRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

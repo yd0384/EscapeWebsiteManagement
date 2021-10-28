@@ -2,7 +2,7 @@
   <div>
     <h1 style="margin-bottom:-5px;">Reservation</h1>
     [예약정보입력]<br>
-    <b-badge variant="info" style="font-size:18px; opacity:0.3; margin-top:20px; height:50px;">
+    <b-badge class="py-4" style="font-size:18px; opacity:0.5; margin-top:20px;">
       {{ Play_Date.getFullYear() }}년 {{ Play_Date.getMonth()+1 }}월 {{ Play_Date.getDate() }}일 {{ Days[Play_Date.getDay()] }}요일 {{ branch_name }} {{ theme_name }} 테마 예약을 진행합니다</b-badge>
     <hr class="mx-5">
     <h4 style="margin-bottom:50px;">예약정보</h4>
@@ -90,21 +90,20 @@
             :options="options"
             value-field="item"
             text-field="name"
-            required
             style="background-color: #FFFFFF; text-align: center; width:100px;"
             class="custom-control-inline"
           ></b-form-select>
           <b-form-input
             id="input-7"
             v-model="secondphone"
-            required
+            :state="validate_secondphone"
             style="background-color: #FFFFFF; text-align: center; width:100px;"
             class="custom-control-inline"
           ></b-form-input>
           <b-form-input
             id="input-8"
             v-model="thirdphone"
-            required
+            :state="validate_thirdphone"
             style="background-color: #FFFFFF; text-align: center; width:100px;"
             class="custom-control-inline"
           ></b-form-input>
@@ -142,8 +141,8 @@
           ></b-form-input>
         </b-form-group>
         <hr style="width:100%; margin-top:5px;">
-        <b-button type="submit" variant="primary"> 예약하기 </b-button>
-        <b-button type="reset"> 초기화하기 </b-button>
+        <b-button type="submit" variant="primary" class="p-2 mx-2"> 예약하기 </b-button>
+        <b-button type="reset" class="p-2 mx-2"> 초기화 </b-button>
       </b-form>
     </b-container>
   </div>
@@ -174,7 +173,13 @@
       }),
       play_date: function(){
         return this.Play_Date.getFullYear()+'년 '+(this.Play_Date.getMonth()+1)+'월 '+this.Play_Date.getDate()+'일';
-      }
+      },
+      validate_secondphone: function() {
+        return this.secondphone.length >2 && this.secondphone.length <5 && !isNaN(this.secondphone);
+      },
+      validate_thirdphone: function() {
+        return this.thirdphone.length==4 && !isNaN(this.thirdphone);
+      },
     },
     data() {
       return {
@@ -197,58 +202,37 @@
       }
     },
     methods: {
-      postBooking: function(){
-        let st = this.get_hour_and_minute(this.items[2]);
-        let en = this.get_hour_and_minute(this.items[3]);
-        let start_day = new Date(this.Play_Date);
-        let end_day = new Date(this.Play_Date);
-        let start_time=this.date_to_mysql(start_day.setHours(st[0],st[1]));
-        let end_time=this.date_to_mysql(end_day.setHours(en[0],en[1]));
-        let payload = {
-          theme_id: this.items[1],
-          start_time: start_time,
-          end_time: end_time,
-          status: 0,
-          reserved_time: this.date_to_mysql(new Date()),
-          number_of_player: this.headcounts[this.idx].item,
-          phone_number: this.firstphone+'-'+this.secondphone+'-'+this.thirdphone,
-          booker_name: this.booker_name,
-          booker_ip: this.user_ip
-        };
-        createReservation(payload)
-        .then(res => {
-          this.$router.push({name: 'ReservationCompletePage'});
-        })
-        .catch(error=>{
-          console.log(error);
-        })
-      },
       onSubmit: function(event){
         event.preventDefault(event);
-        let st = this.get_hour_and_minute(this.items[2]);
-        let en = this.get_hour_and_minute(this.items[3]);
-        let start_day = new Date(this.Play_Date);
-        let end_day = new Date(this.Play_Date);
-        let start_time=this.date_to_mysql(start_day.setHours(st[0],st[1]));
-        let end_time=this.date_to_mysql(end_day.setHours(en[0],en[1]));
-        let payload = {
-          theme_id: this.items[1],
-          start_time: start_time,
-          end_time: end_time,
-          status: 0,
-          reserved_time: this.date_to_mysql(new Date()),
-          number_of_player: this.headcounts[this.idx].item,
-          phone_number: this.firstphone+'-'+this.secondphone+'-'+this.thirdphone,
-          booker_name: this.booker_name,
-          booker_ip: this.user_ip
-        };
-        createReservation(payload)
-        .then(res => {
-          this.$router.push({name: 'ReservationCompletePage', params: { play_date: this.play_date, theme_name: this.theme_name, branch_name: this.branch_name }});
-        })
-        .catch(error=>{
-          console.log(error);
-        })
+        if(this.validate_secondphone && this.validate_thirdphone){
+          let st = this.get_hour_and_minute(this.items[2]);
+          let en = this.get_hour_and_minute(this.items[3]);
+          let start_day = new Date(this.Play_Date);
+          let end_day = new Date(this.Play_Date);
+          let start_time=this.date_to_mysql(start_day.setHours(st[0],st[1]));
+          let end_time=this.date_to_mysql(end_day.setHours(en[0],en[1]));
+          let payload = {
+            theme_id: this.items[1],
+            start_time: start_time,
+            end_time: end_time,
+            status: 0,
+            reserved_time: this.date_to_mysql(new Date()),
+            number_of_player: this.headcounts[this.idx].item,
+            phone_number: this.firstphone+'-'+this.secondphone+'-'+this.thirdphone,
+            booker_name: this.booker_name,
+            booker_ip: this.user_ip
+          };
+          createReservation(payload)
+          .then(res => {
+            this.$router.push({name: 'ReservationCompletePage', params: { play_date: this.play_date, theme_name: this.theme_name, branch_name: this.branch_name }});
+          })
+          .catch(error=>{
+            console.error(error);
+          })
+        }
+        else{
+          alert('올바른 전화번호를 입력해주세요.');
+        }
       },
       onReset: function(event){
         event.preventDefault();
