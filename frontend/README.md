@@ -1,6 +1,6 @@
 # frontend
 
-> A Vue.js project
+> Escape Room Webservice
 
 ## Build Setup
 
