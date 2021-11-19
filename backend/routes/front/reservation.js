@@ -16,6 +16,7 @@ router.get('/get_timetable', function(req, res, next){
         .catch(error => {
             console.error(error);
         });
+    
 });
 router.get('/get_reservations', function(req, res, next){
     let querydate = req.query.date;
@@ -37,7 +38,7 @@ router.get('/get_reservations', function(req, res, next){
         });
 });
 router.get('/get_user_ip', function(req, res, next){
-    res.end(req.clientIp);
+    res.end(req.headers['x-forwarded-for'] || req.socket.remoteAddress);
 });
 router.post('/create_reservation', function(req, res, next){
     const payload = req.body;

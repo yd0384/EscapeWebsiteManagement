@@ -77,11 +77,59 @@ exports.up = function(knex) {
         table.string('booker_name').notNullable();
         table.string('booker_ip');
         table.integer('noshow').unsigned().notNullable();
+    })
+    .createTable('canceled', (table) => {
+        table
+            .integer('reservation_id')
+            .unsigned()
+            .references('id')
+            .inTable('reservation')
+            .notNullable()
+            .primary();
+        table.datetime('canceled_date').notNullable();
+    })
+    .createTable('noshow_list', (table) => {
+        table.increments('id').primary();
+        table.string('booker_name').notNullable();
+        table.string('phone_number').notNullable();
+        table.string('booker_ip');
+    })
+    .createTable('banner', (table) => {
+        table.increments('id').primary();
+        table.string('image_path').notNullable();
+        table.integer('show_order').notNullable();
+    })
+    .createTable('board', (table) => {
+        table.increments('id').primary();
+        table.string('author').notNullable();
+        table.string('title').notNullable();
+        table.text('content').notNullable();
+        table.datetime('register_date').notNullable();
+        table.datetime('update_date').notNullable();
+        table.integer('hits').unsigned().notNullable();
+    })
+    .createTable('user', (table) => {
+        table.increments('id').primary();
+        table.string('username').notNullable();
+        table
+            .integer('branch_id')
+            .unsigned()
+            .references('id')
+            .inTable('branch')
+            .notNullable();
+        table.string('name').notNullable();
+        table.integer('level').unsigned().notNullable();
+        table.string('password').notNullable();
     });
 };
 
 exports.down = function(knex) {
   return knex.schema
+    .dropTable('canceled')
+    .dropTable('noshow_list')
+    .dropTable('banner')
+    .dropTable('board')
+    .dropTable('user')
     .dropTable('time_table')
     .dropTable('cost')
     .dropTable('genre')

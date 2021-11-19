@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import LoginPage from '@/components/LoginPage'
 import Home from '@/components/Home'
+import TotalReservation from '@/components/TotalReservation'
 Vue.use(Router)
 
 export default new Router({
@@ -19,9 +20,9 @@ export default new Router({
       component: LoginPage
     },
     {
-      path: '/reservationList',
-      name: 'reservation',
-      component: LoginPage
+      path: '/totalReservation',
+      name: 'TotalReservation',
+      component: TotalReservation
     },
   ]
 })
