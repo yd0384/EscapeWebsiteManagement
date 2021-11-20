@@ -1,5 +1,3 @@
-import router from '@/router';
-import axios from 'axios';
 import { fetchReservationList, fetchHeadCountAndCost, getUserIp, getReservationByUser, deleteReservation } from '../../api';
 var now = new Date();
 const state = () => ({

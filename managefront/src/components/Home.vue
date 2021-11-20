@@ -1,9 +1,7 @@
 <template>
   <div class="container">
     <header class="jumbotron">
-      <h3>user id : {{user.id}}</h3>
-      <h2>user level : {{user.level}}</h2>
-      <h2 v-if="hasbranch">지점 : {{user.branch_id}}</h2>
+      <h3>username : {{user}}</h3>
     </header>
   </div>
 </template>

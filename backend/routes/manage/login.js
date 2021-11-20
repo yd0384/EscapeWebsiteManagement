@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', function(req, res, next){
     if(req.isAuthenticated() && req.user) {
-        return res.json({ user: req.user });
+        return res.json({user: req.user});
     }
     return res.json({ user: null });
 });
@@ -20,14 +20,14 @@ router.post('/', function(req, res, next){
             return next(authError);
         }
         if(info){
-            return res.status(401).send(json(info));
+            return res.json(info);
         }
         return req.login(user, (loginError) => {
             if(loginError) {
                 console.error(loginError);
                 return next(loginError);
             }
-            return res.json({ user });
+            return res.json({user});
         });
     })(req, res, next);
 });

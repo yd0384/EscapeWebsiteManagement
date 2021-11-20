@@ -31,7 +31,7 @@ app2.use(session({
   secret: process.env.COOKIE_SECRET,
   cookie: {
     httpOnly: true,
-    secure: true,
+    secure: false,
   }
 }));
 app2.use(passport.initialize());

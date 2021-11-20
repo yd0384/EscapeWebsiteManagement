@@ -12,11 +12,11 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: LoginPage
+      component: Home
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'LoginPage',
       component: LoginPage
     },
     {

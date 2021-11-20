@@ -1,39 +1,39 @@
-const { Strategy: LocalStrategy } = require('passport-local');
-var conn = require('../dbconn');
-
-
+const LocalStrategy = require('passport-local').Strategy;
+var db = require('../dbconn');
 exports.config = (passport) => {
-    passport.serializeUser((user, done) => {
-        done(null, user.id);
+    passport.serializeUser((user, done)=>{
+        return done(null, user.id);
     });
-    passport.deserializeUser((user , done) => {
-        done(null, user.id);
+    passport.deserializeUser(async (id, done)=> {
+        try {
+            var user = await db('user').where('id', id);
+            user = await JSON.parse(JSON.stringify(user))[0];
+            return done(null, user);
+        }
+        catch(error){
+            console.error(error);
+            return done(error);
+        }
     });
     passport.use(new LocalStrategy({
-        usernameField: 'id',
-        levelField: 'level',
+        usernameField: 'username',
         passwordField: 'password',
-        session: true,
-        passReqToCallback: false,
-    }, (id, level, password, done) => {
-        var sql = "SELECT * FROM Users WHERE user_name = ? AND user_level = ?";
-        var values = [id, level];
-        conn.connect();
-        conn.query(sql, values, function(err, results){
-            if(err){
-                return done(null, false, {message: "가입되지 않은 회원"});
-            }
-            else{
-                user = result[0];
-                db_password = user['user_password'];
-                if (password === db_password) {
+    },  function(username, password, done) {
+            db('user')
+                .where('username', username)
+                .then((row) => {
+                    if(row.length===0) {
+                        return done(null, false, { message: 'Incorrect username.'});
+                    }
+                    var user = JSON.parse(JSON.stringify(row))[0];
+                    if(user.password!=password){
+                        return done(null, false, { message: 'Incorrect password.' });
+                    }
                     return done(null, user);
-                }
-                else{
-                    return done(null, false, {message: "비밀번호 틀림"});
-                }
-                conn.end();
-            }    
-        })
-    }));
-}
+                })
+                .catch((error)=>{
+                    return done(error);
+                })
+        }
+    ));
+};
