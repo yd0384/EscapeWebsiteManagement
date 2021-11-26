@@ -1,9 +1,10 @@
 <template>
     <div class="container">
         <header class="jumbotron">
-            <h3>{{user.name}}님 환영합니다.</h3>
-            <b-button variant="info" @click="myAccount"><b-icon icon="person-fill" aria-hidden="true"></b-icon>내 정보</b-button>
-            <b-button variant="outline-info" @click="logout"><b-icon icon="power" aria-hidden="true"></b-icon>로그아웃</b-button>
+            <h1>계정 정보</h1>
+            <p>username: {{user.name}}</p>
+            <p>지점: {{user.branch_id}}</p>
+            <p>level: {{user.level}}</p>
         </header>
         </div>
     </template>
@@ -38,9 +39,6 @@ export default {
             .catch((err)=>{
                 console.error(err);
             })
-        },
-        myAccount(){
-            this.$router.push({name: "MyAccountPage"});
         }
     }
 }

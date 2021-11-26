@@ -1,16 +1,16 @@
 const express = require('express');
 const passport = require('passport');
-
+const bcrypt = require('bcrypt');
 const router = express.Router();
 
-router.get('/', function(req, res, next){
+router.get('/login', function(req, res, next){
     if(req.isAuthenticated() && req.user) {
         return res.json({user: req.user});
     }
     return res.json({ user: null });
 });
 
-router.post('/', function(req, res, next){
+router.post('/login', function(req, res, next){
     if(req.isAuthenticated()) {
         return res.redirect('/');
     }
@@ -31,5 +31,12 @@ router.post('/', function(req, res, next){
         });
     })(req, res, next);
 });
+
+router.get('/logout', function(req, res, next){
+    req.logout();
+    req.session.save(function(){
+        res.redirect('/');
+    })
+})
 
 module.exports = router;

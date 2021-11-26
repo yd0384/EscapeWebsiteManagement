@@ -5,12 +5,24 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var passport = require('passport');
+var MYSQLStore = require("express-mysql-session")(session);
+var db_config = require('./data/db_config.json');
+
+var options = {
+  host: db_config.host,
+  port: db_config.port,
+  user: db_config.user,
+  password: db_config.password,
+  database: db_config.database,
+}
+
+var sessionStore = new MYSQLStore(options);
 
 require('./passport').config(passport);
 require('dotenv').config();
 
 var indexRouter = require('./routes/manage/index2');
-var loginRouter = require('./routes/manage/login');
+var authRouter = require('./routes/manage/auth');
 
 var app2 = express();
 
@@ -27,11 +39,13 @@ app2.use(cookieParser());
 app2.use(cookieParser(process.env.COOKIE_SECRET));
 app2.use(session({
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   secret: process.env.COOKIE_SECRET,
+  store: sessionStore,
   cookie: {
     httpOnly: true,
     secure: false,
+    maxAge: 24 * 60 * 60 * 1000,
   }
 }));
 app2.use(passport.initialize());
@@ -40,7 +54,7 @@ app2.use(passport.session());
 app2.use(express.static(path.join(__dirname, 'public2')));
 
 app2.use('/', indexRouter);
-app2.use('/api/login', loginRouter);
+app2.use('/api/auth', authRouter);
 
 // catch 404 and forward to error handler
 app2.use(function(req, res, next) {

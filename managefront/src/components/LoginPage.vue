@@ -42,11 +42,24 @@ export default {
                 }
             };
         },
+    created(){
+        this.$http.get("/api/auth/login")
+        .then((res)=>{
+            const user = res.data.user;
+            if (user) {
+                this.$store.commit("setUser", user);
+                this.$router.push( {name: "Home" });
+            }
+        })
+        .catch((err)=>{
+            console.error(err);
+        });
+    },
     methods: {
         onSubmit(event) {
             event.preventDefault();
             const payload = {username: this.form.username, 'password': this.form.password};
-            this.$http.post("/api/login", payload)
+            this.$http.post("/api/auth/login", payload)
                 .then((res)=>{
                     if(res.data.user){
                         this.$store.commit("setUser", res.data.user);
