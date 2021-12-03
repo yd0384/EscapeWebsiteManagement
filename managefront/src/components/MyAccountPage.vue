@@ -3,31 +3,25 @@
         <header class="jumbotron">
             <h1>계정 정보</h1>
             <p>username: {{user.name}}</p>
-            <p>지점: {{user.branch_id}}</p>
+            <p>지점: {{branch_info.name}}</p>
             <p>level: {{user.level}}</p>
         </header>
     </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 export default {
     created(){
-        this.$http.get("/api/auth/login")
-        .then((res)=>{
-            const user = res.data.user;
-            if (user) {
-                this.$store.commit("setUser", user);
-            }
-            else {
-                this.$router.push( {name: "HomePage" });
-            }
-        })
-        .catch((err)=>{
-            console.error(err);
-        });
+        this.$store.dispatch('branch/fetch_branch_info');
     },
     computed: {
-        user() { return this.$store.getters.user; }
+        ...mapState({
+            user: state=> state.user.user,
+        }),
+        ...mapGetters('branch', {
+            branch_info: 'getBranchInfo'
+        })
     }
 }
 </script>

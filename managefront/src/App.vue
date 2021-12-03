@@ -2,11 +2,9 @@
     <div id="app">
         <div v-if="logined">
             <ManageHeader></ManageHeader>
-            <h1>logined</h1>
             <router-view class="logined view"></router-view>
         </div>
         <div v-else>
-            <h1>not logined</h1>
             <router-view class="login view" name="login"></router-view>
         </div>
     </div>
@@ -25,7 +23,7 @@ export default {
         .then((res)=>{
             const user = res.data.user;
             if (user) {
-                this.$store.commit("setUser", user);
+                this.$store.commit("user/setUser", user);
                 this.logined=true;
             }
             else {

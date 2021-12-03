@@ -47,7 +47,7 @@ export default {
         .then((res)=>{
             const user = res.data.user;
             if (user) {
-                this.$store.commit("setUser", user);
+                this.$store.commit("user/setUser", user);
             }
         })
         .catch((err)=>{
@@ -61,7 +61,7 @@ export default {
             this.$http.post("/api/auth/login", payload)
                 .then((res)=>{
                     if(res.data.user){
-                        this.$store.commit("setUser", res.data.user);
+                        this.$store.commit("user/setUser", res.data.user);
                         this.$router.go();
                     }else if(res.data.message){
                         alert(res.data.message);

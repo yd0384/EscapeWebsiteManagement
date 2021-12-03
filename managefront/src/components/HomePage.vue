@@ -1,19 +1,16 @@
 <template>
-    <div class="container">
-        <header class="jumbotron">
-            
-        </header>
-        </div>
-    </template>
+    
+</template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
     created(){
         this.$http.get("/api/auth/login")
         .then((res)=>{
             const user = res.data.user;
             if (user) {
-                this.$store.commit("setUser", user);
+                this.$store.commit("user/setUser", user);
             }
             else {
                 this.$router.go();
@@ -24,13 +21,15 @@ export default {
         });
     },
     computed: {
-        user() { return this.$store.getters.user; }
+         ...mapState({
+            user: state=> state.user.user,
+        })
     },
     methods: {
         logout(){
             this.$http.get('/api/auth/logout')
             .then(()=>{
-                this.$store.commit("setUser", null);
+                this.$store.commit("user/setUser", null);
                 this.$router.go();
             })
             .catch((err)=>{

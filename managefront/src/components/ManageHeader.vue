@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-navbar type="light" variant="faded" style="list-style-type:none; height:100px;">
-            <router-link :to="{ name : 'HomePage' }">
+            <router-link :to="{ path: '/' }">
                 <b-navbar-brand >
                     <h1 style="margin-top:-10px;">EscapeRoom</h1>
                 </b-navbar-brand>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
     export default {
         data() {
             return {
@@ -55,7 +56,7 @@
             .then((res)=>{
                 const user = res.data.user;
                 if (user) {
-                    this.$store.commit("setUser", user);
+                    this.$store.commit("user/setUser", user);
                 }
                 else {
                     this.$router.go();
@@ -66,14 +67,17 @@
             });
         },
         computed: {
-            user() { return this.$store.getters.user; }
+            ...mapState({
+            user: state=> state.user.user,
+            })
         },
         methods: {
             logout(){
                 this.$http.get('/api/auth/logout')
                 .then(()=>{
-                    this.$store.commit("setUser", null);
-                    this.$router.push({ name: 'HomePage' },this.$router.go());
+                    this.$store.commit("user/setUser", null);
+                    this.$router.push({ path: '/', name: 'login' });
+                    this.$router.go();
                 })
                 .catch((err)=>{
                     console.error(err);
