@@ -36,19 +36,18 @@
 export default {
     data() {
         return {
-                form: {
-                    username: '',
-                    password: ''
-                }
-            };
-        },
+            form: {
+                username: '',
+                password: ''
+            }
+        };
+    },
     created(){
         this.$http.get("/api/auth/login")
         .then((res)=>{
             const user = res.data.user;
             if (user) {
                 this.$store.commit("setUser", user);
-                this.$router.push( {name: "Home" });
             }
         })
         .catch((err)=>{
@@ -63,7 +62,7 @@ export default {
                 .then((res)=>{
                     if(res.data.user){
                         this.$store.commit("setUser", res.data.user);
-                        this.$router.push({name: "Home"});
+                        this.$router.go();
                     }else if(res.data.message){
                         alert(res.data.message);
                     }

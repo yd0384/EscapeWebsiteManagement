@@ -1,23 +1,51 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+    <div id="app">
+        <div v-if="logined">
+            <ManageHeader></ManageHeader>
+            <h1>logined</h1>
+            <router-view class="logined view"></router-view>
+        </div>
+        <div v-else>
+            <h1>not logined</h1>
+            <router-view class="login view" name="login"></router-view>
+        </div>
+    </div>
 </template>
 
 <script>
+import ManageHeader from './components/ManageHeader.vue'
 export default {
-  name: 'App'
+    name: 'App',
+    components: { ManageHeader },
+    data() {
+        return { logined: false }
+    },
+    created(){
+        this.$http.get("/api/auth/login")
+        .then((res)=>{
+            const user = res.data.user;
+            if (user) {
+                this.$store.commit("setUser", user);
+                this.logined=true;
+            }
+            else {
+                this.logined=false;
+            }
+        })
+        .catch((err)=>{
+            console.error(err);
+        });
+    },
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
 }
 </style>

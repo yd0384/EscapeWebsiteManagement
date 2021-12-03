@@ -1,32 +1,28 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import LoginPage from '@/components/LoginPage'
-import Home from '@/components/Home'
-import TotalReservation from '@/components/TotalReservation'
+import HomePage from '@/components/HomePage'
+import TotalReservationPage from '@/components/TotalReservationPage'
 import MyAccountPage from '@/components/MyAccountPage'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/login',
-      name: 'LoginPage',
-      component: LoginPage
+      name: 'HomePage',
+      components: {
+        default: HomePage,
+        login: LoginPage
+      }
     },
     {
       path: '/totalReservation',
-      name: 'TotalReservation',
-      component: TotalReservation
+      name: 'TotalReservationPage',
+      component: TotalReservationPage
     },
     {
-      path: '/MyAccount',
+      path: '/myAccount',
       name: 'MyAccountPage',
       component: MyAccountPage
     },

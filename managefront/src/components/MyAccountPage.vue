@@ -6,8 +6,8 @@
             <p>지점: {{user.branch_id}}</p>
             <p>level: {{user.level}}</p>
         </header>
-        </div>
-    </template>
+    </div>
+</template>
 
 <script>
 export default {
@@ -19,7 +19,7 @@ export default {
                 this.$store.commit("setUser", user);
             }
             else {
-                this.$router.push( {name: "LoginPage" });
+                this.$router.push( {name: "HomePage" });
             }
         })
         .catch((err)=>{
@@ -28,18 +28,6 @@ export default {
     },
     computed: {
         user() { return this.$store.getters.user; }
-    },
-    methods: {
-        logout(){
-            this.$http.get('/api/auth/logout')
-            .then(()=>{
-                this.$store.commit("setUser", null);
-                this.$router.push( {name: "LoginPage" });
-            })
-            .catch((err)=>{
-                console.error(err);
-            })
-        }
     }
 }
 </script>

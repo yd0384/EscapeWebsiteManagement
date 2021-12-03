@@ -1,9 +1,7 @@
 <template>
     <div class="container">
         <header class="jumbotron">
-            <h3>{{user.name}}님 환영합니다.</h3>
-            <b-button variant="info" @click="myAccount"><b-icon icon="person-fill" aria-hidden="true"></b-icon>내 정보</b-button>
-            <b-button variant="outline-info" @click="logout"><b-icon icon="power" aria-hidden="true"></b-icon>로그아웃</b-button>
+            
         </header>
         </div>
     </template>
@@ -18,7 +16,7 @@ export default {
                 this.$store.commit("setUser", user);
             }
             else {
-                this.$router.push( {name: "LoginPage" });
+                this.$router.go();
             }
         })
         .catch((err)=>{
@@ -33,7 +31,7 @@ export default {
             this.$http.get('/api/auth/logout')
             .then(()=>{
                 this.$store.commit("setUser", null);
-                this.$router.push( {name: "LoginPage" });
+                this.$router.go();
             })
             .catch((err)=>{
                 console.error(err);
