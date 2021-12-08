@@ -41,7 +41,7 @@ import { mapState } from 'vuex';
                     {
                         id: 4,
                         title: '예약가능 일수',
-                        url: 'TotalReservationPage'
+                        url: 'ReservableDatePage'
                     },
                     {
                         id: 5,
@@ -72,19 +72,17 @@ import { mapState } from 'vuex';
             })
         },
         methods: {
-            logout(){
-                this.$http.get('/api/auth/logout')
-                .then(()=>{
-                    this.$store.commit("user/setUser", null);
-                    this.$router.push({ path: '/', name: 'login' });
-                    this.$router.go();
-                })
-                .catch((err)=>{
-                    console.error(err);
-                })
+            logout: async function(){
+                await this.$store.dispatch('user/logout');
+                if(this.$router.currentRoute.path!='/'){
+                    await this.$router.push({ path: '/'});
+                }
+                await this.$router.go();
             },
             myAccount(){
-                this.$router.push({name: "MyAccountPage"});
+                if(this.$router.currentRoute.name!="MyAccountPage"){
+                    this.$router.push({name: "MyAccountPage"});
+                }
             }
         }
     }

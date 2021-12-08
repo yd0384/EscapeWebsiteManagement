@@ -72,7 +72,7 @@ export default {
   },
   methods:{
     isSelected: function(i) {
-      return i === this.selected_branch;
+      return i === this.selected_branch; 
     },
     select_branch: function(id){      
       this.$store.commit('theme/select_branch', id);

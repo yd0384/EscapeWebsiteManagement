@@ -16,24 +16,48 @@ export default {
     name: 'App',
     components: { ManageHeader },
     data() {
-        return { logined: false }
+        return { 
+            logined: false,
+            user: null
+        }
+    },
+    watch: {
+        user: function(){
+            this.checklogin();
+        }
     },
     created(){
-        this.$http.get("/api/auth/login")
-        .then((res)=>{
-            const user = res.data.user;
-            if (user) {
-                this.$store.commit("user/setUser", user);
+        this.initlogin();
+    },
+    methods: {
+        initlogin: function() {
+            this.$http.get("/api/auth/login")
+            .then((res)=>{
+                this.user = res.data.user;
+                if (this.user) {
+                    this.$store.commit("user/setUser", this.user);
+                    this.logined=true;
+                }
+                else {
+                    this.logined=false;
+                    if(this.$router.currentRoute.path!='/'){
+                        this.$router.push({ path: '/'});
+                    }
+                }
+            })
+            .catch((err)=>{
+                console.error(err);
+            });
+        },
+        checklogin: function(){
+            if(this.user){
                 this.logined=true;
             }
-            else {
+            else{
                 this.logined=false;
             }
-        })
-        .catch((err)=>{
-            console.error(err);
-        });
-    },
+        }
+    }
 }
 </script>
 

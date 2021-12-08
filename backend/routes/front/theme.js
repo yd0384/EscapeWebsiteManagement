@@ -5,7 +5,8 @@ var branches = [];
 var themes = [];
 var tid;
 var genres = [];
-db
+router.get('/', function(req, res, next){
+    db
     .select('id','name', 'reservable_date', 'image_path', 'address', 'tel_number')
     .from('branch')
     .where({'active': true})
@@ -15,7 +16,6 @@ db
     .catch(error => {
         console.error(error);
     });
-router.get('/', function(req, res, next){
     res.json(branches);
 });
 router.get('/get_themes', async function(req, res, next){

@@ -80,7 +80,6 @@ const actions = {
     getUserIP({ commit }){
         getUserIp()
         .then(res=>{
-            console.log(res.data);
             commit('set_userip', res.data);
         })
         .catch(error => {

@@ -4,6 +4,7 @@ import LoginPage from '@/components/LoginPage'
 import HomePage from '@/components/HomePage'
 import TotalReservationPage from '@/components/TotalReservationPage'
 import MyAccountPage from '@/components/MyAccountPage'
+import ReservableDatePage from '@/components/ReservableDatePage'
 Vue.use(Router)
 
 export default new Router({
@@ -25,5 +26,14 @@ export default new Router({
       name: 'MyAccountPage',
       component: MyAccountPage
     },
+    {
+      path: '/reservableDate',
+      name: 'ReservableDatePage',
+      component: ReservableDatePage
+    },
+    {
+      path: '*',
+      redirect: '/'
+    }
   ]
 })

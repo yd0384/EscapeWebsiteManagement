@@ -26,19 +26,6 @@ export default {
         })
     },
     methods: {
-        logout(){
-            this.$http.get('/api/auth/logout')
-            .then(()=>{
-                this.$store.commit("user/setUser", null);
-                this.$router.go();
-            })
-            .catch((err)=>{
-                console.error(err);
-            })
-        },
-        myAccount(){
-            this.$router.push({name: "MyAccountPage"});
-        }
     }
 }
 </script>

@@ -24,6 +24,7 @@ require('dotenv').config();
 var indexRouter = require('./routes/manage/index2');
 var authRouter = require('./routes/manage/auth');
 var branchRouter = require('./routes/manage/branch');
+var reservationRouter = require('./routes/manage/reservation');
 var app2 = express();
 
 app2.set('views', path.join(__dirname, 'views'));
@@ -56,6 +57,7 @@ app2.use(express.static(path.join(__dirname, 'public2')));
 app2.use('/', indexRouter);
 app2.use('/api/auth', authRouter);
 app2.use('/api/branch', branchRouter);
+app2.use('/api/reservation', reservationRouter);
 // catch 404 and forward to error handler
 app2.use(function(req, res, next) {
   next(createError(404));
