@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-navbar type="light" variant="faded" style="list-style-type:none; height:100px;">
+        <b-navbar type="light" variant="faded" style="list-style-type:none; height:30px;">
             <router-link :to="{ path: '/' }">
                 <b-navbar-brand >
                     <h1 style="margin-top:-10px;">EscapeRoom</h1>
@@ -31,7 +31,7 @@ import { mapState } from 'vuex';
                     {
                         id: 2,
                         title: '당일 예약',
-                        url: 'TotalReservationPage'
+                        url: 'TodayReservationPage'
                     },
                     {
                         id: 3,

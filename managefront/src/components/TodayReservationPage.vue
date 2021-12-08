@@ -1,6 +1,6 @@
 <template>
     <div id="total_reservation">
-        <h1>전체 예약</h1>
+        <h1>당일 예약</h1>
         <hr/>
         <container>
             <b-row align-h="end" class="search_box">

@@ -174,7 +174,7 @@
       DBdatetimeToString(tzString){
         let time = new Date(tzString.slice(0,-1));
         time.setHours(time.getHours()+9);
-        return time.getFullYear()+"년 "+time.getMonth()+"월 "+time.getDate()+"일 "+this.Days[time.getDay()]+"요일 "+((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
+        return time.getFullYear()+"년 "+ (time.getMonth()+1) + "월 "+time.getDate()+"일 "+this.Days[time.getDay()]+"요일 "+((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
       }
     }
   }
