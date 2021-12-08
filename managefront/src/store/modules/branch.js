@@ -39,8 +39,8 @@ const actions = {
             console.error(error);
         })
     },
-    change_branch_reservable_date({ commit }, payload){
-        putReservableDate(payload)
+    change_branch_reservable_date({ commit }, bid){
+        putReservableDate(bid)
         .then(res=>{
             if(res.data.message){
                 alert(res.data.message);

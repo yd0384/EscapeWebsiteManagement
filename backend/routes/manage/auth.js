@@ -78,5 +78,16 @@ router.put('/change_password', async function(req, res, next){
         
     }
 });
-
+router.get('/fetchL1UserList', async function(req, res, next){
+    const bid = req.query.bid;
+    await db('user')
+    .where({branch_id: bid})
+    .where({level: 1})
+    .then(rows=>{
+        res.json(JSON.stringify(rows));
+    })
+    .catch(error=>{
+        console.error(error);
+    })
+})
 module.exports = router;

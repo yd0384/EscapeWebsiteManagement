@@ -14,10 +14,14 @@ function changeUserPassword(payload){
 function fetchReservationList(){
     return axios.get('/api/reservation/fetchReservationList');
 };
+function fetchL1UserList(bid){
+    return axios.get('/api/auth/fetchL1UserList', {params: {bid: bid}});
+}
 export {
     fetchBranchInfo,
     putReservableDate,
     logout,
     changeUserPassword,
     fetchReservationList,
+    fetchL1UserList,
 };
