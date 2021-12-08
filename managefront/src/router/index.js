@@ -5,6 +5,7 @@ import HomePage from '@/components/HomePage'
 import TotalReservationPage from '@/components/TotalReservationPage'
 import MyAccountPage from '@/components/MyAccountPage'
 import ReservableDatePage from '@/components/ReservableDatePage'
+import AccountManagePage from '@/components/AccountManagePage'
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +31,11 @@ export default new Router({
       path: '/reservableDate',
       name: 'ReservableDatePage',
       component: ReservableDatePage
+    },
+    {
+      path: '/accountManage',
+      name: 'AccountManagePage',
+      component: AccountManagePage
     },
     {
       path: '*',
