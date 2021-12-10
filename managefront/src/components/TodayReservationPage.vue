@@ -1,113 +1,21 @@
 <template>
     <div id="total_reservation">
-        <h1>당일 예약</h1>
-        <hr/>
-        <container>
-            <b-row align-h="end" class="search_box">
-                <b-form-select v-model="selected" style="width:70px;" class="select">
-                    <b-form-select-option :value="a">전체</b-form-select-option>
-                    <b-form-select-option :value="b">제목</b-form-select-option>
-                    <b-form-select-option :value="c">작성자</b-form-select-option>
-                </b-form-select>    
-                <b-input type="text" style="width:150px;" class="input"></b-input>
-                <b-button class="search_button">검색</b-button>
-            </b-row>
-        </container>
-
-        <b-table id="total_reservation_table" 
-            :striped="true"
-            :items="reservations"
-            :fields="fields"
-            :small="true"
-            :filter="filter"
-            :filter-included-fields="filterOn"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :sort-direction="sortDirection"
-            :per-page="perPage"
-            :current-page="currentPage"
-            stacked="md"
-            show-empty
-            @filtered="onFiltered"
-        >
-            <template #cell(start_time)="data">
-                {{ DBdatetimeToString(data.value) }}
-            </template>
-
-            <template #cell(end_time)="data">
-                {{ DBdatetimeToString(data.value) }}
-            </template>
-
-            <template #cell(reserved_time)="data">
-                {{ DBdatetimeToString(data.value) }}
-            </template>
-
-        </b-table>
-
-        <b-pagination
-            v-model="currentPage"
-            :total-rows="rows"
-            :per-page="perPage"
-            size="md"
-            align="center"
-            class="mt-4">
-        </b-pagination>
-  </div>
+        <h1>{{branchName}} 당일 예약</h1>
+        <b-card-group v-for="theme in todayReservation" :key="theme.id">
+            <h1>{{theme.title}}</h1>
+            <b-card v-for="time in theme.time_table" :key="time.id" :title="time.start_time">
+                <b-card-text v-if="time.reservation!=null">{{time.reservation}}</b-card-text>
+                <b-card-text v-else>예약 없음</b-card-text>
+            </b-card>
+        </b-card-group>
+    </div>
 </template>
-
 <script>
 import { mapState, mapGetters } from 'vuex';
+const now=new Date();
 export default {
     data(){
         return {
-            fields: [
-                {
-                    key: 'id',
-                    label: '예약번호'
-                },
-                {
-                    key: 'theme_id',
-                    label: '테마명'
-                },
-                {
-                    key: 'start_time',
-                    label: '테마시작시간'
-                },
-                {
-                    key: 'end_time',
-                    label: '테마종료시간'
-                },
-                {
-                    key: 'status',
-                    label: '예약상태'
-                },
-                {
-                    key: 'reserved_time',
-                    label: '예약시간'
-                },
-                {
-                    key: 'number_of_player',
-                    label: '인원수'
-                },
-                {
-                    key: 'phone_number',
-                    label: '전화번호'
-                },
-                {
-                    key: 'booker_name',
-                    label: '예약자명'
-                },
-                {
-                    key: 'booker_ip',
-                    label: 'IP'
-                },
-                {
-                    key: 'noshow',
-                    label: '노쇼여부'
-                }
-            ],
-            perPage: 5,
-            currentPage: 1,
             Days: ['일', '월', '화', '수', '목', '금', '토'],
         }
     },
@@ -116,11 +24,16 @@ export default {
             return this.reservations.length
         },
         ...mapState({
-            reservations: state=> state.reservation.reservations
+            user: state=> state.user.user,
+            todayReservation: state=> state.reservation.todayReservationList,
         }),
+        ...mapGetters('branch', {
+            branchName: 'getBranchName'
+        })
     },
     created() {
-        this.$store.dispatch('reservation/fetch_reservations');
+        this.$store.dispatch('branch/fetch_branch_info');
+        this.$store.dispatch('reservation/fetch_today_reservations', {bid: this.user.branch_id, date:new Date(now.getFullYear(), now.getMonth(), now.getDate())});
     },
     methods: {
         DBdatetimeToString(tzString){

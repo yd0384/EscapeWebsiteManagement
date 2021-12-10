@@ -89,5 +89,8 @@ router.get('/fetchL1UserList', async function(req, res, next){
     .catch(error=>{
         console.error(error);
     })
+});
+router.put('/issueRandomPassword', async function(req, res, next){
+    res.json({success: true, message: '1234'});
 })
 module.exports = router;

@@ -1,4 +1,4 @@
-import { changeUserPassword, logout, fetchL1UserList } from '../../api';
+import { changeUserPassword, logout, fetchL1UserList, issueRandomPassword, deleteUser } from '../../api';
 import router from '../../router';
 const state = () => ({
     user: null,
@@ -46,12 +46,17 @@ const actions = {
     fetch_l1_user_list({commit, state}){
         fetchL1UserList(state.user.branch_id)
         .then(res=>{
-            console.log(res.data);
             commit('setL1UserList', JSON.parse(res.data));
         })
         .catch(error=>{
             console.error(error);
         })
+    },
+    issue_random_password({commit}, uid){
+        return issueRandomPassword(uid);
+    },
+    delete_user({commit}, uid){
+
     }
 };
 
