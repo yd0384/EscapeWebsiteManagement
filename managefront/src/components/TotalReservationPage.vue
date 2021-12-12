@@ -5,9 +5,9 @@
         <container>
             <b-row align-h="end" class="search_box">
                 <b-form-select v-model="selected" style="width:70px;" class="select">
-                    <b-form-select-option :value="a">전체</b-form-select-option>
-                    <b-form-select-option :value="b">제목</b-form-select-option>
-                    <b-form-select-option :value="c">작성자</b-form-select-option>
+                    <b-form-select-option :value="total">전체</b-form-select-option>
+                    <b-form-select-option :value="title">제목</b-form-select-option>
+                    <b-form-select-option :value="author">작성자</b-form-select-option>
                 </b-form-select>    
                 <b-input type="text" style="width:150px;" class="input"></b-input>
                 <b-button class="search_button">검색</b-button>
@@ -19,16 +19,8 @@
             :items="reservations"
             :fields="fields"
             :small="true"
-            :filter="filter"
-            :filter-included-fields="filterOn"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :sort-direction="sortDirection"
             :per-page="perPage"
             :current-page="currentPage"
-            stacked="md"
-            show-empty
-            @filtered="onFiltered"
         >
             <template #cell(start_time)="data">
                 {{ DBdatetimeToString(data.value) }}
