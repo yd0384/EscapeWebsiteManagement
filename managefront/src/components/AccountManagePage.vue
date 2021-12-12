@@ -1,20 +1,22 @@
 <template>
     <div>
         <h1>{{branch_name}} level 1 계정 관리</h1>
-        <b-form v-for="(user, id) in L1UserList" :key="id" inline @submit="onSubmit($event, user.id)" @reset="onReset($event, user.id)">
+        <b-form v-for="(user, id) in L1UserList" :key="id" inline @submit="onSubmit($event, user.id)" @reset="onReset($event, user.id)" style="justify-content:center; margin:50px;">
             <b-form-group
                 id="input-group-1"
                 label= "username: "
                 label-for="input-1"
+                style="margin-right:10px;"
             >
                 <b-form-input
                     id="input-1"
                     readonly
                     inline
                     v-model="user.username"
+                    style="margin-left:10px;"
                 ></b-form-input>
             </b-form-group>
-            <b-button type="submit" variant="primary">랜덤 비밀번호 재설정</b-button>
+            <b-button type="submit" variant="primary" style="margin-right:10px;">랜덤 비밀번호 재설정</b-button>
             <b-button type="reset" variant="danger">계정 제거</b-button>
             <b-alert :show="user.message">{{user.message}}</b-alert>     
         </b-form>
