@@ -16,7 +16,17 @@ function fetchReservationList(){
 };
 function fetchL1UserList(bid){
     return axios.get('/api/auth/fetchL1UserList', {params: {bid: bid}});
-}
+};
+function issueRandomPassword(payload){
+    return axios.put('/api/auth/issueRandomPassword', payload);
+};
+function deleteUser(uid){
+    return 
+};
+function fetchTodayReservationList(payload){
+    return axios.get('/api/reservation/fetchTodayReservationList', {params: {bid: payload.bid, date: payload.date}});
+};
+
 export {
     fetchBranchInfo,
     putReservableDate,
@@ -24,4 +34,7 @@ export {
     changeUserPassword,
     fetchReservationList,
     fetchL1UserList,
+    issueRandomPassword,
+    deleteUser,
+    fetchTodayReservationList
 };

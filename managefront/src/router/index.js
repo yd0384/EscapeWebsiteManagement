@@ -8,6 +8,7 @@ import MyAccountPage from '@/components/MyAccountPage'
 import ReservableDatePage from '@/components/ReservableDatePage'
 import AccountManagePage from '@/components/AccountManagePage'
 import ReservationDetailPage from '@/components/ReservationDetailPage'
+import AccountCreatePage from '@/components/AccountCreatePage'
 Vue.use(Router)
 
 export default new Router({
@@ -48,6 +49,11 @@ export default new Router({
       path: '/reservationDetail',
       name: 'ReservationDetailPage',
       component: ReservationDetailPage
+    },
+    {
+      path: '/accountCreate',
+      name: 'AccountCreatePage',
+      component: AccountCreatePage
     },
     {
       path: '*',

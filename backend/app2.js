@@ -46,7 +46,7 @@ app2.use(session({
   cookie: {
     httpOnly: true,
     secure: false,
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 60 * 60 * 1000, //1시간
   }
 }));
 app2.use(passport.initialize());
