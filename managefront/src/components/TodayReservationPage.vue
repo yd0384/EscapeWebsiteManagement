@@ -1,11 +1,18 @@
 <template>
     <div id="total_reservation">
-        <h1>{{branchName}} 당일 예약</h1>
+        <h1 class='mb-5'>{{branchName}} 당일 예약</h1>
         <b-card-group v-for="theme in todayReservation" :key="theme.id">
-            <h1>{{theme.title}}</h1>
-            <b-card v-for="time in theme.time_table" :key="time.id" :title="time.start_time">
-                <b-card-text v-if="time.reservation!=null">{{time.reservation}}</b-card-text>
-                <b-card-text v-else>예약 없음</b-card-text>
+            <h4 style="width:200px; align-self:center;">{{theme.title}}</h4>
+            <b-card v-for="time in theme.time_table" :key="time.id" :header="time.start_time">
+                <b-card-text v-if="time.reservation!=null">
+                    <div style="text-align:start;">
+                        예약자명: {{time.reservation.booker_name}}<br>
+                        인원수: {{time.reservation.number_of_player}} 명<br>
+                        연락처: {{time.reservation.phone_number}}<br>
+                        <b-badge v-if="time.reservation.status==0" variant="success">예약완료</b-badge>
+                    </div>
+                </b-card-text>
+                <b-card-text v-else><b-badge variant="secondary">예약없음</b-badge></b-card-text>
             </b-card>
         </b-card-group>
     </div>
