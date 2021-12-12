@@ -1,6 +1,6 @@
 <template>
     <div id="total_reservation">
-        <h1>전체 예약</h1>
+        <h1>취소된 예약</h1>
         <hr/>
         <container>
             <b-row align-h="end" class="search_box">
@@ -16,12 +16,11 @@
 
         <b-table id="total_reservation_table" 
             :striped="true"
-            :items="reservations"
+            :items="canceled_reservations"
             :fields="fields"
             :small="true"
             :per-page="perPage"
             :current-page="currentPage"
-            v-if = "rows>0"
         >
             <template #cell(start_time)="data">
                 {{ DBdatetimeToString(data.value) }}
@@ -30,7 +29,6 @@
             <template #cell(end_time)="data">
                 {{ DBdatetimeToString(data.value) }}
             </template>
-
             <template #cell(reserved_time)="data">
                 {{ DBdatetimeToString(data.value) }}
             </template>
@@ -106,14 +104,14 @@ export default {
     },
     computed: {
         rows() {
-            return this.reservations.length
+            return this.canceled_reservations.length
         },
         ...mapState({
-            reservations: state=> state.reservation.reservations
-        })
+            canceled_reservations: state=> state.reservation.canceledReservationList
+        }),
     },
     created() {
-        this.$store.dispatch('reservation/fetch_reservations');
+        this.$store.dispatch('reservation/fetch_canceled_reservations');
     },
     methods: {
         DBdatetimeToString(tzString){

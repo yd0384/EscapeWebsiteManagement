@@ -54,7 +54,7 @@ export default {
             event.preventDefault();
             this.$store.dispatch('user/issue_random_password', {uid: uid})
             .then(res=> {
-                var result = res.data;
+                const result = res.data;
                 if(result.success){
                     alert(result.message);
                 }
@@ -62,15 +62,27 @@ export default {
                     alert("비밀번호 발급 실패");
                 }
             })
+            .catch(error=>{
+                console.error(error);
+            })
         },
         onReset: function(event, uid){
             event.preventDefault();
-            this.$store.dispatch('user/delete_user', uid);
+            this.$store.dispatch('user/delete_user', {uid: uid})
+            .then(res=> {
+                const result = res.data;
+                if(result.success){
+                    this.$store.dispatch('user/fetch_l1_user_list');
+                }
+                else{
+                    alert("계정 삭제 실패");
+                }
+            })
+            .catch(error=>{
+                console.error(error);
+            })
         },
-        appendUser: function(){
-            console.log("hi");
-            this.$router.push({name: 'AccountCreatePage'});
-        }
+        
     }
 }
 </script>

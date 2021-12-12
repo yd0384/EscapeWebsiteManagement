@@ -55,8 +55,8 @@ const actions = {
     issue_random_password({commit}, payload){
         return issueRandomPassword(payload);
     },
-    delete_user({commit}, uid){
-
+    delete_user({commit}, payload){
+        return deleteUser(payload);
     }
 };
 

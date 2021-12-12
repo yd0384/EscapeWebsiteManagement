@@ -3,15 +3,60 @@ const db = require('../../dbconn');
 const router = express.Router();
 
 router.get('/fetchReservationList', async function(req, res, next){
-    db('reservation')
+    const bid = req.query.bid;
+    let theme_info = [];
+    let reservations = [];
+
+    await db('reservation')
     .whereNot({status: 3})
     .then(rows => {
-        res.json(JSON.stringify(rows));
+        reservations = JSON.parse(JSON.stringify(rows));
     })
     .catch(error=> {
         console.error(error);
     })
+    await db('theme')
+    .select('id', 'title')
+    .where({branch_id: bid})
+    .then(rows=>{
+        theme_info = JSON.parse(JSON.stringify(rows));
+    })
+    .catch(error=> {
+        console.error(error);
+    })
+    for(var i in reservations){
+        reservations[i].title = theme_info.find(arr=>arr.id===reservations[i].theme_id).title;
+        delete reservations[i].branch_id;
+    }
+    res.json(JSON.stringify(reservations));
 });
+router.get('/fetchCanceledReservationList', async function(req, res, next){
+    const bid = req.query.bid;
+    let theme_info = [];
+    let reservations = [];
+    await db('reservation')
+    .where({status: 3})
+    .then(rows => {
+        reservations = JSON.parse(JSON.stringify(rows));
+    })
+    .catch(error => {
+        console.error(error);
+    })
+    await db('theme')
+    .select('id', 'title')
+    .where({branch_id: bid})
+    .then(rows=>{
+        theme_info = JSON.parse(JSON.stringify(rows));
+    })
+    .catch(error=> {
+        console.error(error);
+    })
+    for(var i in reservations){
+        reservations[i].title = theme_info.find(arr=>arr.id===reservations[i].theme_id).title;
+        delete reservations[i].branch_id;
+    }
+    res.json(JSON.stringify(reservations));
+})
 router.get('/fetchTodayReservationList', async function(req, res, next){
     const bid = req.query.bid;
     let theme_info = [];
@@ -21,7 +66,7 @@ router.get('/fetchTodayReservationList', async function(req, res, next){
     .then(rows=>{
         theme_info = JSON.parse(JSON.stringify(rows));
     })
-    .catch(error=>{
+    .catch(error=> {
         console.error(error);
     })
     let tids = [];
@@ -81,5 +126,4 @@ function DateToTime(tzString){
     time.setHours(time.getHours()+9);
     return ((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
 }
-
 module.exports = router;

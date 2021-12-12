@@ -11,8 +11,8 @@ function logout(){
 function changeUserPassword(payload){
     return axios.put('/api/auth/change_password', payload);
 };
-function fetchReservationList(){
-    return axios.get('/api/reservation/fetchReservationList');
+function fetchReservationList(bid){
+    return axios.get('/api/reservation/fetchReservationList', {params: {bid: bid}});
 };
 function fetchL1UserList(bid){
     return axios.get('/api/auth/fetchL1UserList', {params: {bid: bid}});
@@ -20,12 +20,18 @@ function fetchL1UserList(bid){
 function issueRandomPassword(payload){
     return axios.put('/api/auth/issueRandomPassword', payload);
 };
-function deleteUser(uid){
-    return 
+function deleteUser(payload){
+    return axios.delete('/api/auth/deleteUser', {data: payload});
 };
 function fetchTodayReservationList(payload){
     return axios.get('/api/reservation/fetchTodayReservationList', {params: {bid: payload.bid, date: payload.date}});
 };
+function fetchCanceledReservationList(bid){
+    return axios.get('/api/reservation/fetchCanceledReservationList', {params: {bid: bid}});
+};
+function fetchThemeList(bid){
+    return axios.get('/api/theme/fetchThemeList', {params: {bid: bid}});
+}
 
 export {
     fetchBranchInfo,
@@ -36,5 +42,7 @@ export {
     fetchL1UserList,
     issueRandomPassword,
     deleteUser,
-    fetchTodayReservationList
+    fetchTodayReservationList,
+    fetchCanceledReservationList,
+    fetchThemeList
 };

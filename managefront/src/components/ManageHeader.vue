@@ -39,7 +39,7 @@ import { mapState } from 'vuex';
                     {
                         id: 3,
                         title: '취소된 예약',
-                        url: 'TotalReservationPage'
+                        url: 'CanceledReservationPage'
                     },
                     {
                         id: 4,

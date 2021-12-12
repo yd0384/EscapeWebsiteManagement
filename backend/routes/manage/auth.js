@@ -102,7 +102,7 @@ router.put('/issueRandomPassword', async function(req, res, next){
                 return res.json({success: false});
             }
             else{
-                res.json({success: true, message: randomPW+"로 비밀번호가 변경되었습니다."});
+                return res.json({success: true, message: randomPW+"로 비밀번호가 변경되었습니다."});
             }
         })
         .catch(error=>{
@@ -111,6 +111,23 @@ router.put('/issueRandomPassword', async function(req, res, next){
         if(err){
             console.error(err);
         }
+    })
+})
+router.delete('/deleteUser', async function(req, res, next){
+    const uid = req.body.uid;
+    await db('user')
+    .where({id: uid})
+    .del()
+    .then(rows=> {
+        if(!rows){
+            return res.json({success: false});
+        }
+        else{
+            return res.json({success: true});
+        }
+    })
+    .catch(error=>{
+        console.error(error);
     })
 })
 module.exports = router;
