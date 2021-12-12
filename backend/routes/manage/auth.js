@@ -91,6 +91,26 @@ router.get('/fetchL1UserList', async function(req, res, next){
     })
 });
 router.put('/issueRandomPassword', async function(req, res, next){
-    res.json({success: true, message: '1234'});
+    const uid = req.body.uid;
+    const randomPW = Math.random().toString(36).slice(2);
+    bcrypt.hash(randomPW, 10, (err, encryptedPassword)=>{
+        db('user')
+        .where({id: uid})
+        .update({password: encryptedPassword})
+        .then(rows=> {
+            if(!rows){
+                return res.json({success: false});
+            }
+            else{
+                res.json({success: true, message: randomPW+"로 비밀번호가 변경되었습니다."});
+            }
+        })
+        .catch(error=>{
+            console.error(error);
+        })
+        if(err){
+            console.error(err);
+        }
+    })
 })
 module.exports = router;

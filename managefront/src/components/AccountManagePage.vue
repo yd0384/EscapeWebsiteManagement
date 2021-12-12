@@ -18,7 +18,9 @@
             <b-button type="reset" variant="danger">계정 제거</b-button>
             <b-alert :show="user.message">{{user.message}}</b-alert>     
         </b-form>
-        <b-button variant="info" @clcik="appendUser">계정 추가</b-button>
+        <router-link :to="{name: 'AccountCreatePage'}">
+            <b-button variant="info">계정 추가</b-button>
+        </router-link>
     </div>
 </template>
 
@@ -50,12 +52,14 @@ export default {
     methods: {
         onSubmit: function(event, uid){
             event.preventDefault();
-            console.log(uid);
-            this.$store.dispatch('user/issue_random_password', uid)
+            this.$store.dispatch('user/issue_random_password', {uid: uid})
             .then(res=> {
                 var result = res.data;
                 if(result.success){
                     alert(result.message);
+                }
+                else{
+                    alert("비밀번호 발급 실패");
                 }
             })
         },
@@ -64,6 +68,7 @@ export default {
             this.$store.dispatch('user/delete_user', uid);
         },
         appendUser: function(){
+            console.log("hi");
             this.$router.push({name: 'AccountCreatePage'});
         }
     }

@@ -17,8 +17,8 @@ function fetchReservationList(){
 function fetchL1UserList(bid){
     return axios.get('/api/auth/fetchL1UserList', {params: {bid: bid}});
 };
-function issueRandomPassword(uid){
-    return axios.put('/api/auth/issueRandomPassword', uid);
+function issueRandomPassword(payload){
+    return axios.put('/api/auth/issueRandomPassword', payload);
 };
 function deleteUser(uid){
     return 

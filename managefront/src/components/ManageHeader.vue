@@ -9,7 +9,7 @@
             <b-nav-item-dropdown text="예약 관리" v-if="user.level===1 || user.level===2" >
                 <router-link tag="b-dropdown-item" :to="{ name : menu.url }" v-for="menu in MenuReservation" :key="menu.id">{{menu.title}}</router-link>
             </b-nav-item-dropdown>
-            <router-link tag="b-nav-item" :to="{ name : 'AccountManagePage' }" >
+            <router-link tag="b-nav-item" :to="{ name : 'AccountManagePage' }" v-if="user.level===2" >
                 계정 관리
             </router-link>
             <h3>{{user.name}}님 환영합니다.</h3>
