@@ -6,20 +6,24 @@ router.get('/fetchReservationList', async function(req, res, next){
     const bid = req.query.bid;
     let theme_info = [];
     let reservations = [];
-
-    await db('reservation')
-    .whereNot({status: 3})
-    .then(rows => {
-        reservations = JSON.parse(JSON.stringify(rows));
-    })
-    .catch(error=> {
-        console.error(error);
-    })
     await db('theme')
     .select('id', 'title')
     .where({branch_id: bid})
     .then(rows=>{
         theme_info = JSON.parse(JSON.stringify(rows));
+    })
+    .catch(error=> {
+        console.error(error);
+    })
+    let tids = [];
+    for(var i in theme_info){
+        tids.push(theme_info[i].id);
+    }
+    await db('reservation')
+    .whereNot({status: 3})
+    .whereIn('theme_id', tids)
+    .then(rows => {
+        reservations = JSON.parse(JSON.stringify(rows));
     })
     .catch(error=> {
         console.error(error);
@@ -34,14 +38,6 @@ router.get('/fetchCanceledReservationList', async function(req, res, next){
     const bid = req.query.bid;
     let theme_info = [];
     let reservations = [];
-    await db('reservation')
-    .where({status: 3})
-    .then(rows => {
-        reservations = JSON.parse(JSON.stringify(rows));
-    })
-    .catch(error => {
-        console.error(error);
-    })
     await db('theme')
     .select('id', 'title')
     .where({branch_id: bid})
@@ -51,6 +47,20 @@ router.get('/fetchCanceledReservationList', async function(req, res, next){
     .catch(error=> {
         console.error(error);
     })
+    let tids = [];
+    for(var i in theme_info){
+        tids.push(theme_info[i].id);
+    }
+    await db('reservation')
+    .where({status: 3})
+    .whereIn('theme_id', tids)
+    .then(rows => {
+        reservations = JSON.parse(JSON.stringify(rows));
+    })
+    .catch(error => {
+        console.error(error);
+    })
+    
     for(var i in reservations){
         reservations[i].title = theme_info.find(arr=>arr.id===reservations[i].theme_id).title;
         delete reservations[i].branch_id;
