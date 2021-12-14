@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>{{branch_name}} level 1 계정 관리</h1>
+        <hr/>
         <b-form v-for="(user, id) in L1UserList" :key="id" inline @submit="onSubmit($event, user.id)" @reset="onReset($event, user.id)" style="justify-content:center; margin:50px;">
             <b-form-group
                 id="input-group-1"

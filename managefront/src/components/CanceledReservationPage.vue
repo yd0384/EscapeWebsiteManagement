@@ -1,19 +1,7 @@
 <template>
     <div id="total_reservation">
-        <h1>취소된 예약</h1>
+        <h1>{{branchName}} 취소된 예약</h1>
         <hr/>
-        <container>
-            <b-row align-h="end" class="search_box">
-                <b-form-select v-model="selected" style="width:70px;" class="select">
-                    <b-form-select-option :value="total">전체</b-form-select-option>
-                    <b-form-select-option :value="title">제목</b-form-select-option>
-                    <b-form-select-option :value="author">작성자</b-form-select-option>
-                </b-form-select>    
-                <b-input type="text" style="width:150px;" class="input"></b-input>
-                <b-button class="search_button">검색</b-button>
-            </b-row>
-        </container>
-
         <b-table id="total_reservation_table" 
             :striped="true"
             :items="canceled_reservations"
@@ -21,6 +9,8 @@
             :small="true"
             :per-page="perPage"
             :current-page="currentPage"
+            @row-clicked="toDetailPage"
+            sticky-header
         >
             <template #cell(start_time)="data">
                 {{ DBdatetimeToString(data.value) }}
@@ -32,7 +22,6 @@
             <template #cell(reserved_time)="data">
                 {{ DBdatetimeToString(data.value) }}
             </template>
-
         </b-table>
 
         <b-pagination
@@ -97,7 +86,7 @@ export default {
                     label: '노쇼여부'
                 }
             ],
-            perPage: 5,
+            perPage: 10,
             currentPage: 1,
             Days: ['일', '월', '화', '수', '목', '금', '토'],
         }
@@ -109,15 +98,22 @@ export default {
         ...mapState({
             canceled_reservations: state=> state.reservation.canceledReservationList
         }),
+        ...mapGetters('branch', {
+            branchName: 'getBranchName'
+        })
     },
     created() {
         this.$store.dispatch('reservation/fetch_canceled_reservations');
+        this.$store.dispatch('branch/fetch_branch_info');
     },
     methods: {
         DBdatetimeToString(tzString){
             let time = new Date(tzString.slice(0,-1));
             time.setHours(time.getHours()+9);
             return time.getFullYear()+"년 "+ (time.getMonth()+1)+"월 "+time.getDate()+"일 "+this.Days[time.getDay()]+"요일 "+((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
+        },
+        toDetailPage(record, index){
+            this.$router.push({name: 'ReservationDetailPage', params: record});
         }
     }
 }

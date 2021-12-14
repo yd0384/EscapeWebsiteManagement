@@ -3,7 +3,6 @@
     <body>
       <div id="app">
         <MainHeader></MainHeader>
-        <!--<img src="./assets/logo.png">!-->
         <div class='main-content'>
         <router-view/>
         </div>

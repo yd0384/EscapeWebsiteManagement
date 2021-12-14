@@ -26,6 +26,7 @@ var authRouter = require('./routes/manage/auth');
 var branchRouter = require('./routes/manage/branch');
 var reservationRouter = require('./routes/manage/reservation');
 var themeRouter = require('./routes/manage/theme');
+var imgRouter = require('./routes/img');
 var app2 = express();
 
 app2.set('views', path.join(__dirname, 'views'));
@@ -60,6 +61,7 @@ app2.use('/api/auth', authRouter);
 app2.use('/api/branch', branchRouter);
 app2.use('/api/reservation', reservationRouter);
 app2.use('/api/theme', themeRouter);
+app2.use('/api/img', imgRouter);
 // catch 404 and forward to error handler
 app2.use(function(req, res, next) {
   next(createError(404));

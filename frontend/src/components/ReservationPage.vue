@@ -38,7 +38,7 @@
           <b-container class="theme_box">
             <b-row>
               <b-col class="theme_poster">
-                <b-img :src="require(`@/assets/theme/${theme.image_path }`)" fluid alt="Responsive image" style="width:300px; height:250px; margin-bottom:50px"></b-img>
+                <b-img :src="'/api/img/theme/?imgName='+theme.image_path" fluid alt="Responsive image" style="width:300px; height:250px; margin-bottom:50px"></b-img>
               </b-col>
               <b-col cols="8">
                 <b-row class="theme_title" style="margin-bottom:10px;">

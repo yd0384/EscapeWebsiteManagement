@@ -15,6 +15,9 @@
                 <router-link tag="b-nav-item" :to="{ name : 'AccountManagePage' }" v-if="user.level===2" >
                     계정 관리
                 </router-link>
+                <router-link tag="b-nav-item" :to="{ name : 'ThemeManagePage' }" v-if="user.level===2" >
+                    테마 관리
+                </router-link>
                 <b-col offset-md="4"><h3>{{user.name}}님 환영합니다.</h3></b-col>
                 <b-col>
                     <b-button style="margin-right:10px;" variant="info" @click="myAccount"><b-icon icon="person-fill" aria-hidden="true"></b-icon>내 정보</b-button>

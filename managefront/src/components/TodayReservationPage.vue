@@ -1,10 +1,11 @@
 <template>
     <div id="total_reservation">
-        <h1 class='mb-5'>{{branchName}} 당일 예약</h1>
+        <h1 >{{branchName}} 당일 예약</h1>
+        <hr/>
         <b-card-group v-for="theme in todayReservation" :key="theme.id">
             <h4 style="width:200px; align-self:center;">{{theme.title}}</h4>
             <b-card v-for="time in theme.time_table" :key="time.id" :header="time.start_time">
-                <b-card-text v-if="time.reservation!=null">
+                <b-card-text v-if="time.reservation!=null" @click="toDetailPage(time.reservation, theme.title)">
                     <div style="text-align:start;">
                         예약자명: {{time.reservation.booker_name}}<br>
                         인원수: {{time.reservation.number_of_player}} 명<br>
@@ -47,6 +48,21 @@ export default {
             let time = new Date(tzString.slice(0,-1));
             time.setHours(time.getHours()+9);
             return time.getFullYear()+"년 "+ (time.getMonth()+1)+"월 "+time.getDate()+"일 "+this.Days[time.getDay()]+"요일 "+((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
+        },
+        StringToDBdate(String){
+            var regex = /[^0-9]/g;
+            var result = String.replace(regex, "");
+            return result.slice(0, 4) + "-"+result.slice(4,6)+"-"+result.slice(6,8)+"T"+result.slice(8,10)+":"+result.slice(10,12)+"Z";
+        },
+        toDetailPage(reservation, title){
+            var  params = {};
+            params = Object.assign(params,reservation);
+            const statusString = ['플레이 이전', '플레이 완료', '노쇼', '취소된 예약'];
+            params.status=statusString[params.status];
+            params.title=title;
+            params.start_time = params.start_datetime;
+            params.reserved_time= params.reserved_datetime;
+            this.$router.push({name: 'ReservationDetailPage', params: params});
         }
     }
 }

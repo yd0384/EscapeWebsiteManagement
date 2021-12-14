@@ -12,7 +12,7 @@
         <b-card
           v-for="theme in theme_view" :key=theme.id
           :title="theme.title"
-          :img-src="require(`@/assets/theme/${theme.image_path }`)"
+          :img-src="'/api/img/theme/?imgName='+theme.image_path"
           img-alt="Image"
           img-left
           img-width="400"

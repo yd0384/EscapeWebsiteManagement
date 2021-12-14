@@ -19,7 +19,7 @@
                 class="d-block img-fluid w-100"
                 width="1024"
                 height="768"
-                src="../assets/Img_door.jpg"
+                src="/api/img?imgName=Img_door.jpg"
                 alt="image slot"
             >
             </template>
@@ -30,7 +30,7 @@
                 class="d-block img-fluid w-100"
                 width="1024"
                 height="768"
-                src="../assets/Img_road.jpg"
+                src="/api/img?imgName=Img_road.jpg"
                 alt="image slot"
             >
             </template>
@@ -41,7 +41,7 @@
                 class="d-block img-fluid w-100"
                 width="1024"
                 height="768"
-                src="../assets/Img_flower.jpg"
+                src="/api/img?imgName=Img_flower.jpg"
                 alt="image slot"
             >
             </template>
@@ -52,7 +52,7 @@
                 class="d-block img-fluid w-100"
                 width="1024"
                 height="768"
-                src="../assets/Img_milkyway.jpg"
+                src="/api/img?imgName=Img_milkyway.jpg"
                 alt="image slot"
             >
             </template>

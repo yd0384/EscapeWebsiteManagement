@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h4 style="margin-bottom:50px;">예약정보</h4>
+        <h1 style="margin-bottom:50px;">{{branchName}} 예약정보</h1>
+        <hr/>
         <b-container style="width:35%">
             <b-form @submit="onSubmit" @reset="onReset">
                 <b-form-group
@@ -11,7 +12,7 @@
                 >
                 <b-form-input
                     id="input-1"
-                    v-model="reservation_id"
+                    v-model="form.id"
                     disabled
                     style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
@@ -25,7 +26,7 @@
                 >
                 <b-form-input
                     id="input-2"
-                    v-model="play_date"
+                    v-model="form.start_date"
                     disabled
                     style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
@@ -39,7 +40,7 @@
                 >
                 <b-form-input
                     id="input-3"
-                    v-model="play_time"
+                    v-model="form.start_time"
                     disabled
                     style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
@@ -47,13 +48,13 @@
                 <hr style="width:100%; margin-top:5px;">
                 <b-form-group
                 id="input-group-4"
-                label="테마명: "
-                label-for="input-4"
+                label="예약한 시간: "
+                label-for="input-3"
                 label-cols="12" label-cols-sm="2"
                 >
                 <b-form-input
                     id="input-4"
-                    v-model="theme_name"
+                    v-model="form.reserved_time"
                     disabled
                     style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
@@ -61,42 +62,56 @@
                 <hr style="width:100%; margin-top:5px;">
                 <b-form-group
                 id="input-group-5"
-                label="인원수: "
+                label="테마명: "
                 label-for="input-5"
                 label-cols="12" label-cols-sm="2"
                 >
                 <b-form-input
                     id="input-5"
-                    v-model="head_count"
+                    v-model="form.title"
                     disabled
-                    style="text-align: center;"
+                    style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
                 </b-form-group>
                 <hr style="width:100%; margin-top:5px;">
                 <b-form-group
                 id="input-group-6"
-                label="전화번호: "
+                label="인원수: "
                 label-for="input-6"
                 label-cols="12" label-cols-sm="2"
                 >
                 <b-form-input
-                    id="input-5"
-                    v-model="phone_number"
+                    id="input-6"
+                    v-model="form.number_of_player"
+                    disabled
+                    style="text-align: center;"
+                ></b-form-input>
+                </b-form-group>
+                <hr style="width:100%; margin-top:5px;">
+                <b-form-group
+                id="input-group-7"
+                label="전화번호: "
+                label-for="input-7"
+                label-cols="12" label-cols-sm="2"
+                >
+                <b-form-input
+                    id="input-7"
+                    v-model="form.phone_number"
                     disabled
                     style="text-align: center;"
                 ></b-form-input>
                 <hr style="width:100%; margin-top:5px;">
                 </b-form-group>
                 <b-form-group
-                id="input-group-7"
+                id="input-group-8"
                 required
-                label="IP: "
-                label-for="input-9"
+                label="예약 상태: "
+                label-for="input-8"
                 label-cols="12" label-cols-sm="2"
                 >
                 <b-form-input
-                    id="input-5"
-                    v-model="ip"
+                    id="input-8"
+                    v-model="form.status"
                     disabled
                     style="text-align: center;"
                 ></b-form-input>
@@ -110,41 +125,66 @@
 </template>
 
 <script>
-    export default {
-        data(){
-            return {
-                reservation_id: 1,
-                play_date: '2021/12/12',
-                play_time: '09:00~10:00',
-                theme_name: 'dear marsy',
-                head_count:'2',
-                booker_name: '홍길동',
-                phone_number: '010-1234-5678',
-                ip: '127.0.0.1',
-                idx: 0,
-                options: [
-                { item: '010', name: '010' },
-                { item: '011', name: '011' },
-                { item: '016', name: '016' },
-                { item: '017', name: '017' },
-                { item: '018', name: '018' },
-                { item: '019', name: '019' }
-                ],
-                items2: [
-                    {예약번호: 1, 날짜: "2021/09/21", 시간: "09:00~10:00", 
-                    테마: "튀어마르시", 인원수: 2, 예약자명: "홍길동", 연락처: "010-1234-5678", IP: '127.0.0.1'},
-                    {번호: 5, 제목: "홍대점 10월 오픈기념 이벤트", 작성자: "홍대점", 
-                    작성일: "2021.10.01", 조회: 23},
-                    {번호: 4, 제목: "건대 2호점 향수테마 관련 공지사항", 작성자: "건대2호점", 
-                    작성일: "2021.09.10", 조회: 50},
-                    {번호: 3, 제목: "건대 3호점 오픈예정", 작성자: "총관리자", 
-                    작성일: "2021.02.18", 조회: 100},
-                    {번호: 2, 제목: "건대 1호점 태풍관련 공지사항", 작성자: "건대1호점", 
-                    작성일: "2020.10.30", 조회: 34},
-                    {번호: 1, 제목: "이스케이프룸 SNS 할인 이벤트", 작성자: "총관리자", 
-                    작성일: "2020.04.23", 조회: 7}
-                ]
+import { mapState, mapGetters } from 'vuex';
+export default {
+    data(){
+        return {
+            form: {
+                id: this.$route.params.id,
+                title: this.$route.params.title,
+                number_of_player: this.$route.params.number_of_player,
+                booker_name: this.$route.params.booker_name,
+                phone_number: this.$route.params.phone_number,
+                status: this.$route.params.status,
+                start_date: this.DBdatetimeToDateString(this.$route.params.start_time),
+                start_time: this.DBdatetimeToTimeString(this.$route.params.start_time),
+                reserved_time: this.DBdatetimeToString(this.$route.params.reserved_time),
             }
         }
+    },
+    methods:{
+        DBdatetimeToString(tzString){
+            const Days=['일', '월', '화', '수', '목', '금', '토'];
+            let time = new Date(tzString.slice(0,-1));
+            time.setHours(time.getHours()+9);
+            return time.getFullYear()+"년 "+ (time.getMonth()+1)+"월 "+time.getDate()+"일 "+Days[time.getDay()]+"요일 "+((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
+        },
+        DBdatetimeToDateString(tzString){
+            const Days=['일', '월', '화', '수', '목', '금', '토'];
+            let time = new Date(tzString.slice(0,-1));
+            time.setHours(time.getHours()+9);
+            return time.getFullYear()+"년 "+ (time.getMonth()+1)+"월 "+time.getDate()+"일 "+Days[time.getDay()]+"요일 ";
+        },
+        DBdatetimeToTimeString(tzString){
+            let time = new Date(tzString.slice(0,-1));
+            time.setHours(time.getHours()+9);
+            return ((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());    
+        },
+        onSubmit(){
+
+        },
+        onReset(){
+
+        }
+    },
+    mounted(){
+        this.form.start_date = this.DBdatetimeToDateString(this.$route.params.start_time);
+        this.start_time = this.DBdatetimeToTimeString(this.$route.params.start_time);
+        this.reserved_time = this.DBdatetimeToString(this.$route.params.reserved_time);
+    },
+    computed: {
+        ...mapGetters('branch', {
+            branchName: 'getBranchName'
+        })
+    },
+    created(){
+        if(Object.keys(this.$route.params).length===0){
+            alert('다시 접근해주세요.');
+            this.$router.go(-1);
+        }
+        else{
+            this.$store.dispatch('branch/fetch_branch_info');
+        }
     }
+}
 </script>

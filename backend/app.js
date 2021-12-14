@@ -11,6 +11,7 @@ require('dotenv').config()
 var indexRouter = require('./routes/front/index');
 var themeRouter = require('./routes/front/theme');
 var reservationRouter = require('./routes/front/reservation');
+var imgRouter = require('./routes/img');
 
 var app = express();
 
@@ -38,7 +39,7 @@ app.use(requestIP.mw());
 app.use('/', indexRouter);
 app.use('/api/theme', themeRouter);
 app.use('/api/reservation', reservationRouter);
-
+app.use('/api/img', imgRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -112,7 +112,7 @@ router.put('/issueRandomPassword', async function(req, res, next){
             console.error(err);
         }
     })
-})
+});
 router.delete('/deleteUser', async function(req, res, next){
     const uid = req.body.uid;
     await db('user')
@@ -129,5 +129,45 @@ router.delete('/deleteUser', async function(req, res, next){
     .catch(error=>{
         console.error(error);
     })
+});
+router.post('/createL1User', async function(req, res, next){
+    const payload = req.body;
+    const username = payload.username;
+    const branch_id = payload.branch_id;
+    const name = payload.name;
+    let usernames = [];
+    await db('user')
+    .select('username')
+    .then(rows=>{
+        usernames=JSON.parse(JSON.stringify(rows));
+    })
+    .catch(error=>{
+        console.error(error);
+    })
+    if(usernames.find(arr=>arr.username===username) != undefined){
+        return res.status(400).json({message: "해당 username은 이미 존재합니다."})
+    }
+    else{
+        const randomPW = Math.random().toString(36).slice(2);
+        bcrypt.hash(randomPW, 10, async function(err, encryptedPassword){
+            await db('user')
+            .insert({
+                username: username,
+                branch_id: branch_id,
+                name: name,
+                password: encryptedPassword,
+                level: 1
+            })
+            .then(()=>{
+                return res.status(201).json({password: randomPW});
+            })
+            .catch(error=>{
+                console.error(error);
+            })
+            if(err){
+                console.error(err);
+            }
+        });
+    }
 })
 module.exports = router;

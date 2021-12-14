@@ -10,6 +10,7 @@ import AccountManagePage from '@/components/AccountManagePage'
 import ReservationDetailPage from '@/components/ReservationDetailPage'
 import AccountCreatePage from '@/components/AccountCreatePage'
 import CanceledReservationPage from '@/components/CanceledReservationPage'
+import ThemeManagePage from '@/components/ThemeManagePage'
 Vue.use(Router)
 
 export default new Router({
@@ -60,6 +61,11 @@ export default new Router({
       path: '/canceledReservation',
       name: 'CanceledReservationPage',
       component: CanceledReservationPage
+    },
+    {
+      path: '/themeManage',
+      name: 'ThemeManagePage',
+      component: ThemeManagePage
     },
     {
       path: '*',

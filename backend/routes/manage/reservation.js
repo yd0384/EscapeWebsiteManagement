@@ -31,6 +31,7 @@ router.get('/fetchReservationList', async function(req, res, next){
     for(var i in reservations){
         reservations[i].title = theme_info.find(arr=>arr.id===reservations[i].theme_id).title;
         delete reservations[i].branch_id;
+        reservations[i].status = statusString[reservations[i].status];
     }
     res.json(JSON.stringify(reservations));
 });
@@ -64,6 +65,7 @@ router.get('/fetchCanceledReservationList', async function(req, res, next){
     for(var i in reservations){
         reservations[i].title = theme_info.find(arr=>arr.id===reservations[i].theme_id).title;
         delete reservations[i].branch_id;
+        reservations[i].status = statusString[reservations[i].status];
     }
     res.json(JSON.stringify(reservations));
 })
@@ -95,12 +97,13 @@ router.get('/fetchTodayReservationList', async function(req, res, next){
     let querydate = req.query.date;
     querydate = querydate.replace('+', ' ');
     let startdate = new Date(querydate);
+    startdate.setHours(startdate.getHours()+9);
     let enddate = new Date(startdate.getFullYear(), startdate.getMonth(), startdate.getDate()+1);
-    enddate.setHours(enddate.getHours()+9);
+    startdate = startdate.toISOString().slice(0, 19).replace('T', ' ');
     enddate = enddate.toISOString().slice(0,19).replace('T',' ');
     let reservations = [];
     await db('reservation')
-    .where('start_time', '>=', querydate)
+    .where('start_time', '>=', startdate)
     .where('start_time', '<', enddate)
     .whereIn('theme_id', tids)
     .whereNot({status: 3})
@@ -118,14 +121,18 @@ router.get('/fetchTodayReservationList', async function(req, res, next){
         theme_info.find(arr=>arr.id===time_table[i].theme_id).time_table.push(time_table[i]);
     }
     for(var i in reservations){
+        reservations[i].start_datetime = reservations[i].start_time;
         reservations[i].start_time = DateToTime(reservations[i].start_time);
+        reservations[i].end_datetime = reservations[i].end_time;
         reservations[i].end_time = DateToTime(reservations[i].end_time);
+        reservations[i].reserved_datetime = reservations[i].reserved_time;
         reservations[i].reserved_time = DateToString(reservations[i].reserved_time);
         time_table.find(arr=>arr.start_time===reservations[i].start_time && arr.theme_id===reservations[i].theme_id).reservation=reservations[i];
     }   
     res.json(JSON.stringify(theme_info));
 });
 const Days=['일', '월', '화', '수', '목', '금', '토'];
+const statusString = ['플레이 이전', '플레이 완료', '노쇼', '취소된 예약'];
 function DateToString(tzString){
     let time = new Date(tzString.slice(0,-1));
     time.setHours(time.getHours()+9);

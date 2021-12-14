@@ -1,6 +1,7 @@
 <template>
     <div class="container">
-        <h2>현재 {{branch_name}} 예약가능 일수: {{branch_reservable_date}}일</h2>
+        <h1>현재 {{branch_name}} 예약가능 일수: {{branch_reservable_date}}일</h1>
+        <hr/>
         <b-form @submit="onSubmit">
             <b-form-group
                 id="input-group-1"

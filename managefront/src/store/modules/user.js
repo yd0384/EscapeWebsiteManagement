@@ -1,4 +1,4 @@
-import { changeUserPassword, logout, fetchL1UserList, issueRandomPassword, deleteUser } from '../../api';
+import { changeUserPassword, logout, fetchL1UserList, issueRandomPassword, deleteUser, createL1User } from '../../api';
 import router from '../../router';
 const state = () => ({
     user: null,
@@ -57,6 +57,9 @@ const actions = {
     },
     delete_user({commit}, payload){
         return deleteUser(payload);
+    },
+    create_l1_user({commit}, payload){
+        return createL1User(payload);
     }
 };
 
