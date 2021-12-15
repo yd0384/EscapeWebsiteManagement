@@ -9,8 +9,6 @@
             :small="true"
             :per-page="perPage"
             :current-page="currentPage"
-            @row-clicked="toDetailPage"
-            sticky-header
         >
             <template #cell(start_time)="data">
                 {{ DBdatetimeToString(data.value) }}
@@ -111,9 +109,6 @@ export default {
             let time = new Date(tzString.slice(0,-1));
             time.setHours(time.getHours()+9);
             return time.getFullYear()+"년 "+ (time.getMonth()+1)+"월 "+time.getDate()+"일 "+this.Days[time.getDay()]+"요일 "+((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
-        },
-        toDetailPage(record, index){
-            this.$router.push({name: 'ReservationDetailPage', params: record});
         }
     }
 }

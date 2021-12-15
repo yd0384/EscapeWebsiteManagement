@@ -90,10 +90,11 @@
                     label-cols-sm="2"
                 >
                     <b-form-file
+                        name="img"
                         accept="image/jpeg, image/png, image/gif"
                         id="file-6"
-                        v-model="form.image"
-                        :state="Boolean(form.image)"
+                        v-model="image"
+                        :state="Boolean(image)"
                         placeholder="이미지 파일을 선택하세요."
                         no-drop
                         @change="previewImage"
@@ -187,12 +188,14 @@ export default {
                 genres: [],
                 device_importance: 0,
                 difficulty: 0,
-                image: null,
+                image_path: '',
                 length: '',
                 cost: [],
                 time_table: [],
                 active: true,
             },
+            image: null,
+            formData: new FormData(),
             time_tables: 1,
             previewImageData: null,
             top: 4,
@@ -225,11 +228,19 @@ export default {
         get_lock_importance(device_importance){
             return 100-device_importance;
         },
-        createTheme(){
-            this.$router.push({name: "ThemeCreatePage"});
-        },
         onSubmit(event){
             event.preventDefault();
+            this.uploadThemeImage(event)
+            .then(res=>{
+                if(res.status===201){
+                    form.image_path=res.data.img_path;
+                    //여기서부터 예약생성
+                }
+            })
+            .catch(error=>{
+                console.error(error);
+            })
+            /*
             this.$store.dispatch("theme/create_theme", this.form)
             .then(res=>{
 
@@ -237,6 +248,7 @@ export default {
             .catch(error=>{
                 console.error(error);
             })
+            */
         },
         onReset(event){
 
@@ -249,9 +261,15 @@ export default {
                     this.previewImageData = e.target.result;
                 };
                 reader.readAsDataURL(input.files[0]);
+                this.formData.delete('img');
+                this.formData.append('img', input.files[0]);
             }else{
                 this.previewImageData = null;
             }
+        },
+        uploadThemeImage(event){
+            console.log(this.formData);
+            return this.$http.post('/api/img/uploadThemeImage', this.formData);
         },
         addTop(){
             this.top+=1;

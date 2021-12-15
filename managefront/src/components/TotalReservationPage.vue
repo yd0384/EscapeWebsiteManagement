@@ -11,7 +11,6 @@
             :current-page="currentPage"
             @row-clicked="toDetailPage"
             v-if = "rows>0"
-            sticky-header
         >
             <template #cell(start_time)="data">
                 {{ DBdatetimeToString(data.value) }}

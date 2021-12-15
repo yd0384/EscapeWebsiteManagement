@@ -29,7 +29,7 @@ router.get('/get_reservations', function(req, res, next){
         .select('id', 'theme_id', 'start_time')
         .where('start_time', '>=', querydate)
         .where('start_time', '<', enddate)
-        .where('status', 0)
+        .whereIn('status', [0, 1, 2])
         .then((rows)=>{
             res.json(JSON.stringify(rows));
         })
