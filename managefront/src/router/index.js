@@ -11,6 +11,8 @@ import ReservationDetailPage from '@/components/ReservationDetailPage'
 import AccountCreatePage from '@/components/AccountCreatePage'
 import CanceledReservationPage from '@/components/CanceledReservationPage'
 import ThemeManagePage from '@/components/ThemeManagePage'
+import ThemeCreatePage from '@/components/ThemeCreatePage'
+import ThemeDetailPage from '@/components/ThemeDetailPage'
 Vue.use(Router)
 
 export default new Router({
@@ -66,6 +68,16 @@ export default new Router({
       path: '/themeManage',
       name: 'ThemeManagePage',
       component: ThemeManagePage
+    },
+    {
+      path: '/themeCreate',
+      name: 'ThemeCreatePage',
+      component: ThemeCreatePage
+    },
+    {
+      path: '/themeDetail',
+      name: 'ThemeDetailPage',
+      component: ThemeDetailPage
     },
     {
       path: '*',

@@ -1,4 +1,4 @@
-import { fetchThemeList } from '../../api';
+import { fetchThemeList, createTheme } from '../../api';
 const state = () => ({
     themeList: []
 });
@@ -19,6 +19,10 @@ const actions = {
         .catch(error=>{
             console.error(error);
         })
+    },
+    create_theme({commit, rootState}, payload){
+        payload.branch_id = rootState.user.user.branch_id;
+        return createTheme(payload);
     }
 };
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../../dbconn');
 const router = express.Router();
+var fs = require('fs');
 
 router.get('/fetchThemeList', async function(req, res, next){
     const bid = req.query.bid;
@@ -47,4 +48,36 @@ router.get('/fetchThemeList', async function(req, res, next){
         console.error(error);
     })
 });
+router.post('/createTheme', async function(req, res, next){
+    console.log(req.body.image);
+    let img_path='';
+    if(fs.existsSync('./assets/theme/'+req.body.image.name)){
+        let i=0;
+        while(true){
+            if(fs.existsSync('./assets/theme/'+String(i)+req.body.image.name)){
+                i+=1;
+                continue;
+            }
+            img_path=String(i)+req.body.image.name;
+            break;
+        }
+    }
+    else{
+        img_path = req.body.image.name;
+    }
+    console.log(img_path);
+    /*
+    db('theme')
+    .insert({
+        branch_id: req.body.branch_id,
+        active: req.body.active,
+        title: req.body.title,
+        content: req.body.content,
+        difficulty: req.body.difficulty,
+        length: req.body.length,
+        device_importance: req.body.device_importance,
+        image_path: img_path
+    })
+    */
+})
 module.exports = router;

@@ -76,12 +76,26 @@
                 <hr style="width:100%; margin-top:5px;">
                 <b-form-group
                 id="input-group-6"
-                label="인원수: "
+                label="예약자 이름: "
                 label-for="input-6"
                 label-cols="12" label-cols-sm="2"
                 >
                 <b-form-input
                     id="input-6"
+                    v-model="form.booker_name"
+                    disabled
+                    style="background-color: #FFFFFF; text-align: center; border: 0px;"
+                ></b-form-input>
+                </b-form-group>
+                <hr style="width:100%; margin-top:5px;">
+                <b-form-group
+                id="input-group-7"
+                label="인원수: "
+                label-for="input-7"
+                label-cols="12" label-cols-sm="2"
+                >
+                <b-form-input
+                    id="input-7"
                     v-model="form.number_of_player"
                     disabled
                     style="text-align: center;"
@@ -89,13 +103,13 @@
                 </b-form-group>
                 <hr style="width:100%; margin-top:5px;">
                 <b-form-group
-                id="input-group-7"
+                id="input-group-8"
                 label="전화번호: "
-                label-for="input-7"
+                label-for="input-8"
                 label-cols="12" label-cols-sm="2"
                 >
                 <b-form-input
-                    id="input-7"
+                    id="input-8"
                     v-model="form.phone_number"
                     disabled
                     style="text-align: center;"
@@ -103,22 +117,24 @@
                 <hr style="width:100%; margin-top:5px;">
                 </b-form-group>
                 <b-form-group
-                id="input-group-8"
+                id="input-group-9"
                 required
                 label="예약 상태: "
-                label-for="input-8"
+                label-for="input-9"
                 label-cols="12" label-cols-sm="2"
                 >
                 <b-form-input
-                    id="input-8"
+                    id="input-9"
                     v-model="form.status"
                     disabled
                     style="text-align: center;"
                 ></b-form-input>
                 </b-form-group>
                 <hr style="width:100%; margin-top:5px;">
-                <b-button type="submit" variant="primary" class="p-2 mx-2"> 예약하기 </b-button>
+                <b-button type="submit" variant="primary" class="p-2 mx-2"> 예약 수정 </b-button>
                 <b-button type="reset" class="p-2 mx-2"> 초기화 </b-button>
+                <b-button variant="success">탈출 완료</b-button>
+                <b-button variant="danger"> no show </b-button>
             </b-form>
         </b-container>
     </div>

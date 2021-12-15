@@ -31,11 +31,13 @@ function fetchCanceledReservationList(bid){
 };
 function fetchThemeList(bid){
     return axios.get('/api/theme/fetchThemeList', {params: {bid: bid}});
-}
+};
 function createL1User(payload){
     return axios.post('/api/auth/createL1User', payload);
+};
+function createTheme(payload){
+    return axios.post('/api/theme/createTheme', payload);
 }
-
 export {
     fetchBranchInfo,
     putReservableDate,
@@ -49,4 +51,5 @@ export {
     fetchCanceledReservationList,
     fetchThemeList,
     createL1User,
+    createTheme
 };
