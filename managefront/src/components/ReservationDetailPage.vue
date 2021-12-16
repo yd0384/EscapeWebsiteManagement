@@ -128,7 +128,7 @@
                     style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
                 </b-form-group>
-                <hr style="width:100%; margin-top:5px;">
+                <hr style="width:100%; margin-top:5px; margin-bottom:50px;">
                 <b-button v-if="form.status=='플레이 이전'" type="submit" variant="primary" class="p-2 mx-2" style="width:100px;"> 예약 수정 </b-button>
                 <b-button v-if="form.status=='플레이 완료'" variant="warning" class="p-2 mx-2" style="color:white; width:100px;"> 플레이 이전 </b-button>
                 <b-button v-if="form.status=='플레이 이전'" variant="success" class="p-2 mx-2" style="width:100px;">탈출 완료</b-button>

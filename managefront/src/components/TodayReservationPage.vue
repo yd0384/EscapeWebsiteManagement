@@ -11,6 +11,8 @@
                         인원수: {{time.reservation.number_of_player}} 명<br>
                         연락처: {{time.reservation.phone_number}}<br>
                         <b-badge v-if="time.reservation.status==0" variant="success">예약완료</b-badge>
+                        <b-badge v-if="time.reservation.status==1" variant="primary">플레이완료</b-badge>
+                        <b-badge v-if="time.reservation.status==2" variant="danger">노쇼</b-badge>
                     </div>
                 </b-card-text>
                 <b-card-text v-else @click="toNewBookingPage()"><b-badge variant="secondary">예약없음</b-badge></b-card-text>
