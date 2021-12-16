@@ -139,8 +139,8 @@
                             ></b-form-input>
                         </b-col>
                     </b-row>
-                    <b-icon icon="dash-circle" aria-hidden="true" v-if="removetop" @click="removeTop"></b-icon>
                     <b-icon icon="plus-circle" aria-hidden="true" v-if="addtop" @click="addTop"></b-icon>
+                    <b-icon icon="dash-circle" aria-hidden="true" v-if="removetop" @click="removeTop"></b-icon>
                 </b-form-group>
                 <b-form-group
                     id="input-group-9"
@@ -234,9 +234,6 @@ export default {
         this.form.time_table.push({id: 1, start_time: ''});
     },
     computed: {
-        ...mapState({
-            themeList: state => state.theme.themeList
-        }),
         ...mapGetters('branch', {
             branchName: 'getBranchName'
         })

@@ -120,8 +120,8 @@ router.post('/createTheme', async function(req, res, next){
                 await db('cost')
                 .insert({
                     theme_id: new_tid,
-                    number_of_player: req.body.cost.number_of_player,
-                    price: req.body.cost.price
+                    number_of_player: req.body.cost[k].number_of_player,
+                    price: req.body.cost[k].price
                 })
             }
             res.status(201).end();
@@ -132,5 +132,78 @@ router.post('/createTheme', async function(req, res, next){
     .catch(error=>{
         console.error(error);
     })
-})
+});
+router.put('/updateTheme', async function(req, res, next){
+    const tid = req.body.id;
+    await db('theme')
+    .where({id: tid})
+    .update({
+        active: req.body.active,
+        title: req.body.title,
+        content: req.body.content,
+        difficulty: req.body.difficulty,
+        length: req.body.length,
+        device_importance: req.body.device_importance,
+        image_path: req.body.image_path
+    })
+    .then(async function(rows){
+        if(rows){
+            await db('genre')
+            .where({theme_id: tid})
+            .del()
+            for(var i in req.body.genres){
+                await db('genre')
+                .insert({
+                    theme_id: tid,
+                    genre: req.body.genres[i]
+                })
+            }
+            await db('time_table')
+            .where({theme_id: tid})
+            .del()
+            for(var j in req.body.time_table){
+                await db('time_table')
+                .insert({
+                    theme_id: tid,
+                    start_time: req.body.time_table[j].start_time,
+                    end_time: req.body.time_table[j].end_time
+                })
+            }
+            await db('cost')
+            .where({theme_id: tid})
+            .del()
+            for(var k in req.body.cost){
+                await db('cost')
+                .insert({
+                    theme_id: tid,
+                    number_of_player: req.body.cost[k].number_of_player,
+                    price: req.body.cost[k].price
+                })
+            }
+            res.status(200).end();
+        }
+    })
+    .catch(error=>console.error(error));
+});
+router.delete('/deleteTheme', async function(req, res, next){
+    const tid = req.query.tid;
+    try{
+        await db('genre')
+        .where({theme_id: tid})
+        .del()
+        await db('time_table')
+        .where({theme_id: tid})
+        .del()
+        await db('cost')
+        .where({theme_id: tid})
+        .del()
+        await db('theme')
+        .where({id: tid})
+        .del()
+        res.status(200).end();
+    }
+    catch(error){
+        console.error(error);
+    }
+});
 module.exports = router;

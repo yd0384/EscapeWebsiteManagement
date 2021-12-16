@@ -1,5 +1,5 @@
 <template>
-    <div id="theme_create">
+    <div id="theme_detail">
         <h1>{{branchName}} 테마 정보</h1>
         <hr/>
         <b-container>
@@ -88,7 +88,8 @@
                     label-for="file-6"
                     label-cols="12"
                     label-cols-sm="2"
-                >
+                >   
+                    
                     <b-form-file
                         name="img"
                         accept="image/jpeg, image/png, image/gif"
@@ -98,9 +99,9 @@
                         placeholder="이미지 파일을 선택하세요."
                         no-drop
                         @change="previewImage"
-                        required
                     ></b-form-file>
-                    <b-img :src="previewImageData" height="400"></b-img>
+                    <b-img v-if="!Boolean(image)" :src="'/api/img/theme/?imgName='+themeInfo.image_path" height="400"></b-img>
+                    <b-img v-if="Boolean(image)" :src="previewImageData" height="400"></b-img>
                 </b-form-group>
                 <b-form-group
                     id="input-group-7"
@@ -139,8 +140,8 @@
                             ></b-form-input>
                         </b-col>
                     </b-row>
-                    <b-icon icon="dash-circle" aria-hidden="true" v-if="removetop" @click="removeTop"></b-icon>
                     <b-icon icon="plus-circle" aria-hidden="true" v-if="addtop" @click="addTop"></b-icon>
+                    <b-icon icon="dash-circle" aria-hidden="true" v-if="removetop" @click="removeTop"></b-icon>
                 </b-form-group>
                 <b-form-group
                     id="input-group-9"
@@ -173,8 +174,8 @@
                             ></b-form-input>
                         </b-col>
                     </b-row>
-                    <b-icon icon="dash-circle" aria-hidden="true" v-if="removetime" @click="removeTime"></b-icon>
                     <b-icon icon="plus-circle" aria-hidden="true" @click="addTime"></b-icon>
+                    <b-icon icon="dash-circle" aria-hidden="true" v-if="removetime" @click="removeTime"></b-icon>
                 </b-form-group>
                 <b-form-group
                     id="input-group-10"
@@ -189,7 +190,7 @@
                         switch
                     ></b-form-checkbox>
                 </b-form-group>
-                <b-button variant="primary" type="submit">테마 등록</b-button>
+                <b-button variant="primary" type="submit">테마 수정</b-button> <b-button variant="danger" @click="deleteTheme">테마 삭제</b-button>
             </b-form>
         </b-container>
     </div>
@@ -200,6 +201,7 @@ export default {
     data() {
         return {
             form: {
+                id: -1,
                 title: '',
                 content: '',
                 genres: [],
@@ -216,12 +218,12 @@ export default {
             time_tables: 1,
             previewImageData: null,
             top: 0,
-            bottom: 99999999,
+            bottom: 0,
             addtop: true,
             addbottom: true,
             removetop: true,
             removebottom: true,
-            removetime: false
+            removetime: true
         }
     },
     created() {
@@ -235,6 +237,7 @@ export default {
     watch: {
         'themeInfo.id': function(){
             if(this.themeInfo.id === this.$route.params.tid){
+                this.form.id=this.themeInfo.id;
                 this.form.title = this.themeInfo.title;
                 this.form.content = this.themeInfo.content;
                 this.form.genres = this.themeInfo.genres;
@@ -243,19 +246,26 @@ export default {
                 this.form.length = this.themeInfo.length;
                 this.form.cost = this.themeInfo.cost;
                 this.form.time_table = this.themeInfo.time_table;
-                for(var i in this.themeInfo.time_table){
-                    this.time_tables = Math.max(this.time_tables, this.themeInfo.time_table[i].id);
+                this.time_tables = this.form.time_table.length;
+                if(this.time_tables===0){
+                    this.form.time_table.push({id: 1, start_time: ''});
+                    this.removetime=false;
                 }
                 this.form.active = (this.themeInfo.active===1)?true:false;
                 for(var i in this.form.cost){
                     this.top = Math.max(this.form.cost[i].number_of_player, this.top);
-                    this.bottom = Math.min(this.form.cost[i].number_of_player, this.bottom);
+                    if(this.bottom===0){
+                        this.bottom=this.form.cost[i].number_of_player;
+                    }
+                    else{
+                        this.bottom = Math.min(this.form.cost[i].number_of_player, this.bottom);
+                    }
                 }
                 if(this.top===this.bottom){
                     this.removetop=false;
                     this.removebottom=false;
                 }
-                if(this.bottom==1){
+                if(this.bottom<1){
                     this.addbottom=false;
                 }
                 this.$forceUpdate();
@@ -264,6 +274,7 @@ export default {
     },
     mounted() {
         if(this.themeInfo.id === this.$route.params.tid){
+            this.form.id=this.themeInfo.id;
             this.form.title = this.themeInfo.title;
             this.form.content = this.themeInfo.content;
             this.form.genres = this.themeInfo.genres;
@@ -272,19 +283,26 @@ export default {
             this.form.length = this.themeInfo.length;
             this.form.cost = this.themeInfo.cost;
             this.form.time_table = this.themeInfo.time_table;
-            for(var i in this.themeInfo.time_table){
-                this.time_tables = Math.max(this.time_tables, this.themeInfo.time_table[i].id);
+            this.time_tables = this.form.time_table.length;
+            if(this.time_tables===0){
+                this.form.time_table.push({id: 1, start_time: ''});
+                this.removetime=false;
             }
             this.form.active = (this.themeInfo.active===1)?true:false;
             for(var i in this.form.cost){
                 this.top = Math.max(this.form.cost[i].number_of_player, this.top);
-                this.bottom = Math.min(this.form.cost[i].number_of_player, this.bottom);
+                if(this.bottom===0){
+                        this.bottom=this.form.cost[i].number_of_player;
+                    }
+                else{
+                    this.bottom = Math.min(this.form.cost[i].number_of_player, this.bottom);
+                }
             }
             if(this.top===this.bottom){
                 this.removetop=false;
                 this.removebottom=false;
             }
-            if(this.bottom==1){
+            if(this.bottom<1){
                 this.addbottom=false;
             }
             this.$forceUpdate();
@@ -318,32 +336,67 @@ export default {
         },
         onSubmit(event){
             event.preventDefault();
-            this.uploadThemeImage(event)
+            if(this.image){
+                this.changeThemeImage(event)
+                .then(res=>{
+                    if(res.status===200){
+                        this.form.image_path=res.data.img_path;
+                        this.$store.dispatch("theme/update_theme", this.form)
+                        .then(res=>{
+                            if(res.status===200){
+                                alert("테마 수정 완료");
+                                this.$router.push({name: 'ThemeManagePage'});
+                            }
+                            else{
+                                alert("테마 수정 실패");
+                                this.$router.push({name: 'ThemeManagePage'});
+                            }
+                        })
+                        .catch(error=>{
+                            console.error(error);
+                        })
+                    }
+                })
+                .catch(error=>{
+                    console.error(error);
+                })
+            }
+            else{
+                this.form.image_path = this.themeInfo.image_path;
+                this.$store.dispatch("theme/update_theme", this.form)
+                .then(res=>{
+                    if(res.status===200){
+                        alert("테마 변경 완료");
+                        this.$router.push({name: 'ThemeManagePage'});
+                    }
+                    else{
+                        alert("테마 생성 실패");
+                        this.$router.push({name: 'ThemeManagePage'});
+                    }
+                })
+                .catch(error=>{
+                    console.error(error);
+                })
+            }
+        },
+        onReset(event){
+
+        },
+        deleteTheme(event){
+            this.$store.dispatch("theme/delete_theme", this.form.id)
             .then(res=>{
-                if(res.status===201){
-                    this.form.image_path=res.data.img_path;
-                    this.$store.dispatch("theme/create_theme", this.form)
-                    .then(res=>{
-                        if(res.status===201){
-                            alert("테마 생성 완료");
-                            this.$router.push({name: 'ThemeManagePage'});
-                        }
-                        else{
-                            alert("테마 생성 실패");
-                            this.$router.push({name: 'ThemeManagePage'});
-                        }
-                    })
-                    .catch(error=>{
-                        console.error(error);
-                    })
+                if(res.status===200){
+                    alert("테마 삭제 완료");
+                    this.$router.push({name: 'ThemeManagePage'});
+                }
+                else{
+                    alert("테마 생성 실패");
+                    this.$router.push({name: 'ThemeManagePage'});
                 }
             })
             .catch(error=>{
                 console.error(error);
             })
-        },
-        onReset(event){
-
         },
         previewImage(event){
             var input = event.target;
@@ -359,8 +412,8 @@ export default {
                 this.previewImageData = null;
             }
         },
-        uploadThemeImage(event){
-            return this.$http.post('/api/img/uploadThemeImage', this.formData);
+        changeThemeImage(event){
+            return this.$http.post('/api/img/changeThemeImage?imageName='+this.themeInfo.image_path, this.formData);
         },
         addTop(){
             this.top+=1;
