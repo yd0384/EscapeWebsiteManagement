@@ -49,6 +49,7 @@ router.get('/theme', (req, res, next)=>{
     });
 });
 router.post('/uploadThemeImage', upload.single('img'), function(req, res, next){
+    console.log(req.file.filename);
     res.status(201).json({img_path:req.file.filename});
 });
 module.exports = router;

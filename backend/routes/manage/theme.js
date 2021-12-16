@@ -3,6 +3,42 @@ const db = require('../../dbconn');
 const router = express.Router();
 var fs = require('fs');
 
+router.get('/fetchThemeInfo', async function(req, res, next){
+    const tid = req.query.tid;
+    var theme_info = [];
+    await db('theme')
+    .where({id: tid})
+    .then(async function(rows){
+        theme_info = JSON.parse(JSON.stringify(rows))[0];
+        await db('genre')
+        .select('genre')
+        .where({'theme_id': tid})
+        .then(rows=>{
+            var tmp = JSON.parse(JSON.stringify(rows));
+            theme_info.genres=[];
+            for(var i in tmp){
+                theme_info.genres.push(tmp[i].genre);
+            }
+        })
+        .catch(error=>{console.error(error);})
+        await db('cost')
+        .where({theme_id: tid})
+        .then(rows=>{
+            theme_info.cost = JSON.parse(JSON.stringify(rows));
+        })
+        .catch(error=>{console.error(error);})
+        await db('time_table')
+        .where({theme_id: tid})
+        .then(rows=>{
+            theme_info.time_table = JSON.parse(JSON.stringify(rows));
+        })
+        .catch(error=>{console.error(error);})
+        res.status(200).json(JSON.stringify(await theme_info));
+    })
+    .catch(error=>{
+        console.error(error);
+    })
+})
 router.get('/fetchThemeList', async function(req, res, next){
     const bid = req.query.bid;
     var themeList = [];
@@ -49,25 +85,7 @@ router.get('/fetchThemeList', async function(req, res, next){
     })
 });
 router.post('/createTheme', async function(req, res, next){
-    console.log(req.body.image);
-    let img_path='';
-    if(fs.existsSync('./assets/theme/'+req.body.image.name)){
-        let i=0;
-        while(true){
-            if(fs.existsSync('./assets/theme/'+String(i)+req.body.image.name)){
-                i+=1;
-                continue;
-            }
-            img_path=String(i)+req.body.image.name;
-            break;
-        }
-    }
-    else{
-        img_path = req.body.image.name;
-    }
-    console.log(img_path);
-    /*
-    db('theme')
+    await db('theme')
     .insert({
         branch_id: req.body.branch_id,
         active: req.body.active,
@@ -76,8 +94,43 @@ router.post('/createTheme', async function(req, res, next){
         difficulty: req.body.difficulty,
         length: req.body.length,
         device_importance: req.body.device_importance,
-        image_path: img_path
+        image_path: req.body.image_path
     })
-    */
+    .then(async function(){
+        let new_tid=0;
+        await db.raw('SELECT LAST_INSERT_ID() as id;')
+        .then(async function(rows){
+            new_tid = JSON.parse(JSON.stringify(rows))[0][0].id;
+            for(var i in req.body.genres){
+                await db('genre')
+                .insert({
+                    theme_id: new_tid,
+                    genre: req.body.genres[i]
+                })
+            }
+            for(var j in req.body.time_table){
+                await db('time_table')
+                .insert({
+                    theme_id: new_tid,
+                    start_time: req.body.time_table[j].start_time,
+                    end_time: req.body.time_table[j].end_time
+                })
+            }
+            for(var k in req.body.cost){
+                await db('cost')
+                .insert({
+                    theme_id: new_tid,
+                    number_of_player: req.body.cost.number_of_player,
+                    price: req.body.cost.price
+                })
+            }
+            res.status(201).end();
+        })
+        .catch(error=>console.error(error))
+
+    })
+    .catch(error=>{
+        console.error(error);
+    })
 })
 module.exports = router;

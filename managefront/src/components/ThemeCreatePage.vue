@@ -114,6 +114,7 @@
                             id="input-7"
                             v-model="form.length"
                             required
+                            @change="onChange"
                         ></b-form-input>
                     </b-input-group>
                 </b-form-group>
@@ -149,13 +150,29 @@
                     label-cols-sm="2"
                 >
                     <strong>테마 시작시간을 순서대로 ex) 09:20 형태로 입력해주세요.</strong>
-                    <b-form-input
+                    <b-row
                         v-for="time_table in form.time_table"
                         :key=time_table.id
-                        id="input-9"
-                        v-model="time_table.start_time"
-                        required
-                    ></b-form-input>
+                    >
+                        <b-col>
+                            <b-form-input
+                                id="input-9"
+                                v-model="time_table.start_time"
+                                required
+                                @change="onChange"
+                            ></b-form-input>
+                        </b-col>
+                        <b-col>
+                            ~
+                        </b-col>
+                        <b-col>
+                            <b-form-input
+                                id="input-9-1"
+                                v-model="time_table.end_time"
+                                disabled
+                            ></b-form-input>
+                        </b-col>
+                    </b-row>
                     <b-icon icon="dash-circle" aria-hidden="true" v-if="removetime" @click="removeTime"></b-icon>
                     <b-icon icon="plus-circle" aria-hidden="true" @click="addTime"></b-icon>
                 </b-form-group>
@@ -189,7 +206,7 @@ export default {
                 device_importance: 0,
                 difficulty: 0,
                 image_path: '',
-                length: '',
+                length: 0,
                 cost: [],
                 time_table: [],
                 active: true,
@@ -225,6 +242,19 @@ export default {
         })
     },
     methods: {
+        onChange(event){
+            const exp = new RegExp('^([0-1][0-9]|2[0-3]):[0-5][0-9]$');
+            var time = new Date();
+            for(var i in this.form.time_table){
+                if(exp.test(this.form.time_table[i].start_time)){
+                    var hh = Number(this.form.time_table[i].start_time.split(':')[0]);
+                    var mm = Number(this.form.time_table[i].start_time.split(':')[1]);
+                    time.setHours(hh, mm + Number(this.form.length));
+                    this.form.time_table[i].end_time=((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes())
+                }
+            }
+            this.$forceUpdate();
+        },
         get_lock_importance(device_importance){
             return 100-device_importance;
         },
@@ -233,22 +263,26 @@ export default {
             this.uploadThemeImage(event)
             .then(res=>{
                 if(res.status===201){
-                    form.image_path=res.data.img_path;
-                    //여기서부터 예약생성
+                    this.form.image_path=res.data.img_path;
+                    this.$store.dispatch("theme/create_theme", this.form)
+                    .then(res=>{
+                        if(res.status===201){
+                            alert("테마 생성 완료");
+                            this.$router.push({name: 'ThemeManagePage'});
+                        }
+                        else{
+                            alert("테마 생성 실패");
+                            this.$router.push({name: 'ThemeManagePage'});
+                        }
+                    })
+                    .catch(error=>{
+                        console.error(error);
+                    })
                 }
             })
             .catch(error=>{
                 console.error(error);
             })
-            /*
-            this.$store.dispatch("theme/create_theme", this.form)
-            .then(res=>{
-
-            })
-            .catch(error=>{
-                console.error(error);
-            })
-            */
         },
         onReset(event){
 
@@ -268,7 +302,6 @@ export default {
             }
         },
         uploadThemeImage(event){
-            console.log(this.formData);
             return this.$http.post('/api/img/uploadThemeImage', this.formData);
         },
         addTop(){

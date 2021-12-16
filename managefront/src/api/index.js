@@ -37,7 +37,10 @@ function createL1User(payload){
 };
 function createTheme(payload){
     return axios.post('/api/theme/createTheme', payload);
-}
+};
+function fetchThemeInfo(tid){
+    return axios.get('/api/theme/fetchThemeInfo', {params: {tid: tid}});
+};
 export {
     fetchBranchInfo,
     putReservableDate,
@@ -51,5 +54,6 @@ export {
     fetchCanceledReservationList,
     fetchThemeList,
     createL1User,
-    createTheme
+    createTheme,
+    fetchThemeInfo
 };

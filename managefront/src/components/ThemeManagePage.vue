@@ -11,6 +11,7 @@
                         img-alt="Image"
                         img-top
                         img-height="400"
+                        @click="toDetailPage(theme.id)"
                     >
                         <b-card-text>
                             <h3><b>{{theme.title}}</b></h3>
@@ -75,6 +76,9 @@ export default {
         },
         createTheme(){
             this.$router.push({name: "ThemeCreatePage"});
+        },
+        toDetailPage(tid){
+            this.$router.push({name: "ThemeDetailPage", params: {tid: tid}});
         }
     }
 }

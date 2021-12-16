@@ -1,6 +1,7 @@
-import { fetchThemeList, createTheme } from '../../api';
+import { fetchThemeList, createTheme, fetchThemeInfo } from '../../api';
 const state = () => ({
-    themeList: []
+    themeList: [],
+    themeInfo: null,
 });
 const getters = {
     
@@ -8,6 +9,9 @@ const getters = {
 const mutations =  {
     setThemeList(state, themeList){
         state.themeList = themeList;
+    },
+    setThemeInfo(state, themeInfo){
+        state.themeInfo = themeInfo;
     }
 };
 const actions = {
@@ -16,6 +20,15 @@ const actions = {
         .then(res=>{
             commit('setThemeList', JSON.parse(res.data));
         })
+        .catch(error=>{
+            console.error(error);
+        })
+    },
+    fetch_theme_info({commit}, tid){
+        fetchThemeInfo(tid)
+        .then(res=>{
+            commit('setThemeInfo', JSON.parse(res.data));
+        }) 
         .catch(error=>{
             console.error(error);
         })
