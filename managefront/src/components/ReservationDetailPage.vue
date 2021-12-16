@@ -2,7 +2,7 @@
     <div>
         <h1 style="margin-bottom:50px;">{{branchName}} 예약정보</h1>
         <hr/>
-        <b-container style="width:35%">
+        <b-container style="width:35%; margin-bottom:150px;">
             <b-form @submit="onSubmit" @reset="onReset">
                 <b-form-group
                 id="input-group-1"
@@ -27,8 +27,7 @@
                 <b-form-input
                     id="input-2"
                     v-model="form.start_date"
-                    disabled
-                    style="background-color: #FFFFFF; text-align: center; border: 0px;"
+                    style="text-align: center;"
                 ></b-form-input>
                 </b-form-group>
                 <hr style="width:100%; margin-top:5px;">
@@ -41,8 +40,7 @@
                 <b-form-input
                     id="input-3"
                     v-model="form.start_time"
-                    disabled
-                    style="background-color: #FFFFFF; text-align: center; border: 0px;"
+                    style="text-align: center;"
                 ></b-form-input>
                 </b-form-group>
                 <hr style="width:100%; margin-top:5px;">
@@ -69,8 +67,8 @@
                 <b-form-input
                     id="input-5"
                     v-model="form.title"
-                    disabled
-                    style="background-color: #FFFFFF; text-align: center; border: 0px;"
+                    required
+                    style="text-align: center;"
                 ></b-form-input>
                 </b-form-group>
                 <hr style="width:100%; margin-top:5px;">
@@ -97,7 +95,7 @@
                 <b-form-input
                     id="input-7"
                     v-model="form.number_of_player"
-                    disabled
+                    required
                     style="text-align: center;"
                 ></b-form-input>
                 </b-form-group>
@@ -112,10 +110,10 @@
                     id="input-8"
                     v-model="form.phone_number"
                     disabled
-                    style="text-align: center;"
+                    style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
-                <hr style="width:100%; margin-top:5px;">
                 </b-form-group>
+                <hr style="width:100%; margin-top:5px;">
                 <b-form-group
                 id="input-group-9"
                 required
@@ -127,14 +125,16 @@
                     id="input-9"
                     v-model="form.status"
                     disabled
-                    style="text-align: center;"
+                    style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
                 </b-form-group>
                 <hr style="width:100%; margin-top:5px;">
-                <b-button type="submit" variant="primary" class="p-2 mx-2"> 예약 수정 </b-button>
-                <b-button type="reset" class="p-2 mx-2"> 초기화 </b-button>
-                <b-button variant="success">탈출 완료</b-button>
-                <b-button variant="danger"> no show </b-button>
+                <b-button v-if="form.status=='플레이 이전'" type="submit" variant="primary" class="p-2 mx-2" style="width:100px;"> 예약 수정 </b-button>
+                <b-button v-if="form.status=='플레이 완료'" variant="warning" class="p-2 mx-2" style="color:white; width:100px;"> 플레이 이전 </b-button>
+                <b-button v-if="form.status=='플레이 이전'" variant="success" class="p-2 mx-2" style="width:100px;">탈출 완료</b-button>
+                <b-button v-if="form.status=='플레이 이전'" variant="danger" class="p-2 mx-2" style="width:100px;"> no show </b-button>
+                <b-button v-if="form.status=='노쇼'" variant="danger">확인 필요<b-icon icon="exclamation-triangle-fill" scale="1.5" variant="warning" style="margin-left:11px;"></b-icon></b-button>
+                <b-button v-if="form.status=='노쇼'" variant="primary">확인 완료<b-icon icon="check-square" scale="1.5" variant="warning" style="margin-left:11px;"></b-icon></b-button>
             </b-form>
         </b-container>
     </div>
