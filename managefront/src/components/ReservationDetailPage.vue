@@ -128,13 +128,11 @@
                     style="background-color: #FFFFFF; text-align: center; border: 0px;"
                 ></b-form-input>
                 </b-form-group>
-                <hr style="width:100%; margin-top:5px; margin-bottom:50px;">
-                <b-button v-if="form.status=='플레이 이전'" type="submit" variant="primary" class="p-2 mx-2" style="width:100px;"> 예약 수정 </b-button>
-                <b-button v-if="form.status=='플레이 완료'" variant="warning" class="p-2 mx-2" style="color:white; width:100px;"> 플레이 이전 </b-button>
-                <b-button v-if="form.status=='플레이 이전'" variant="success" class="p-2 mx-2" style="width:100px;">탈출 완료</b-button>
-                <b-button v-if="form.status=='플레이 이전'" variant="danger" class="p-2 mx-2" style="width:100px;"> no show </b-button>
-                <b-button v-if="form.status=='노쇼'" variant="danger">확인 필요<b-icon icon="exclamation-triangle-fill" scale="1.5" variant="warning" style="margin-left:11px;"></b-icon></b-button>
-                <b-button v-if="form.status=='노쇼'" variant="primary">확인 완료<b-icon icon="check-square" scale="1.5" variant="warning" style="margin-left:11px;"></b-icon></b-button>
+                <hr style="width:100%; margin-top:5px;">
+                <b-button type="submit" variant="primary" class="p-2 mx-2" style="width:100px;"> 예약 수정 </b-button>
+                <b-button variant="success" class="p-2 mx-2" style="width:100px;" @click = "completePlay">탈출 완료</b-button>
+                <b-button variant="warning" class="p-2 mx-2" style="width:100px;" @click = "noShow"> no show </b-button>
+                <b-button variant="danger" class="p-2 mx-2" style="width:100px;" @click = "cancelReservation">예약 취소</b-button>
             </b-form>
         </b-container>
     </div>
@@ -159,6 +157,54 @@ export default {
         }
     },
     methods:{
+        completePlay(){
+            this.$store.dispatch('reservation/complete_play', this.form.id)
+            .then(res=>{
+                if(res.status===204){
+                    alert("상태 변경 완료");
+                }
+            })
+            .catch(error=>{
+                console.error(error);
+            })
+            this.$router.go(-1);
+        },
+        cancelReservation(){
+            const payload = {
+                id: this.$route.params.id
+            };
+            console.log(payload);
+            this.$store.dispatch('reservation/cancel_reservation', payload)
+            .then(res=>{
+                if(res.status===204){
+                    alert('예약을 취소했습니다.');
+                }
+            })
+            .catch(error=>{
+                console.error(error);
+            })
+            this.$router.go(-1);
+        },
+        noShow(){
+            const payload = {
+                id: this.$route.params.id,
+                booker_name: this.$route.params.booker_name,
+                phone_number: this.$route.params.phone_number
+            };
+            this.$store.dispatch('reservation/no_show', payload)
+            .then(res=>{
+                if(res.status===200){
+                    alert('노쇼리스트에 추가했습니다.');
+                }
+                else if(res.status===204){
+                    alert('노쇼리스트에 이미 존재합니다.');
+                }
+            })
+            .catch(error=>{
+                console.error(error);
+            })
+            this.$router.go(-1);
+        },
         DBdatetimeToString(tzString){
             const Days=['일', '월', '화', '수', '목', '금', '토'];
             let time = new Date(tzString.slice(0,-1));

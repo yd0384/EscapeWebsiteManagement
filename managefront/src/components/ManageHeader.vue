@@ -58,7 +58,7 @@ import { mapState } from 'vuex';
                     {
                         id: 5,
                         title: '노쇼 리스트',
-                        url: 'TotalReservationPage'
+                        url: 'NoshowListPage'
                     },
                 ]
             }

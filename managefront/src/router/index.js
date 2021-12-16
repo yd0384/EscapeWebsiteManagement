@@ -14,6 +14,7 @@ import ThemeManagePage from '@/components/ThemeManagePage'
 import ThemeCreatePage from '@/components/ThemeCreatePage'
 import ThemeDetailPage from '@/components/ThemeDetailPage'
 import NewReservationPage from '@/components/NewReservationPage'
+import NoshowListPage from '@/components/NoshowListPage'
 Vue.use(Router)
 
 export default new Router({
@@ -84,6 +85,11 @@ export default new Router({
       path: '/newReservation',
       name: 'NewReservationPage',
       component: NewReservationPage
+    },
+    {
+      path: '/noshowList',
+      name: 'NoshowListPage',
+      component: NoshowListPage
     },
     {
       path: '*',

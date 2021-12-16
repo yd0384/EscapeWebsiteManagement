@@ -46,6 +46,18 @@ function updateTheme(payload){
 };
 function deleteTheme(tid){
     return axios.delete('/api/theme/deleteTheme', {params: {tid: tid}});
+};
+function completePlay(rid){
+    return axios.put('/api/reservation/completePlay', {rid: rid});
+};
+function noShow(payload){
+    return axios.put('/api/reservation/noShow', payload);
+};
+function fetchNoshowList(){
+    return axios.get('/api/reservation/fetchNoshowList');
+}
+function cancelReservation(payload){
+    return axios.delete('/api/reservation/cancelReservation', {data: payload});
 }
 export {
     fetchBranchInfo,
@@ -63,5 +75,9 @@ export {
     createTheme,
     fetchThemeInfo,
     updateTheme,
-    deleteTheme
+    deleteTheme,
+    completePlay,
+    noShow,
+    fetchNoshowList,
+    cancelReservation,
 };

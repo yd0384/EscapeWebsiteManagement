@@ -113,7 +113,9 @@ export default {
             return time.getFullYear()+"년 "+ (time.getMonth()+1)+"월 "+time.getDate()+"일 "+this.Days[time.getDay()]+"요일 "+((time.getHours()<10)?'0'+time.getHours():time.getHours())+":"+((time.getMinutes()<10)?'0'+time.getMinutes():time.getMinutes());
         },
         toDetailPage(record, index){
-            this.$router.push({name: 'ReservationDetailPage', params: record});
+            if(record.status=='플레이 이전'){
+                this.$router.push({name: 'ReservationDetailPage', params: record});
+            }
         },
         newBooking(){
             this.$router.push({name: 'NewReservationPage'});

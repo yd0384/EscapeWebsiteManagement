@@ -53,7 +53,6 @@ router.post('/uploadThemeImage', upload.single('img'), function(req, res, next){
 });
 router.post('/changeThemeImage', upload.single('img'), function(req, res, next){
     const existImg = req.query.imgName;
-    console.log('./assets/theme/'+existImg);
     fs.rm('./assets/theme/'+existImg, (err)=>{
         res.status(302).end();
     });

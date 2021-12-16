@@ -99,9 +99,9 @@ router.get('/fetchTodayReservationList', async function(req, res, next){
     let startdate = new Date(querydate);
     startdate.setHours(startdate.getHours()+9);
     let enddate = new Date(startdate.getFullYear(), startdate.getMonth(), startdate.getDate()+1);
+    enddate.setHours(enddate.getHours()+9);
     startdate = startdate.toISOString().slice(0, 19).replace('T', ' ');
     enddate = enddate.toISOString().slice(0,19).replace('T',' ');
-    let reservations = [];
     await db('reservation')
     .where('start_time', '>=', startdate)
     .where('start_time', '<', enddate)
@@ -131,6 +131,76 @@ router.get('/fetchTodayReservationList', async function(req, res, next){
     }   
     res.json(JSON.stringify(theme_info));
 });
+router.put('/completePlay', async function(req, res, next){
+    const rid = req.body.rid;
+    await db('reservation')
+    .where({id: rid})
+    .update({status: 1})
+    .then(()=>{
+        res.status(204).end();
+    })
+    .catch(error=>{
+        console.error(error);
+    })
+});
+router.put('/noShow', async function(req, res, next){
+    const rid = req.body.id;
+    const booker_name = req.body.booker_name;
+    const phone_number = req.body.phone_number;
+    var noshowList = [];
+    await db('reservation')
+    .where({id: rid})
+    .update({status: 2})
+    .then(async function(){
+        db('noshow_list')
+        .then(async function(rows){
+            noshowList = JSON.parse(JSON.stringify(rows));
+            if(noshowList.find(arr=>arr.booker_name===booker_name && arr.phone_number===phone_number) === undefined){
+                db('noshow_list')
+                .insert({booker_name: booker_name, phone_number: phone_number})
+                .then(()=>res.status(200).end())
+                .catch(error=>console.error(error))
+            }
+            else{
+                res.status(204).end();
+            }
+        })
+        .catch(error=>{
+            console.error(error);
+        })
+    })
+    .catch(error=>{
+        console.error(error);
+    })
+});
+router.get('/fetchNoshowList', async function(req, res, next){
+    try{
+        db('noshow_list')
+        .then(rows=>{
+            res.json(JSON.stringify(rows));
+        })
+    }
+    catch(error){
+        console.error(error);
+    }
+});
+router.delete('/cancelReservation', async function(req, res, next){
+    const rid = req.body.id;
+    console.log(rid);
+    try{
+        db('reservation')
+        .where({id: rid})
+        .update({status: 3})
+        .then(rows=>{
+            if(rows){
+                res.status(204).end();
+            }
+        })
+    }
+    catch(error){
+        console.error(error);
+    }
+})
 const Days=['일', '월', '화', '수', '목', '금', '토'];
 const statusString = ['플레이 이전', '플레이 완료', '노쇼', '취소된 예약'];
 function DateToString(tzString){

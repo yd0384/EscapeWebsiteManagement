@@ -1,9 +1,10 @@
-import { fetchReservationList, fetchTodayReservationList, fetchCanceledReservationList } from '../../api';
+import { fetchReservationList, fetchTodayReservationList, fetchCanceledReservationList, completePlay, noShow, fetchNoshowList, cancelReservation } from '../../api';
 
 const state = () => ({
     reservations: [],
     todayReservationList: [],
-    canceledReservationList: []
+    canceledReservationList: [],
+    noshowList: [],
 });
 const getters = {
 
@@ -17,6 +18,9 @@ const mutations =  {
     },
     setCanceledReservationList(state, canceledReservationList){
         state.canceledReservationList = canceledReservationList;
+    },
+    setNoshowList(state, noshowList){
+        state.noshowList = noshowList;
     }
 };
 const actions = {
@@ -42,6 +46,24 @@ const actions = {
         fetchCanceledReservationList(rootState.user.user.branch_id)
         .then(res => {
             commit('setCanceledReservationList', JSON.parse(res.data));
+        })
+        .catch(error=>{
+            console.error(error);
+        })
+    },
+    complete_play({commit}, rid){
+        return completePlay(rid);
+    },
+    cancel_reservation({commit}, payload){
+        return cancelReservation(payload);
+    },
+    no_show({commit}, payload){
+        return noShow(payload);
+    },
+    fetch_noshow_list({commit}){
+        fetchNoshowList()
+        .then(res=>{
+            commit('setNoshowList', JSON.parse(res.data));
         })
         .catch(error=>{
             console.error(error);
