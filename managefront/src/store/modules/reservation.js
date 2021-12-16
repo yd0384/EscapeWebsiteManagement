@@ -1,5 +1,4 @@
-import { fetchReservationList, fetchTodayReservationList, fetchCanceledReservationList, completePlay, noShow, fetchNoshowList, cancelReservation } from '../../api';
-
+import { fetchReservationList, fetchTodayReservationList, fetchCanceledReservationList, completePlay, noShow, fetchNoshowList, cancelReservation, createReservation } from '../../api';
 const state = () => ({
     reservations: [],
     todayReservationList: [],
@@ -68,6 +67,9 @@ const actions = {
         .catch(error=>{
             console.error(error);
         })
+    },
+    create_reservation({commit}, payload){
+        return createReservation(payload);
     }
 };
 

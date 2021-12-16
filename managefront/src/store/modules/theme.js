@@ -4,7 +4,7 @@ const state = () => ({
     themeInfo: null,
 });
 const getters = {
-    
+    getThemeInfo: state=> state.themeInfo
 };
 const mutations =  {
     setThemeList(state, themeList){
@@ -42,7 +42,7 @@ const actions = {
     },
     delete_theme({commit}, tid){
         return deleteTheme(tid);
-    }
+    },
 };
 
 export default {

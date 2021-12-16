@@ -15,7 +15,7 @@
                         <b-badge v-if="time.reservation.status==2" variant="danger">노쇼</b-badge>
                     </div>
                 </b-card-text>
-                <b-card-text v-else @click="toNewBookingPage()"><b-badge variant="secondary">예약없음</b-badge></b-card-text>
+                <b-card-text v-else @click="toNewBookingPage({play_date: dateString, start_time: time.start_time, end_time: time.end_time, id: time.theme_id})"><b-badge variant="secondary">예약없음</b-badge></b-card-text>
             </b-card>
         </b-card-group>
     </div>
@@ -23,10 +23,15 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 const now=new Date();
+var year = now.getFullYear();
+var month = ('0' + (now.getMonth() + 1)).slice(-2);
+var day = ('0' + now.getDate()).slice(-2);
+
 export default {
     data(){
         return {
             Days: ['일', '월', '화', '수', '목', '금', '토'],
+            dateString: year + '-' + month  + '-' + day
         }
     },
     computed: {
@@ -59,15 +64,17 @@ export default {
         toDetailPage(reservation, title){
             var  params = {};
             params = Object.assign(params,reservation);
-            const statusString = ['플레이 이전', '플레이 완료', '노쇼', '취소된 예약'];
-            params.status=statusString[params.status];
-            params.title=title;
-            params.start_time = params.start_datetime;
-            params.reserved_time= params.reserved_datetime;
-            this.$router.push({name: 'ReservationDetailPage', params: params});
+            if(params.status===0){
+                const statusString = ['플레이 이전', '플레이 완료', '노쇼', '취소된 예약'];
+                params.status=statusString[params.status];
+                params.title=title;
+                params.start_time = params.start_datetime;
+                params.reserved_time= params.reserved_datetime;
+                this.$router.push({name: 'ReservationDetailPage', params: params});
+            }
         },
-        toNewBookingPage(){
-            this.$router.push({name:'NewReservationPage'});
+        toNewBookingPage(params){
+            this.$router.push({name:'NewReservationPage', params: params});
         }
     }
 }

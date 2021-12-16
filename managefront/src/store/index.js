@@ -13,5 +13,4 @@ export default new Vuex.Store({
         reservation,
         theme
     },
-    strict: true//배포할때빼야됨
 });

@@ -173,7 +173,6 @@ export default {
             const payload = {
                 id: this.$route.params.id
             };
-            console.log(payload);
             this.$store.dispatch('reservation/cancel_reservation', payload)
             .then(res=>{
                 if(res.status===204){

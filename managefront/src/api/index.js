@@ -55,10 +55,13 @@ function noShow(payload){
 };
 function fetchNoshowList(){
     return axios.get('/api/reservation/fetchNoshowList');
-}
+};
 function cancelReservation(payload){
     return axios.delete('/api/reservation/cancelReservation', {data: payload});
-}
+};
+function createReservation(payload){
+    return axios.post('/api/reservation/createReservation', payload);
+};
 export {
     fetchBranchInfo,
     putReservableDate,
@@ -80,4 +83,5 @@ export {
     noShow,
     fetchNoshowList,
     cancelReservation,
+    createReservation
 };

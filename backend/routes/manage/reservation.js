@@ -186,7 +186,6 @@ router.get('/fetchNoshowList', async function(req, res, next){
 });
 router.delete('/cancelReservation', async function(req, res, next){
     const rid = req.body.id;
-    console.log(rid);
     try{
         db('reservation')
         .where({id: rid})
@@ -195,6 +194,29 @@ router.delete('/cancelReservation', async function(req, res, next){
             if(rows){
                 res.status(204).end();
             }
+        })
+    }
+    catch(error){
+        console.error(error);
+    }
+});
+router.post('/createReservation', async function(req, res, next){
+    const payload = req.body;
+    try{
+        db('reservation')
+        .insert({
+            theme_id: payload.theme_id,
+            start_time: payload.start_time,
+            end_time: payload.end_time,
+            status: payload.status,
+            reserved_time: payload.reserved_time,
+            number_of_player: payload.number_of_player,
+            phone_number: payload.phone_number,
+            booker_name: payload.booker_name,
+            noshow: 0
+        })
+        .then(rows=>{
+            res.status(204).end();
         })
     }
     catch(error){
