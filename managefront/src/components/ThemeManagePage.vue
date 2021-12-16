@@ -3,7 +3,9 @@
         <h1>{{branchName}} 테마 관리</h1>
         <hr/>
         <b-container>
-            <b-button variant="primary" @click="createTheme">테마 등록</b-button>
+            <b-row align-h="end" class="mb-3 mr-1">
+                <b-button variant="primary" @click="createTheme">테마 등록</b-button>
+            </b-row>
             <b-row cols="3">
                 <b-col v-for = "theme in themeList" :key=theme.id>
                     <b-card

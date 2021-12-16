@@ -23,7 +23,6 @@
                 {{ DBdatetimeToString(data.value) }}
             </template>
         </b-table>
-
         <b-pagination
             v-model="currentPage"
             :total-rows="rows"
@@ -32,6 +31,7 @@
             align="center"
             class="mt-4">
         </b-pagination>
+        <b-button v-on:click="newBooking" variant="primary">신규예약</b-button>
   </div>
 </template>
 
@@ -114,6 +114,9 @@ export default {
         },
         toDetailPage(record, index){
             this.$router.push({name: 'ReservationDetailPage', params: record});
+        },
+        newBooking(){
+            this.$router.push({name: 'NewReservationPage'});
         }
     }
 }

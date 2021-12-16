@@ -13,7 +13,7 @@
                         <b-badge v-if="time.reservation.status==0" variant="success">예약완료</b-badge>
                     </div>
                 </b-card-text>
-                <b-card-text v-else><b-badge variant="secondary">예약없음</b-badge></b-card-text>
+                <b-card-text v-else @click="toNewBookingPage()"><b-badge variant="secondary">예약없음</b-badge></b-card-text>
             </b-card>
         </b-card-group>
     </div>
@@ -63,6 +63,9 @@ export default {
             params.start_time = params.start_datetime;
             params.reserved_time= params.reserved_datetime;
             this.$router.push({name: 'ReservationDetailPage', params: params});
+        },
+        toNewBookingPage(){
+            this.$router.push({name:'NewReservationPage'});
         }
     }
 }
