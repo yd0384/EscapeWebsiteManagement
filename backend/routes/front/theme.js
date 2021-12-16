@@ -81,5 +81,5 @@ router.get('/get_costinfo', function(req, res, next){
         .catch(error=> {
             console.error(error);
         })
-})
+});
 module.exports = router;

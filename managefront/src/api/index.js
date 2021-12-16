@@ -41,6 +41,12 @@ function createTheme(payload){
 function fetchThemeInfo(tid){
     return axios.get('/api/theme/fetchThemeInfo', {params: {tid: tid}});
 };
+function updateTheme(payload){
+    return axios.put('/api/theme/updateTheme', payload);
+};
+function deleteTheme(tid){
+    return axios.delete('/api/theme/deleteTheme', {params: {tid: tid}});
+}
 export {
     fetchBranchInfo,
     putReservableDate,
@@ -55,5 +61,7 @@ export {
     fetchThemeList,
     createL1User,
     createTheme,
-    fetchThemeInfo
+    fetchThemeInfo,
+    updateTheme,
+    deleteTheme
 };

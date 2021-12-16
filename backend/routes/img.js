@@ -49,7 +49,15 @@ router.get('/theme', (req, res, next)=>{
     });
 });
 router.post('/uploadThemeImage', upload.single('img'), function(req, res, next){
-    console.log(req.file.filename);
     res.status(201).json({img_path:req.file.filename});
 });
+router.post('/changeThemeImage', upload.single('img'), function(req, res, next){
+    const existImg = req.query.imgName;
+    console.log('./assets/theme/'+existImg);
+    fs.rm('./assets/theme/'+existImg, (err)=>{
+        res.status(302).end();
+    });
+    res.status(200).json({img_path:req.file.filename});
+
+})
 module.exports = router;
